@@ -41,6 +41,8 @@ private slots:
     void handlePreferencesChange(const QStringList& changes);
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
+    void maybeUpdateStatus();
+
 private:
     Preferences* m_preferences;
     QString m_identityFilePath;
@@ -59,6 +61,10 @@ private:
 
     QMenu* m_contextMenu;
     QSystemTrayIcon* m_systemTrayIcon;
+
+    QTimer* m_statusTimer;
+    bool m_tunnelIndicatedAsOpened = false;
+
     PreferencesDialog* m_preferencesDialog;
 };
 

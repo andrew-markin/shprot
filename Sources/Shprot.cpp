@@ -37,6 +37,8 @@ static const int HealthCheckDelayShort = 50; // 50ms
 static const int HealthCheckConnectionTimeout = 3000; // 3s
 static const int HealthCheckFailsLimit = 3;
 
+static const int StatusUpdateTimeout = 1000; // 1s
+
 } // namespace
 
 Shprot::Shprot(QObject* parent) : QObject(parent)
@@ -87,6 +89,11 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
 
     connect(m_systemTrayIcon, &QSystemTrayIcon::activated, this, &Shprot::handleSystemTrayIconActivation);
 
+    m_statusTimer = new QTimer(this);
+    m_statusTimer->setSingleShot(true);
+
+    connect(m_statusTimer, &QTimer::timeout, this, &Shprot::maybeUpdateStatus);
+
     m_preferencesDialog = new PreferencesDialog(m_preferences);
 
     QNetworkInformation* networkInformation = QNetworkInformation::instance();
@@ -96,6 +103,8 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
 
     connect(networkInformation, &QNetworkInformation::transportMediumChanged,
             this, &Shprot::maybeRestartTunnelProcessLater);
+
+    maybeUpdateStatus();
 }
 
 Shprot::~Shprot()
@@ -244,11 +253,15 @@ void Shprot::handleTunnelProcessStart()
 
     m_healthCheckTimer->start(HealthCheckStartDelay);
     m_healthCheckFailsCount = 0;
+
+    m_statusTimer->start(StatusUpdateTimeout);
 }
 
 void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitStatus)
 {
     stopHealthCheck();
+
+    m_statusTimer->start(StatusUpdateTimeout);
 
     if (m_tunnelStoppedIntentionally)
     {
@@ -404,6 +417,27 @@ void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason re
     {
         openPreferencesDialog();
     }
+}
+
+void Shprot::maybeUpdateStatus()
+{
+    bool tunnelIsOpened = m_tunnelProcess->state() == QProcess::Running;
+
+    if (m_tunnelIndicatedAsOpened == tunnelIsOpened)
+    {
+        return;
+    }
+
+    if (tunnelIsOpened)
+    {
+        m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy");
+    }
+    else
+    {
+        m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available");
+    }
+
+    m_tunnelIndicatedAsOpened = tunnelIsOpened;
 }
 
 // Main function
