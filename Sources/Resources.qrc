@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Shprot.svg</file>
+    </qresource>
+</RCC>

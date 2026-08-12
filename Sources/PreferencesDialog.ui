@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PreferencesDialog</class>
+ <widget class="QDialog" name="PreferencesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="topWidget" native="true">
+     <layout class="QVBoxLayout" name="topWidgetLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QCheckBox" name="sshProxyTunnelCheckBox">
+        <property name="text">
+         <string>Enable SSH Proxy Tunnel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="sshProxyTunnelWidget" native="true">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <layout class="QVBoxLayout" name="sshProxyTunnelWidgetLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="sshDestinationLabelLayout" stretch="1,0">
+           <item>
+            <widget class="QLabel" name="sshDestinationLabel">
+             <property name="text">
+              <string>SSH Destination (e.g. &lt;i&gt;tunnel@myserver.com&lt;/i&gt;):</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::TextFormat::RichText</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="trustCheckButton">
+             <property name="text">
+              <string>Run Trust Check</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="sshDestinationEdit"/>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="sshPrivateKeyLabelLayout" stretch="1,0,0,0">
+           <property name="spacing">
+            <number>7</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="sshPrivateKeyLabel">
+             <property name="text">
+              <string>SSH Private Key:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="generateSshPrivateKeyButton">
+             <property name="text">
+              <string>Generate</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="importSshPrivateKeyButton">
+             <property name="text">
+              <string>Import…</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="copySshPublicKeyButton">
+             <property name="text">
+              <string>Copy Public Key</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QPlainTextEdit" name="sshPrivateKeyEdit"/>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="localSocks5ProxyAddresLayout" columnstretch="1,0">
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="localSocks5ProxyHostEdit">
+             <property name="placeholderText">
+              <string>localhost</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="localSocks5ProxyAddresLabel">
+             <property name="text">
+              <string>Local SOCKS5 Proxy Address (e.g. &lt;i&gt;localhost&lt;/i&gt; or &lt;i&gt;127.0.0.1&lt;/i&gt;):</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::TextFormat::RichText</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="localSocks5ProxyPortLabel">
+             <property name="text">
+              <string>Port:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="localSocks5ProxyPortEdit">
+             <property name="placeholderText">
+              <string>1080</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="bottomWidget" native="true">
+     <layout class="QHBoxLayout" name="bottomWidgetLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>12</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>12</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>sshProxyTunnelCheckBox</tabstop>
+  <tabstop>trustCheckButton</tabstop>
+  <tabstop>sshDestinationEdit</tabstop>
+  <tabstop>generateSshPrivateKeyButton</tabstop>
+  <tabstop>importSshPrivateKeyButton</tabstop>
+  <tabstop>copySshPublicKeyButton</tabstop>
+  <tabstop>sshPrivateKeyEdit</tabstop>
+  <tabstop>localSocks5ProxyHostEdit</tabstop>
+  <tabstop>localSocks5ProxyPortEdit</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,452 @@
+#include "Shprot.h"
+
+#include <QApplication>
+#include <QDebug>
+#include <QDir>
+#include <QLocalServer>
+#include <QLocalSocket>
+#include <QMessageBox>
+#include <QNetworkProxy>
+#include <QRandomGenerator>
+#include <QRegularExpression>
+#include <QStandardPaths>
+#include <QUrl>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
+#include "Preferences.h"
+#include "PreferencesDialog.h"
+#include "Utilities.h"
+#include "Websites.h"
+
+namespace {
+
+static const int SingleInstanceWaitTimeout = 500; // 500ms
+
+static const int TunnelProcessStartTimeout = 2000; // 2s
+static const int TunnelProcessUptimeLimit = 1000; // 1s
+static const int TunnelProcessRestartDelayLazy = 1000; // 1s
+static const int TunnelProcessRestartDelayStep = 200; // 200ms
+static const int TunnelProcessRestartDelayMax = 10000; // 10s
+
+static const int HealthCheckStartDelay = 5000; // 5s
+static const int HealthCheckDelayLong = 20000; // 20s
+static const int HealthCheckDelayShort = 50; // 50ms
+static const int HealthCheckConnectionTimeout = 3000; // 3s
+static const int HealthCheckFailsLimit = 3;
+
+} // namespace
+
+Shprot::Shprot(QObject* parent) : QObject(parent)
+{
+    QString appConfigPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+
+    QDir appConfigDir(appConfigPath);
+    appConfigDir.mkpath(".");
+
+    QString preferencesPath = appConfigDir.filePath("Preferences.json");
+    m_preferences = new Preferences(preferencesPath, this);
+
+    connect(m_preferences, &Preferences::changed, this, &Shprot::handlePreferencesChange);
+
+    m_identityFilePath = appConfigDir.filePath("Identity");
+
+    m_tunnelTimer = new QTimer(this);
+    m_tunnelTimer->setSingleShot(true);
+
+    connect(m_tunnelTimer, &QTimer::timeout, this, &Shprot::maybeRestartTunnelProcess);
+
+    m_tunnelProcess = new QProcess(this);
+    connect(m_tunnelProcess, &QProcess::started, this, &Shprot::handleTunnelProcessStart);
+    connect(m_tunnelProcess, &QProcess::finished, this, &Shprot::handleTunnelProcessFinish);
+
+    m_healthCheckTimer = new QTimer(this);
+    m_healthCheckTimer->setSingleShot(true);
+
+    connect(m_healthCheckTimer, &QTimer::timeout, this, &Shprot::maybeRunHealthCheck);
+
+    for (const QString& website : Websites::Popular)
+    {
+        m_healthCheckUrls.append(website);
+    }
+
+    m_contextMenu = new QMenu();
+    m_contextMenu->setDefaultAction(m_contextMenu->addAction(tr("Preferences…"), this, &Shprot::openPreferencesDialog));
+    m_contextMenu->addAction(tr("About %1").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
+
+    m_contextMenu->addSeparator();
+    m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
+
+    m_systemTrayIcon = new QSystemTrayIcon(this);
+    m_systemTrayIcon->setIcon(QIcon(":/Shprot.svg"));
+    m_systemTrayIcon->setToolTip(PROJECT_TITLE);
+    m_systemTrayIcon->setContextMenu(m_contextMenu);
+    m_systemTrayIcon->show();
+
+    connect(m_systemTrayIcon, &QSystemTrayIcon::activated, this, &Shprot::handleSystemTrayIconActivation);
+
+    m_preferencesDialog = new PreferencesDialog(m_preferences);
+
+    QNetworkInformation* networkInformation = QNetworkInformation::instance();
+
+    connect(networkInformation, &QNetworkInformation::reachabilityChanged,
+            this, &Shprot::maybeRestartTunnelProcessLater);
+
+    connect(networkInformation, &QNetworkInformation::transportMediumChanged,
+            this, &Shprot::maybeRestartTunnelProcessLater);
+}
+
+Shprot::~Shprot()
+{
+    stop();
+    delete m_contextMenu;
+    delete m_preferencesDialog;
+}
+
+void Shprot::start()
+{
+    m_tunnelTimer->start(0);
+}
+
+void Shprot::stop()
+{
+    stopTunnelProcess();
+}
+
+void Shprot::openPreferencesDialog()
+{
+    m_preferencesDialog->open();
+}
+
+void Shprot::openAboutDialog()
+{
+    QMessageBox messageBox;
+    messageBox.setWindowTitle(QString("%1 version %2").arg(PROJECT_TITLE).arg(PROJECT_VERSION));
+    messageBox.setText(PROJECT_DESCRIPTION);
+    messageBox.exec();
+}
+
+void Shprot::maybeRestartTunnelProcess()
+{
+    stopHealthCheck();
+
+    m_tunnelTimer->stop();
+    stopTunnelProcess();
+
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    if (!sshProxyTunnel.value("enabled", false).toBool())
+    {
+        return; // SSH Proxy Tunnel is disabled
+    }
+
+    QString destination = sshProxyTunnel.value("sshDestination").toString();
+    QString address = Utilities::getAddressFromSshDestination(destination);
+    QString knownHostsPath = Utilities::getKnownHostsPath(address);
+
+    QString localSocks5ProxyHost = sshProxyTunnel.value("localSocks5ProxyHost", "localhost").toString();
+
+    if (localSocks5ProxyHost.isEmpty())
+    {
+        localSocks5ProxyHost = "localhost";
+    }
+
+    QString localSocks5ProxyPort = sshProxyTunnel.value("localSocks5ProxyPort", "1080").toString();
+
+    if (localSocks5ProxyPort.isEmpty())
+    {
+        localSocks5ProxyPort = "1080";
+    }
+
+    QString localSocks5ProxyAddress = QString("%1:%2").arg(localSocks5ProxyHost, localSocks5ProxyPort);
+
+    QFile identityFile(m_identityFilePath);
+
+    if (!identityFile.open(QIODevice::WriteOnly))
+    {
+        qCritical() << "Unable to write identity file";
+        return;
+    }
+
+    QString privateKey = sshProxyTunnel.value("sshPrivateKey").toString();
+    identityFile.write(privateKey.toUtf8());
+    identityFile.close();
+
+    QStringList arguments;
+    arguments << "-D" << localSocks5ProxyAddress;
+    arguments << "-N" << destination;
+    arguments << "-o" << QString("IdentityFile=%1").arg(QDir::toNativeSeparators(m_identityFilePath));
+    arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
+    arguments << "-o" << "StrictHostKeyChecking=yes";
+    arguments << "-o" << "BatchMode=yes";
+
+    m_tunnelProcess->start("ssh", arguments);
+    m_tunnelStoppedIntentionally = false;
+
+    if (!m_tunnelProcess->waitForStarted(TunnelProcessStartTimeout))
+    {
+        qWarning() << "Failed to start tunnel process:" << m_tunnelProcess->errorString();
+        return;
+    }
+}
+
+void Shprot::maybeRestartTunnelProcessLater()
+{
+    m_tunnelTimer->start(TunnelProcessRestartDelayLazy);
+}
+
+void Shprot::stopTunnelProcess(int timeout)
+{
+    qint64 pid = m_tunnelProcess->processId();
+
+    if ((m_tunnelProcess->state() == QProcess::NotRunning) || (pid <= 0))
+    {
+        return;
+    }
+
+    m_tunnelStoppedIntentionally = true;
+
+#if defined(Q_OS_WIN)
+    FreeConsole();
+
+    if (AttachConsole(static_cast<DWORD>(pid)))
+    {
+        SetConsoleCtrlHandler(NULL, TRUE);
+        GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+
+        if (!m_tunnelProcess->waitForFinished(timeout))
+        {
+            m_tunnelProcess->kill();
+            m_tunnelProcess->waitForFinished();
+        }
+
+        SetConsoleCtrlHandler(NULL, FALSE);
+        FreeConsole();
+    }
+#else
+    m_tunnelProcess->terminate();
+
+    if (!m_tunnelProcess->waitForFinished(timeout))
+    {
+        m_tunnelProcess->kill();
+        m_tunnelProcess->waitForFinished();
+    }
+#endif
+
+    QFile::remove(m_identityFilePath);
+}
+
+void Shprot::handleTunnelProcessStart()
+{
+    m_tunnelProcess->setProperty("startedAt", QDateTime::currentMSecsSinceEpoch());
+
+    m_healthCheckTimer->start(HealthCheckStartDelay);
+    m_healthCheckFailsCount = 0;
+}
+
+void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    stopHealthCheck();
+
+    if (m_tunnelStoppedIntentionally)
+    {
+        m_frequentRestartsCount = 0;
+        return;
+    }
+
+    qint64 uptime = QDateTime::currentMSecsSinceEpoch() - m_tunnelProcess->property("startedAt").toLongLong();
+
+    if (uptime < TunnelProcessUptimeLimit)
+    {
+        m_frequentRestartsCount++;
+    }
+    else
+    {
+        m_frequentRestartsCount = 0;
+    }
+
+    m_tunnelTimer->start(qMin(m_frequentRestartsCount * TunnelProcessRestartDelayStep, TunnelProcessRestartDelayMax));
+}
+
+void Shprot::stopHealthCheck()
+{
+    m_healthCheckTimer->stop();
+
+    if (m_healthCheckSocket)
+    {
+        QTcpSocket* socket = m_healthCheckSocket;
+        m_healthCheckSocket = nullptr;
+        socket->disconnectFromHost();
+    }
+}
+
+void Shprot::maybeRunHealthCheck()
+{
+    stopHealthCheck();
+
+    if ((m_tunnelProcess->state() != QProcess::Running))
+    {
+        return;
+    }
+
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    if (!sshProxyTunnel.value("enabled", false).toBool())
+    {
+        return; // SSH Proxy Tunnel is disabled
+    }
+
+    int healthCheckUrlIndex = QRandomGenerator::global()->bounded(m_healthCheckUrls.count());
+    const QUrl& healthCheckUrl = m_healthCheckUrls.value(healthCheckUrlIndex);
+
+    QString localSocks5ProxyHost = sshProxyTunnel.value("localSocks5ProxyHost", "localhost").toString();
+
+    if (localSocks5ProxyHost.isEmpty())
+    {
+        localSocks5ProxyHost = "localhost";
+    }
+
+    QString localSocks5ProxyPort = sshProxyTunnel.value("localSocks5ProxyPort", "1080").toString();
+
+    if (localSocks5ProxyPort.isEmpty())
+    {
+        localSocks5ProxyPort = "1080";
+    }
+
+    QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, localSocks5ProxyHost, localSocks5ProxyPort.toInt());
+    proxy.setCapabilities(proxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
+
+    QTcpSocket* healthCheckSocket = new QTcpSocket(this);
+    healthCheckSocket->setProperty("url", healthCheckUrl);
+    healthCheckSocket->setProxy(proxy);
+
+    QTimer::singleShot(HealthCheckConnectionTimeout, healthCheckSocket, [healthCheckSocket]() {
+        QAbstractSocket::SocketState state = healthCheckSocket->state();
+        if ((state == QAbstractSocket::HostLookupState) || (state == QAbstractSocket::ConnectingState))
+        {
+            qWarning() << "Aborting health checker after timeout...";
+            healthCheckSocket->abort();
+        }
+    });
+
+    connect(healthCheckSocket, &QTcpSocket::stateChanged, this, &Shprot::handleHealthCheckSocketStateChange);
+
+    m_healthCheckSocket = healthCheckSocket;
+
+    quint16 healthCheckUrlPort = healthCheckUrl.port(healthCheckUrl.scheme().toLower() == "https" ? 443 : 80);
+    m_healthCheckSocket->connectToHost(healthCheckUrl.host(), healthCheckUrlPort);
+}
+
+void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState state)
+{
+    QTcpSocket* socket = reinterpret_cast<QTcpSocket*>(sender());
+
+    switch (state)
+    {
+    case QAbstractSocket::ConnectedState:
+    {
+        socket->setProperty("success", true);
+        socket->disconnectFromHost();
+        break;
+    }
+    case QAbstractSocket::UnconnectedState:
+    {
+        socket->deleteLater();
+
+        if (socket != m_healthCheckSocket)
+        {
+            return; // Obsolete socket
+        }
+
+        m_healthCheckSocket = nullptr;
+
+        if (socket->property("success").toBool())
+        {
+            m_healthCheckFailsCount = 0;
+            m_healthCheckTimer->start(HealthCheckDelayLong);
+        }
+        else
+        {
+            m_healthCheckFailsCount += 1;
+
+            qWarning() << qPrintable(QString("Health check failed (%1) for %2")
+                                     .arg(m_healthCheckFailsCount)
+                                     .arg(socket->property("url").toUrl().toString()));
+
+            if (m_healthCheckFailsCount < HealthCheckFailsLimit)
+            {
+                m_healthCheckTimer->start(HealthCheckDelayShort);
+            }
+            else
+            {
+                maybeRestartTunnelProcessLater();
+            }
+        }
+
+        break;
+    }
+    }
+}
+
+void Shprot::handlePreferencesChange(const QStringList& changes)
+{
+    if (changes.contains("sshProxyTunnel"))
+    {
+        m_tunnelTimer->start(0);
+    }
+}
+
+void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason)
+{
+    if (reason == QSystemTrayIcon::Trigger)
+    {
+        openPreferencesDialog();
+    }
+}
+
+// Main function
+
+int main(int argc, char* argv[])
+{
+    QApplication::setApplicationName(PROJECT_NAME);
+    QApplication::setQuitOnLastWindowClosed(false);
+
+    QApplication application(argc, argv);
+
+    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
+
+    // Check for other instances already running
+
+    QLocalSocket singleInstanceSocket;
+    singleInstanceSocket.connectToServer(PROJECT_NAME);
+
+    if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
+    {
+        singleInstanceSocket.close();
+        return EXIT_FAILURE; // Application is already started
+    }
+
+    // Initialize single instance server to prevent other instances to start
+
+    QLocalServer::removeServer(PROJECT_NAME);
+    QLocalServer singleInstanceServer;
+
+    if (!singleInstanceServer.listen(PROJECT_NAME))
+    {
+        return EXIT_FAILURE; // Unable to start single instance server
+    }
+
+    if (!QNetworkInformation::loadDefaultBackend())
+    {
+        qWarning() << "Unable to load default network backend.";
+    }
+
+    Shprot shprot;
+    shprot.start();
+
+    QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, &shprot, &Shprot::openPreferencesDialog);
+
+    return application.exec();
+}
