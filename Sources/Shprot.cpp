@@ -81,8 +81,11 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     m_contextMenu->addSeparator();
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
+    m_tunnelOpenIcon = QIcon(":/ShprotOn.svg");
+    m_tunnelClosedIcon = QIcon(":/ShprotOff.svg");
+
     m_systemTrayIcon = new QSystemTrayIcon(this);
-    m_systemTrayIcon->setIcon(QIcon(":/Shprot.svg"));
+    m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
     m_systemTrayIcon->setToolTip(PROJECT_TITLE);
     m_systemTrayIcon->setContextMenu(m_contextMenu);
     m_systemTrayIcon->show();
@@ -430,10 +433,12 @@ void Shprot::maybeUpdateStatus()
 
     if (tunnelIsOpened)
     {
+        m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
         m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy");
     }
     else
     {
+        m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
         m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available");
     }
 

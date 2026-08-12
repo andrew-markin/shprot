@@ -60,6 +60,8 @@ private:
     int m_healthCheckFailsCount = 0;
 
     QMenu* m_contextMenu;
+    QIcon m_tunnelOpenIcon;
+    QIcon m_tunnelClosedIcon;
     QSystemTrayIcon* m_systemTrayIcon;
 
     QTimer* m_statusTimer;

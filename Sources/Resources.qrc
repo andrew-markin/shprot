@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>Shprot.svg</file>
+        <file>ShprotOff.svg</file>
+        <file>ShprotOn.svg</file>
     </qresource>
 </RCC>
