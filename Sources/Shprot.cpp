@@ -487,5 +487,12 @@ int main(int argc, char* argv[])
 
     QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, &shprot, &Shprot::openPreferencesDialog);
 
+    QStringList arguments = QCoreApplication::arguments();
+
+    if (!arguments.contains("--auto"))
+    {
+        shprot.openPreferencesDialog();
+    }
+
     return application.exec();
 }

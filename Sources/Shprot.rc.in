@@ -18,7 +18,7 @@ BEGIN
             VALUE "ProductName", "@PROJECT_TITLE@"
             VALUE "ProductVersion", "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.0.0"
             VALUE "FileDescription", "@PROJECT_TITLE@ - @PROJECT_DESCRIPTION@"
-            VALUE "LegalCopyright",  "Copyright (c) @CURRENT_YEAR@ @PROJECT_VENDOR@"
+            VALUE "LegalCopyright",  "@PROJECT_COPYRIGHT@"
         END
     END
     BLOCK "VarFileInfo"

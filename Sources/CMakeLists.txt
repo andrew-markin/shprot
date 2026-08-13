@@ -3,10 +3,21 @@ cmake_minimum_required(VERSION 3.16)
 project(Shprot VERSION 0.1 LANGUAGES CXX)
 
 set(PROJECT_TITLE "Shprot")
-set(PROJECT_VENDOR "Andrew Markin")
+set(PROJECT_VENDOR "Andrew N. Markin")
 
-set(PROJECT_DESCRIPTION "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel")
+set(PROJECT_DESCRIPTION "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel.")
 set(PROJECT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/Shprot.ico")
+
+set(ORIGINAL_YEAR "2026")
+string(TIMESTAMP CURRENT_YEAR "%Y")
+
+if(ORIGINAL_YEAR EQUAL CURRENT_YEAR)
+    set(COPYRIGHT_YEARS "${ORIGINAL_YEAR}")
+else()
+    set(COPYRIGHT_YEARS "${ORIGINAL_YEAR}-${CURRENT_YEAR}")
+endif()
+
+set(PROJECT_COPYRIGHT "Copyright (C) ${COPYRIGHT_YEARS} ${PROJECT_VENDOR}. All rights reserved.")
 
 set(CMAKE_BUILD_TYPE "Release")
 
@@ -40,8 +51,6 @@ get_filename_component(QT_BINARY_DIR "${QT6_INSTALL_PREFIX}/bin" ABSOLUTE)
 get_filename_component(QT_PLUGINS_DIR "${QT6_INSTALL_PREFIX}/plugins" ABSOLUTE)
 
 # Configure executable resources
-
-string(TIMESTAMP CURRENT_YEAR "%Y")
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/Shprot.rc.in
@@ -125,9 +134,18 @@ install(CODE "
   fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Shprot.exe\" \"\${INSTALLED_QT_PLUGINS}\" \"${DEPENDENCIES_SEARCH_PATHS}\")
 ")
 
+# Prepare extended license file for packaging
+
+set(PACKAGE_LICENSE_TXT_IN "${CMAKE_CURRENT_SOURCE_DIR}/PackageLicense.txt.in")
+set(PACKAGE_LICENSE_TXT "${CMAKE_CURRENT_BINARY_DIR}/PackageLicense.txt")
+
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../LICENSE" PROJECT_LICENSE)
+configure_file("${PACKAGE_LICENSE_TXT_IN}" "${PACKAGE_LICENSE_TXT}" @ONLY)
+
 # Configure packaging
 
-SET(CPACK_GENERATOR "ZIP")
+set(CPACK_GENERATOR "NSIS")
+
 SET(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}")
 
 set(CPACK_PACKAGE_NAME "${PROJECT_TITLE}")
@@ -138,5 +156,30 @@ set(CPACK_MONOLITHIC_INSTALL ON)
 
 set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
+
+set(CPACK_RESOURCE_FILE_LICENSE "${PACKAGE_LICENSE_TXT}")
+
+set(CPACK_NSIS_MUI_LANGUAGE "English")
+set(CPACK_NSIS_LICENSE_PAGE_FORCE_SELECTION_CHECKBOX ON)
+set(CPACK_NSIS_MENU_LINKS "Shprot.exe" "${PROJECT_TITLE}")
+set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_TITLE} ${PROJECT_VERSION}")
+set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_TITLE}")
+set(CPACK_NSIS_MUI_ICON "${PROJECT_ICON}")
+set(CPACK_NSIS_INSTALLED_ICON_NAME "Shprot.exe")
+set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
+set(CPACK_NSIS_MANIFEST_DPI_AWARE TRUE)
+
+set(CPACK_NSIS_DEFINES "
+  !define MUI_FINISHPAGE_RUN \\\"explorer.exe\\\"
+  !define MUI_FINISHPAGE_RUN_PARAMETERS \\\"$INSTDIR\\\\Shprot.exe\\\"
+")
+
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+  WriteRegStr HKCU \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" '\\\"$INSTDIR\\\\Shprot.exe\\\" --auto'
+")
+
+set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+  DeleteRegValue HKCU \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\"
+")
 
 include(CPack)
