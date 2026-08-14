@@ -1,4 +1,4 @@
-<h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="40" height="40" valign="middle"> Shprot</h1>
+<h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="35" height="35" valign="middle"> Shprot</h1>
 
 🌐 **Languages:** [English](README.md) | [Русский](README.ru.md)
 
@@ -129,8 +129,6 @@ git clone https://github.com/andrew-markin/shprot.git
 cd shprot
 ```
 
----
-
 ### 📦 Option A: Building the Release Package
 The project includes an automated script to build the production bundle without manual compilation. To use it, you must first set up a local environment file so CMake can find your Qt installation:
 
@@ -150,8 +148,6 @@ The project includes an automated script to build the production bundle without 
    MakeRelease.cmd
    ```
 Once the script finishes execution, you can find the production-ready `.exe` installer inside the **`Release`** folder.
-
----
 
 ### 💻 Option B: Working with Code (Development)
 If you want to modify the code, fix bugs, or add features, you should use **Qt Creator**:

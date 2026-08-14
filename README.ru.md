@@ -1,4 +1,4 @@
-<h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="40" height="40" valign="middle"> Shprot</h1>
+<h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="35" height="35" valign="middle"> Shprot</h1>
 
 🌐 **Languages:** [English](README.md) | [Русский](README.ru.md)
 
@@ -129,8 +129,6 @@ git clone https://github.com/andrew-markin/shprot.git
 cd shprot
 ```
 
----
-
 ### 📦 Вариант А: Сборка релизного пакета
 Проект содержит автоматизированный скрипт для сборки релизного бандла без ручной компиляции. Чтобы использовать его, необходимо сначала настроить локальный файл окружения, чтобы CMake мог найти вашу установку Qt:
 
@@ -150,8 +148,6 @@ cd shprot
    MakeRelease.cmd
    ```
 После завершения работы скрипта готовый к установке `.exe`-инсталлятор появится в папке **`Release`**.
-
----
 
 ### 💻 Вариант Б: Работа с кодом (Разработка)
 Если вы хотите изменить код, исправить баги или добавить новые фичи, вам следует использовать **Qt Creator**:
