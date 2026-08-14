@@ -171,7 +171,7 @@ We welcome contributions to Shprot! To get started:
 4. Commit your changes (`git commit -m 'Add some amazing feature'`) and push them to your fork (`git push origin feature/amazing-feature`).
 5. Open a **Pull Request** against our main repository.
 
-*Before starting any major work, please open an [Issue](issues) first to discuss your ideas with the maintainers.*
+*Before starting any major work, please open an [Issue](../../issues) first to discuss your ideas with the maintainers.*
 
 ## 📜 License
 
