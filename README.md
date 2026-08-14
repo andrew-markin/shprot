@@ -1,4 +1,11 @@
-<h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="35" height="35" valign="middle"> Shprot</h1>
+<table style="margin-bottom: 20px">
+  <tr>
+    <td style="padding: 0; margin: 0">
+      <img src="Assets/Shprot.svg" alt="Shprot Logo" width="40" height="40" style="vertical-align: middle;">
+    </td>
+    <td><h1 style="margin: 0; padding: 0; border: none">Shprot</h1></td>
+  </tr>
+</table>
 
 🌐 **Languages:** [English](README.md) | [Русский](README.ru.md)
 
