@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(Shprot VERSION 0.1 LANGUAGES CXX)
+project(Shprot VERSION 1.0 LANGUAGES CXX)
 
 set(PROJECT_TITLE "Shprot")
 set(PROJECT_VENDOR "Andrew N. Markin")
