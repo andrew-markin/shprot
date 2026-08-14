@@ -19,7 +19,7 @@ Currently, Shprot is optimized and supported exclusively for **Windows** (10 / 1
 
 ## 🚀 Installation
 
-You can download the pre-compiled installer for Windows from the **[Releases](releases)** section. 
+You can download the pre-compiled installer for Windows from the **[Releases](../../releases)** section. 
 
 The installation package is created using NSIS. Simply run the downloaded `.exe` file and follow the setup wizard instructions.
 
