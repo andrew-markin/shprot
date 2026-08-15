@@ -175,11 +175,11 @@ set(CPACK_NSIS_DEFINES "
 ")
 
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-  WriteRegStr HKCU \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" '\\\"$INSTDIR\\\\Shprot.exe\\\" --auto'
+  WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" '\\\"$INSTDIR\\\\Shprot.exe\\\" --auto'
 ")
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
-  DeleteRegValue HKCU \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\"
+  DeleteRegValue HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\"
 ")
 
 include(CPack)
