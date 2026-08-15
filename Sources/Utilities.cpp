@@ -28,6 +28,15 @@ QString getTemporaryFilePath()
     return QDir(temporaryDirPath).filePath(QString("%1-%2").arg(PROJECT_NAME).arg(getRandom128BitHexKey()));
 }
 
+QString getCurrentUserName()
+{
+#ifdef Q_OS_WIN
+    return QProcessEnvironment::systemEnvironment().value("USERNAME");
+#else
+    return QProcessEnvironment::systemEnvironment().value("USER");
+#endif
+}
+
 QString generateSshPrivateKey()
 {
     QString result;
@@ -40,8 +49,8 @@ QString generateSshPrivateKey()
         QFile::remove(publicKeyPath);
     });
 
+    QString userName = getCurrentUserName();
     QString hostName = QHostInfo::localHostName();
-    QString userName = QProcessEnvironment::systemEnvironment().value("USERNAME");
     QString privateKeyComment = QString("%1@%2/%3").arg(userName).arg(hostName).arg(PROJECT_NAME);
 
     QProcess process;

@@ -458,8 +458,10 @@ int main(int argc, char* argv[])
 
     // Check for other instances already running
 
+    QString singleInstanceServerName = QString("%1/%2").arg(PROJECT_NAME).arg(Utilities::getCurrentUserName());
+
     QLocalSocket singleInstanceSocket;
-    singleInstanceSocket.connectToServer(PROJECT_NAME);
+    singleInstanceSocket.connectToServer(singleInstanceServerName);
 
     if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
     {
@@ -469,10 +471,11 @@ int main(int argc, char* argv[])
 
     // Initialize single instance server to prevent other instances to start
 
-    QLocalServer::removeServer(PROJECT_NAME);
+
+    QLocalServer::removeServer(singleInstanceServerName);
     QLocalServer singleInstanceServer;
 
-    if (!singleInstanceServer.listen(PROJECT_NAME))
+    if (!singleInstanceServer.listen(singleInstanceServerName))
     {
         return EXIT_FAILURE; // Unable to start single instance server
     }
