@@ -184,7 +184,13 @@ void Shprot::openAboutDialog()
 {
     QMessageBox messageBox;
     messageBox.setWindowTitle(QString("%1 version %2").arg(PROJECT_TITLE).arg(PROJECT_VERSION));
-    messageBox.setText(PROJECT_DESCRIPTION);
+    messageBox.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::TextSelectableByMouse);
+    messageBox.setText(QString("%1<br><br><a href='%2'>GitHub repository</a>,&nbsp;"
+                               "<a href='%3'>LinkedIn profile</a><br><br>%4")
+                       .arg(PROJECT_DESCRIPTION)
+                       .arg(PROJECT_GITHUB_REPOSITORY)
+                       .arg(PROJECT_LINKEDIN_PROFILE)
+                       .arg(PROJECT_COPYRIGHT));
     messageBox.exec();
 }
 
