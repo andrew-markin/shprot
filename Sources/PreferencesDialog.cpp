@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QFontMetrics>
 #include <QMessageBox>
 #include <QRegularExpressionValidator>
 #include <QStringList>
@@ -41,6 +42,10 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     fixedFont.setPointSizeF(defaultFont.pointSizeF() * 1.1);
     m_ui->sshPrivateKeyEdit->setFont(fixedFont);
+
+    QFontMetrics fixedFontMetrics(fixedFont);
+    m_ui->sshPrivateKeyEdit->setMinimumWidth(fixedFontMetrics.horizontalAdvance(QByteArray(75, 'W')));
+    m_ui->sshPrivateKeyEdit->setMinimumHeight(fixedFontMetrics.lineSpacing() * 10);
 
     connectHighlightReset(m_ui->sshPrivateKeyEdit);
 
