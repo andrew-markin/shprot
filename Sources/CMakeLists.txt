@@ -6,6 +6,8 @@ set(PROJECT_TITLE "Shprot")
 set(PROJECT_VENDOR "Andrew N. Markin")
 
 set(PROJECT_DESCRIPTION "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel.")
+
+# Use https://redketchup.io/icon-converter to make icon
 set(PROJECT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/Shprot.ico")
 
 set(ORIGINAL_YEAR "2026")

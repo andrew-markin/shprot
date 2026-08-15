@@ -129,8 +129,8 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     m_contextMenu->addSeparator();
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
-    m_tunnelOpenIcon = QIcon(":/ShprotOn.svg");
-    m_tunnelClosedIcon = QIcon(":/ShprotOff.svg");
+    m_tunnelOpenIcon = QIcon(":/Shprot.svg");
+    m_tunnelClosedIcon = QIcon(":/Inactive.svg");
 
     m_systemTrayIcon = new QSystemTrayIcon(this);
     m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
