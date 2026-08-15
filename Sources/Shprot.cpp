@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QMessageBox>
@@ -14,6 +15,7 @@
 
 #ifdef Q_OS_WIN
 #include <windows.h>
+#include <wtsapi32.h>
 #endif
 
 #include "Preferences.h"
@@ -24,6 +26,8 @@
 namespace {
 
 static const int SingleInstanceWaitTimeout = 500; // 500ms
+static const int SingleInstanceReadTimeout = 5000; // 5s
+static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
 static const int TunnelProcessUptimeLimit = 1000; // 1s
@@ -38,6 +42,50 @@ static const int HealthCheckConnectionTimeout = 3000; // 3s
 static const int HealthCheckFailsLimit = 3;
 
 static const int StatusUpdateTimeout = 1000; // 1s
+
+QStringList getAllLoggedInUserNames()
+{
+    PWTS_SESSION_INFO sessionsData = NULL;
+    DWORD sessionsCount = 0;
+
+    if (!WTSEnumerateSessions(WTS_CURRENT_SERVER_HANDLE, 0, 1, &sessionsData, &sessionsCount))
+    {
+        return QStringList();
+    }
+
+    QSet<QString> userNamesSet;
+
+    for (DWORD i = 0; i < sessionsCount; i++)
+    {
+        LPWSTR userNameData = NULL;
+        DWORD userNameSize = 0;
+
+        if (WTSQuerySessionInformation(WTS_CURRENT_SERVER_HANDLE, sessionsData[i].SessionId, WTSUserName,
+                                       &userNameData, &userNameSize))
+        {
+            if (userNameData && (userNameSize > 0))
+            {
+                QString userName = QString::fromUtf16((const ushort*)userNameData);
+
+                if (!userName.isEmpty() && (userName != "SYSTEM") && (userName != "LOCAL SERVICE") &&
+                    (userName != "NETWORK SERVICE"))
+                {
+                    userNamesSet.insert(userName);
+                }
+            }
+
+            WTSFreeMemory(userNameData);
+        }
+    }
+
+    WTSFreeMemory(sessionsData);
+    return userNamesSet.values();
+}
+
+QString getSingleInstanceServerName(const QString& userName)
+{
+    return QString("%1/%2").arg(PROJECT_NAME).arg(userName);
+}
 
 } // namespace
 
@@ -453,24 +501,45 @@ int main(int argc, char* argv[])
     QApplication::setQuitOnLastWindowClosed(false);
 
     QApplication application(argc, argv);
+    QStringList arguments = QCoreApplication::arguments();
 
     qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
 
+    if (arguments.contains("--shutdown"))
+    {
+        for (const QString& userName : getAllLoggedInUserNames())
+        {
+            QLocalSocket singleInstanceSocket;
+            singleInstanceSocket.connectToServer(getSingleInstanceServerName(userName));
+
+            if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
+            {
+                singleInstanceSocket.write("quit");
+                singleInstanceSocket.waitForBytesWritten(SingleInstanceWriteTimeout);
+                singleInstanceSocket.close();
+            }
+        }
+
+        return EXIT_SUCCESS;
+    }
+
     // Check for other instances already running
 
-    QString singleInstanceServerName = QString("%1/%2").arg(PROJECT_NAME).arg(Utilities::getCurrentUserName());
+    QString singleInstanceServerName = getSingleInstanceServerName(Utilities::getCurrentUserName());
 
     QLocalSocket singleInstanceSocket;
     singleInstanceSocket.connectToServer(singleInstanceServerName);
 
     if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
     {
+        // Application is already started
+        singleInstanceSocket.write("activate");
+        singleInstanceSocket.waitForBytesWritten(SingleInstanceWriteTimeout);
         singleInstanceSocket.close();
-        return EXIT_FAILURE; // Application is already started
+        return EXIT_FAILURE;
     }
 
     // Initialize single instance server to prevent other instances to start
-
 
     QLocalServer::removeServer(singleInstanceServerName);
     QLocalServer singleInstanceServer;
@@ -488,9 +557,40 @@ int main(int argc, char* argv[])
     Shprot shprot;
     shprot.start();
 
-    QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, &shprot, &Shprot::openPreferencesDialog);
+    QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, [&singleInstanceServer, &shprot]() {
+        QLocalSocket* socket = singleInstanceServer.nextPendingConnection();
 
-    QStringList arguments = QCoreApplication::arguments();
+        if (!socket)
+        {
+            return;
+        }
+
+        QByteArray message;
+        QElapsedTimer timer;
+        timer.start();
+
+        while (((socket->state() == QLocalSocket::ConnectedState) || (socket->bytesAvailable() > 0)) &&
+               (timer.elapsed() < SingleInstanceReadTimeout))
+        {
+            if (socket->bytesAvailable() <= 0)
+            {
+                socket->waitForReadyRead(SingleInstanceReadTimeout);
+            }
+
+            message.append(socket->readAll());
+        }
+
+        socket->deleteLater();
+
+        if (message == "activate")
+        {
+            shprot.openPreferencesDialog();
+        }
+        else if (message == "quit")
+        {
+            qApp->quit();
+        }
+    });
 
     if (!arguments.contains("--auto"))
     {

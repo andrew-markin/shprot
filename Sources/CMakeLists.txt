@@ -85,6 +85,7 @@ target_link_libraries(
   Shprot PRIVATE
   Qt6::Widgets
   Qt6::Network
+  wtsapi32
 )
 
 target_compile_options(
@@ -180,6 +181,8 @@ set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
 
 set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
   DeleteRegValue HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\"
+  ExecWait '\\\"$INSTDIR\\\\Shprot.exe\\\" --shutdown'
+  Sleep 2000
 ")
 
 include(CPack)
