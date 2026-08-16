@@ -3,11 +3,13 @@
 
 #include <QMenu>
 #include <QNetworkInformation>
+#include <QNetworkProxy>
 #include <QProcess>
 #include <QSystemTrayIcon>
 #include <QTcpSocket>
 #include <QTimer>
 
+class HttpProxyServer;
 class Preferences;
 class PreferencesDialog;
 
@@ -38,6 +40,8 @@ private slots:
     void maybeRunHealthCheck();
     void handleHealthCheckSocketStateChange(QAbstractSocket::SocketState state);
 
+    void maybeStartHttpProxyServer();
+
     void handlePreferencesChange(const QStringList& changes);
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
@@ -49,6 +53,7 @@ private:
 
     QTimer* m_tunnelTimer;
     QProcess* m_tunnelProcess;
+    QNetworkProxy m_tunnelSocksProxy;
     bool m_tunnelStoppedIntentionally = false;
     int m_frequentRestartsCount = 0;
 
@@ -58,6 +63,8 @@ private:
     QList<QUrl> m_healthCheckUrls;
     int m_healthCheckUrlIndex = 0;
     int m_healthCheckFailsCount = 0;
+
+    HttpProxyServer* m_httpProxyServer;
 
     QMenu* m_contextMenu;
     QIcon m_tunnelOpenIcon;

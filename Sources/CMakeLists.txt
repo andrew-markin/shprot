@@ -70,6 +70,10 @@ configure_file(
 
 add_executable(
   Shprot WIN32
+  HttpProxyServer.cpp
+  HttpProxyServer.h
+  HttpProxyStream.cpp
+  HttpProxyStream.h
   Preferences.cpp
   Preferences.h
   PreferencesDialog.cpp

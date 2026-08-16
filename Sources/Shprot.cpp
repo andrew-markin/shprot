@@ -18,6 +18,7 @@
 #include <wtsapi32.h>
 #endif
 
+#include "HttpProxyServer.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
 #include "Utilities.h"
@@ -121,6 +122,8 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     {
         m_healthCheckUrls.append(website);
     }
+
+    m_httpProxyServer = new HttpProxyServer(this);
 
     m_contextMenu = new QMenu();
     m_contextMenu->setDefaultAction(m_contextMenu->addAction(tr("Preferences…"), this, &Shprot::openPreferencesDialog));
@@ -240,6 +243,11 @@ void Shprot::maybeRestartTunnelProcess()
     identityFile.write(privateKey.toUtf8());
     identityFile.close();
 
+    m_tunnelSocksProxy.setType(QNetworkProxy::Socks5Proxy);
+    m_tunnelSocksProxy.setHostName(localSocks5ProxyHost);
+    m_tunnelSocksProxy.setPort(localSocks5ProxyPort.toUShort());
+    m_tunnelSocksProxy.setCapabilities(m_tunnelSocksProxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
+
     QStringList arguments;
     arguments << "-D" << localSocks5ProxyAddress;
     arguments << "-N" << destination;
@@ -311,11 +319,14 @@ void Shprot::handleTunnelProcessStart()
     m_healthCheckTimer->start(HealthCheckStartDelay);
     m_healthCheckFailsCount = 0;
 
+    maybeStartHttpProxyServer();
+
     m_statusTimer->start(StatusUpdateTimeout);
 }
 
 void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitStatus)
 {
+    m_httpProxyServer->stop();
     stopHealthCheck();
 
     m_statusTimer->start(StatusUpdateTimeout);
@@ -361,36 +372,12 @@ void Shprot::maybeRunHealthCheck()
         return;
     }
 
-    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
-
-    if (!sshProxyTunnel.value("enabled", false).toBool())
-    {
-        return; // SSH Proxy Tunnel is disabled
-    }
-
     int healthCheckUrlIndex = QRandomGenerator::global()->bounded(m_healthCheckUrls.count());
     const QUrl& healthCheckUrl = m_healthCheckUrls.value(healthCheckUrlIndex);
 
-    QString localSocks5ProxyHost = sshProxyTunnel.value("localSocks5ProxyHost", "localhost").toString();
-
-    if (localSocks5ProxyHost.isEmpty())
-    {
-        localSocks5ProxyHost = "localhost";
-    }
-
-    QString localSocks5ProxyPort = sshProxyTunnel.value("localSocks5ProxyPort", "1080").toString();
-
-    if (localSocks5ProxyPort.isEmpty())
-    {
-        localSocks5ProxyPort = "1080";
-    }
-
-    QNetworkProxy proxy(QNetworkProxy::Socks5Proxy, localSocks5ProxyHost, localSocks5ProxyPort.toInt());
-    proxy.setCapabilities(proxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
-
     QTcpSocket* healthCheckSocket = new QTcpSocket(this);
     healthCheckSocket->setProperty("url", healthCheckUrl);
-    healthCheckSocket->setProxy(proxy);
+    healthCheckSocket->setProxy(m_tunnelSocksProxy);
 
     QTimer::singleShot(HealthCheckConnectionTimeout, healthCheckSocket, [healthCheckSocket]() {
         QAbstractSocket::SocketState state = healthCheckSocket->state();
@@ -458,6 +445,40 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
         break;
     }
     }
+}
+
+void Shprot::maybeStartHttpProxyServer()
+{
+    m_httpProxyServer->stop();
+
+    if ((m_tunnelProcess->state() != QProcess::Running))
+    {
+        return;
+    }
+
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    if (!sshProxyTunnel.value("enabled", false).toBool() ||
+        !sshProxyTunnel.value("localHttpProxyEnabled", false).toBool())
+    {
+        return; // SSH Proxy Tunnel or Local HTTP Proxy are disabled
+    }
+
+    QString localHttpProxyHost = sshProxyTunnel.value("localHttpProxyHost", "localhost").toString();
+
+    if (localHttpProxyHost.isEmpty())
+    {
+        localHttpProxyHost = "localhost";
+    }
+
+    QString localHttpProxyPort = sshProxyTunnel.value("localHttpProxyPort", "8080").toString();
+
+    if (localHttpProxyPort.isEmpty())
+    {
+        localHttpProxyPort = "8080";
+    }
+
+    m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort.toUShort(), m_tunnelSocksProxy);
 }
 
 void Shprot::handlePreferencesChange(const QStringList& changes)
@@ -564,37 +585,40 @@ int main(int argc, char* argv[])
     shprot.start();
 
     QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, [&singleInstanceServer, &shprot]() {
-        QLocalSocket* socket = singleInstanceServer.nextPendingConnection();
-
-        if (!socket)
+        while (singleInstanceServer.hasPendingConnections())
         {
-            return;
-        }
+            QLocalSocket* socket = singleInstanceServer.nextPendingConnection();
 
-        QByteArray message;
-        QElapsedTimer timer;
-        timer.start();
-
-        while (((socket->state() == QLocalSocket::ConnectedState) || (socket->bytesAvailable() > 0)) &&
-               (timer.elapsed() < SingleInstanceReadTimeout))
-        {
-            if (socket->bytesAvailable() <= 0)
+            if (!socket)
             {
-                socket->waitForReadyRead(SingleInstanceReadTimeout);
+                return;
             }
 
-            message.append(socket->readAll());
-        }
+            QByteArray message;
+            QElapsedTimer timer;
+            timer.start();
 
-        socket->deleteLater();
+            while (((socket->state() == QLocalSocket::ConnectedState) || (socket->bytesAvailable() > 0)) &&
+                   (timer.elapsed() < SingleInstanceReadTimeout))
+            {
+                if (socket->bytesAvailable() <= 0)
+                {
+                    socket->waitForReadyRead(SingleInstanceReadTimeout);
+                }
 
-        if (message == "activate")
-        {
-            shprot.openPreferencesDialog();
-        }
-        else if (message == "quit")
-        {
-            qApp->quit();
+                message.append(socket->readAll());
+            }
+
+            socket->deleteLater();
+
+            if (message == "activate")
+            {
+                shprot.openPreferencesDialog();
+            }
+            else if (message == "quit")
+            {
+                qApp->quit();
+            }
         }
     });
 

@@ -17,6 +17,21 @@
 #include "Utilities.h"
 #include "Websites.h"
 
+namespace {
+
+bool proxyPortStringIsAcceptable(const QString& portString)
+{
+    if (portString.isEmpty())
+    {
+        return true;
+    }
+
+    int portNumber = portString.toInt();
+    return (portNumber >= 1024) && (portNumber <= 65535);
+}
+
+} // namespace
+
 PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     : QDialog(parent), m_ui(new Ui::PreferencesDialog), m_preferences(preferences)
 {
@@ -50,19 +65,32 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     connectHighlightReset(m_ui->sshPrivateKeyEdit);
 
     static const QRegularExpression HostRegEx(R"(^(\[[0-9a-fA-F:]+\]|[a-zA-Z0-9.-]*)$)");
-    QRegularExpressionValidator* socks5ProxyValidator = new QRegularExpressionValidator(HostRegEx, this);
-    m_ui->localSocks5ProxyHostEdit->setValidator(socks5ProxyValidator);
-    connectHighlightReset(m_ui->localSocks5ProxyHostEdit);
+    QRegularExpressionValidator* proxyHostValidator = new QRegularExpressionValidator(HostRegEx, this);
 
     static const QRegularExpression PortRegEx(R"(^([0-9]*)$)");
-    QRegularExpressionValidator* portValidator = new QRegularExpressionValidator(PortRegEx, this);
-    m_ui->localSocks5ProxyPortEdit->setValidator(portValidator);
+    QRegularExpressionValidator* proxyPortValidator = new QRegularExpressionValidator(PortRegEx, this);
+
+
+    m_ui->localSocks5ProxyHostEdit->setValidator(proxyHostValidator);
+    connectHighlightReset(m_ui->localSocks5ProxyHostEdit);
+
+    m_ui->localSocks5ProxyPortEdit->setValidator(proxyPortValidator);
     connectHighlightReset(m_ui->localSocks5ProxyPortEdit);
 
     connect(m_ui->trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::runTrustCheckWithForcedProbe);
     connect(m_ui->generateSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::generateSshPrivateKey);
     connect(m_ui->importSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::importSshPrivateKey);
     connect(m_ui->copySshPublicKeyButton, &QToolButton::clicked, this, &PreferencesDialog::copySshPublicKey);
+
+    connect(m_ui->localHttpProxyCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
+        m_ui->localHttpProxyAddresWidget->setEnabled(checked);
+    });
+
+    m_ui->localHttpProxyHostEdit->setValidator(proxyHostValidator);
+    connectHighlightReset(m_ui->localHttpProxyHostEdit);
+
+    m_ui->localHttpProxyPortEdit->setValidator(proxyPortValidator);
+    connectHighlightReset(m_ui->localHttpProxyPortEdit);
 
     connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &PreferencesDialog::accept);
     connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::reject);
@@ -89,6 +117,9 @@ void PreferencesDialog::open()
     m_ui->sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
     m_ui->localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
     m_ui->localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
+    m_ui->localHttpProxyCheckBox->setChecked(sshProxyTunnel.value("localHttpProxyEnabled", false).toBool());
+    m_ui->localHttpProxyHostEdit->setText(sshProxyTunnel.value("localHttpProxyHost").toString());
+    m_ui->localHttpProxyPortEdit->setText(sshProxyTunnel.value("localHttpProxyPort").toString());
 
     validate();
 
@@ -129,7 +160,10 @@ void PreferencesDialog::accept()
                                 {"sshDestination", m_ui->sshDestinationEdit->text()},
                                 {"sshPrivateKey", m_ui->sshPrivateKeyEdit->toPlainText()},
                                 {"localSocks5ProxyHost", m_ui->localSocks5ProxyHostEdit->text()},
-                                {"localSocks5ProxyPort", m_ui->localSocks5ProxyPortEdit->text()}});
+                                {"localSocks5ProxyPort", m_ui->localSocks5ProxyPortEdit->text()},
+                                {"localHttpProxyEnabled", m_ui->localHttpProxyCheckBox->isChecked()},
+                                {"localHttpProxyHost", m_ui->localHttpProxyHostEdit->text()},
+                                {"localHttpProxyPort", m_ui->localHttpProxyPortEdit->text()}});
 
     m_preferences->setValue("sshProxyTunnel", sshProxyTunnel);
 
@@ -224,23 +258,33 @@ QStringList PreferencesDialog::validate()
 
     // Local SOCKS5 Proxy Port
 
-    bool localSocks5ProxyPortIsAcceptable = m_ui->localSocks5ProxyPortEdit->hasAcceptableInput();
-
-    if (localSocks5ProxyPortIsAcceptable)
-    {
-        QString portString = m_ui->localSocks5ProxyPortEdit->text();
-
-        if (!portString.isEmpty())
-        {
-            int portNumber = portString.toInt();
-            localSocks5ProxyPortIsAcceptable = (portNumber >= 1024) && (portNumber <= 65535);
-        }
-    }
-
-    if (!localSocks5ProxyPortIsAcceptable)
+    if (!m_ui->localSocks5ProxyPortEdit->hasAcceptableInput() ||
+        !proxyPortStringIsAcceptable(m_ui->localSocks5ProxyPortEdit->text()))
     {
         errors.append("Invalid Local SOCKS5 Proxy Port");
         setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, true);
+    }
+
+    // Local HTTP Proxy
+
+    if (m_ui->localHttpProxyCheckBox->isChecked())
+    {
+        // Local HTTP Proxy Host
+
+        if (!m_ui->localHttpProxyHostEdit->hasAcceptableInput())
+        {
+            errors.append("Invalid Local HTTP Proxy Host");
+            setWidgetHighlighted(m_ui->localHttpProxyHostEdit, true);
+        }
+
+        // Local HTTP Proxy Port
+
+        if (!m_ui->localHttpProxyPortEdit->hasAcceptableInput() ||
+            !proxyPortStringIsAcceptable(m_ui->localHttpProxyPortEdit->text()))
+        {
+            errors.append("Invalid Local HTTP Proxy Port");
+            setWidgetHighlighted(m_ui->localHttpProxyPortEdit, true);
+        }
     }
 
     return errors;
