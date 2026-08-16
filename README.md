@@ -1,8 +1,12 @@
 <h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="30"> Shprot</h1>
 
-🌐 **Languages:** [English](README.md) | [Русский](README.ru.md)
+🌐 **Languages:** [**English**](README.md) | [Русский](README.ru.md)
 
-Shprot is a lightweight, cross-platform-ready GUI wrapper written in Qt/C++ designed to manage a highly resilient SOCKS5 proxy over an SSH tunnel. Unlike standard command-line tools, it constantly monitors network environments, executes periodic proxy health checks, and automatically revives stalled connections or adapts to Wi-Fi switches. It also simplifies infrastructure setup with integrated SSH key generation and customizable local routing parameters, ensuring an uninterrupted and secure browsing experience.
+**Shprot** is a desktop application that gives you a reliable, auto-recovering SOCKS5 proxy over SSH — without touching the command line.
+
+Unlike standard SSH tunneling tools, it watches your network, automatically restarts broken connections, and even adapts when you switch Wi-Fi or wake your PC from sleep. Built-in SSH key generation and flexible proxy settings make it easy to set up and secure.
+
+Whether you're a developer, tester, or just need a stable proxy for daily browsing, Shprot keeps your connection alive with minimal effort.
 
 ## ✨ Features
 
@@ -12,7 +16,8 @@ Shprot is a lightweight, cross-platform-ready GUI wrapper written in Qt/C++ desi
 - **Integrated Key Management:** Simplifies client authentication with built-in SSH key generation, allowing you to easily copy your public key to the remote server's `authorized_keys`.
 - **User-Friendly Authentication:** Provides a clean interface for managing remote server credentials and server/client authentication parameters.
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
-
+- **Optional HTTP Proxy Support:** In addition to the SOCKS5 proxy, you can enable a separate HTTP proxy that routes traffic through the same SSH tunnel. This is useful for legacy applications or scripts that only support HTTP proxies.
+  
 ## 💻 System Requirements
 
 Currently, Shprot is optimized and supported exclusively for **Windows** (10 / 11, 64-bit).
@@ -72,7 +77,7 @@ Once configured, use `tunnel` as the **SSH username** when setting up the connec
 
 Shprot operates completely independently of your system's global SSH configurations or pre-existing user keys, relying solely on its internal settings for enhanced isolation and security.
 
-<img src="Assets/Screenshot.png" alt="Shprot Interface Overview" width="752" height="664">
+<img src="Assets/Screenshot.png" alt="Shprot Interface Overview" width="613" height="488">
 
 Follow these steps to configure the proxy tunnel:
 
@@ -97,7 +102,15 @@ Follow these steps to configure the proxy tunnel:
    * **Local SOCKS5 Proxy Address:** Defaults to `localhost` (restricts traffic to your local computer). Change it to `0.0.0.0` if you want to share the proxy with other devices in your LAN.
    * **Port:** Defaults to `1080`. You can change this if `1080` is already occupied by another service on your system.
 
-### Step 5: Save and Establish Connection
+### Step 5: Optional Local HTTP Proxy (Advanced)
+If you need an HTTP proxy in addition to the SOCKS5 one, check the **"Enable Local HTTP Proxy"** checkbox. This will unlock the following two controls:
+
+- **Local HTTP Proxy Address:** By default, this is set to `localhost` (same as SOCKS5). Change it to `0.0.0.0` to share the HTTP proxy with other devices on your LAN.
+- **Port:** Defaults to `8080`. You can change it if this port is already in use.
+
+The HTTP proxy works **through** the same SSH tunnel as the SOCKS5 proxy, so it does not require any additional server-side configuration. Once you enable it, both proxies will be available simultaneously.
+
+### Step 6: Save and Establish Connection
 1. Click the **"Save"** button. Shprot will automatically validate all fields. If any errors are found, the app will highlight the invalid fields and guide you on what to fix.
 2. **Host Verification (First-time Connection):**
    If you are connecting to this server for the first time, a dialog box will appear displaying the remote server's **host key fingerprint**. 
