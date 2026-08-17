@@ -66,6 +66,32 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
         restoreGeometry(QByteArray::fromBase64(m_preferences->value("preferencesDialogGeometry").toByteArray()));
     }
 
+    // Prepare highlight palette
+
+    QPalette sourcePalette = palette();
+    m_highlightPalette = sourcePalette;
+
+    static const QColor HilightColor("#ff5722");
+    static const int HighlightBlend = 30;
+
+    QColor baseActiveColor = sourcePalette.color(QPalette::Active, QPalette::Base);
+    QColor baseActiveHighlightedColor = blendColors(baseActiveColor, HilightColor, HighlightBlend);
+    m_highlightPalette.setColor(QPalette::Active, QPalette::Base, baseActiveHighlightedColor);
+
+    QColor baseInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Base);
+    QColor baseInactiveHighlightedColor = blendColors(baseInactiveColor, HilightColor, HighlightBlend);
+    m_highlightPalette.setColor(QPalette::Inactive, QPalette::Base, baseInactiveHighlightedColor);
+
+    QColor textActiveColor = sourcePalette.color(QPalette::Active, QPalette::Text);
+    QColor textActiveHighlightedColor = blendColors(textActiveColor, HilightColor, HighlightBlend);
+    m_highlightPalette.setColor(QPalette::Active, QPalette::Text, textActiveHighlightedColor);
+
+    QColor textInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Text);
+    QColor textInactiveHighlightedColor = blendColors(textInactiveColor, HilightColor, HighlightBlend);
+    m_highlightPalette.setColor(QPalette::Inactive, QPalette::Text, textInactiveHighlightedColor);
+
+    // Setup controls
+
     connect(m_ui->sshProxyTunnelCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
         m_ui->sshProxyTunnelWidget->setEnabled(checked);
     });
@@ -91,7 +117,6 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     static const QRegularExpression PortRegEx(R"(^([0-9]*)$)");
     QRegularExpressionValidator* proxyPortValidator = new QRegularExpressionValidator(PortRegEx, this);
-
 
     m_ui->localSocks5ProxyHostEdit->setValidator(proxyHostValidator);
     connectHighlightReset(m_ui->localSocks5ProxyHostEdit);
@@ -206,39 +231,11 @@ void PreferencesDialog::closeEvent(QCloseEvent* event)
 
 void PreferencesDialog::setWidgetHighlighted(QWidget* widget, bool value)
 {
-    if (widget->property("highlighted").toBool() == value)
+    if (widget->property("highlighted").toBool() != value)
     {
-        return;
+        widget->setPalette(value ? m_highlightPalette : palette());
+        widget->setProperty("highlighted", value);
     }
-
-    if (value)
-    {
-        QPalette sourcePalette = QApplication::palette();
-        QPalette targetPalette = widget->palette();
-
-        static const QColor ErrorColor(255, 0, 0);
-        static const int Blend = 30;
-
-        QColor baseActiveColor = sourcePalette.color(QPalette::Active, QPalette::Base);
-        targetPalette.setColor(QPalette::Active, QPalette::Base, blendColors(baseActiveColor, ErrorColor, Blend));
-
-        QColor baseInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Base);
-        targetPalette.setColor(QPalette::Inactive, QPalette::Base, blendColors(baseInactiveColor, ErrorColor, Blend));
-
-        QColor textActiveColor = sourcePalette.color(QPalette::Active, QPalette::Text);
-        targetPalette.setColor(QPalette::Active, QPalette::Text, blendColors(textActiveColor, ErrorColor, Blend));
-
-        QColor textInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Text);
-        targetPalette.setColor(QPalette::Inactive, QPalette::Text, blendColors(textInactiveColor, ErrorColor, Blend));
-
-        widget->setPalette(targetPalette);
-    }
-    else
-    {
-        widget->setPalette(palette());
-    }
-
-    widget->setProperty("highlighted", value);
 }
 
 void PreferencesDialog::connectHighlightReset(QLineEdit* edit)

@@ -46,6 +46,7 @@ private slots:
 private:
     Ui::PreferencesDialog* m_ui;
     Preferences* m_preferences;
+    QPalette m_highlightPalette;
 };
 
 #endif // PREFERENCESDIALOG_H
