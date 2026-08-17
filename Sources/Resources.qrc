@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Inactive.svg</file>
         <file>Shprot.svg</file>
+        <file>Shprot.ico</file>
     </qresource>
 </RCC>

@@ -95,6 +95,7 @@ QString getSshPublicKey(const QString& privateKey)
         return QString();
     }
 
+    privateKeyFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
     privateKeyFile.write(privateKey.toUtf8());
     privateKeyFile.close();
 

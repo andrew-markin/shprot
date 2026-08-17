@@ -12,7 +12,8 @@ void HttpProxyServer::start(const QString& host, quint16 port, const QNetworkPro
 {
     stop();
     m_socksProxy = socksProxy;
-    m_tcpServer->listen(QHostAddress(host), port);
+    QHostAddress address(host.toLower() == "localhost" ? QHostAddress::LocalHost : QHostAddress(host));
+    m_tcpServer->listen(address, port);
 }
 
 void HttpProxyServer::stop()

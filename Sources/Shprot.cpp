@@ -21,6 +21,7 @@
 #include "HttpProxyServer.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
+#include "TweakStyle.h"
 #include "Utilities.h"
 #include "Websites.h"
 
@@ -46,6 +47,7 @@ static const int StatusUpdateTimeout = 1000; // 1s
 
 QStringList getAllLoggedInUserNames()
 {
+#ifdef Q_OS_WIN
     PWTS_SESSION_INFO sessionsData = NULL;
     DWORD sessionsCount = 0;
 
@@ -81,11 +83,14 @@ QStringList getAllLoggedInUserNames()
 
     WTSFreeMemory(sessionsData);
     return userNamesSet.values();
+#else
+    return QStringList();
+#endif
 }
 
 QString getSingleInstanceServerName(const QString& userName)
 {
-    return QString("%1/%2").arg(PROJECT_NAME).arg(userName);
+    return QString("%1:%2").arg(PROJECT_NAME).arg(userName);
 }
 
 } // namespace
@@ -240,6 +245,7 @@ void Shprot::maybeRestartTunnelProcess()
     }
 
     QString privateKey = sshProxyTunnel.value("sshPrivateKey").toString();
+    identityFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
     identityFile.write(privateKey.toUtf8());
     identityFile.close();
 
@@ -509,12 +515,12 @@ void Shprot::maybeUpdateStatus()
     if (tunnelIsOpened)
     {
         m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
-        m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy");
+        m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
     }
     else
     {
         m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
-        m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available");
+        m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available", QSystemTrayIcon::NoIcon);
     }
 
     m_tunnelIndicatedAsOpened = tunnelIsOpened;
@@ -524,13 +530,13 @@ void Shprot::maybeUpdateStatus()
 
 int main(int argc, char* argv[])
 {
+    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
+
     QApplication::setApplicationName(PROJECT_NAME);
     QApplication::setQuitOnLastWindowClosed(false);
 
     QApplication application(argc, argv);
     QStringList arguments = QCoreApplication::arguments();
-
-    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
 
     if (arguments.contains("--shutdown"))
     {
@@ -580,6 +586,9 @@ int main(int argc, char* argv[])
     {
         qWarning() << "Unable to load default network backend.";
     }
+
+    application.setWindowIcon(QIcon(":/Shprot.ico"));
+    application.setStyle(new TweakStyle(application.style()));
 
     Shprot shprot;
     shprot.start();

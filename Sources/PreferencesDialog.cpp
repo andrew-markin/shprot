@@ -1,6 +1,7 @@
 #include "PreferencesDialog.h"
 #include "ui_PreferencesDialog.h"
 
+#include <QApplication>
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
@@ -18,6 +19,27 @@
 #include "Websites.h"
 
 namespace {
+
+QColor blendColors(const QColor& background, const QColor& foreground, int alpha = 128)
+{
+    double a = qBound(0, alpha, 255) / 255.0;
+
+    if (a == 0.0)
+    {
+        return background;
+    }
+
+    if (a == 1.0)
+    {
+        return foreground;
+    }
+
+    int r = static_cast<int>(foreground.red() * a + background.red() * (1.0 - a));
+    int g = static_cast<int>(foreground.green() * a + background.green() * (1.0 - a));
+    int b = static_cast<int>(foreground.blue() * a + background.blue() * (1.0 - a));
+
+    return QColor(r, g, b, 255);
+}
 
 bool proxyPortStringIsAcceptable(const QString& portString)
 {
@@ -55,7 +77,7 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     QFont defaultFont = QApplication::font();
     QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    fixedFont.setPointSizeF(defaultFont.pointSizeF() * 1.1);
+    fixedFont.setPointSizeF(defaultFont.pointSizeF());
     m_ui->sshPrivateKeyEdit->setFont(fixedFont);
 
     QFontMetrics fixedFontMetrics(fixedFont);
@@ -191,10 +213,25 @@ void PreferencesDialog::setWidgetHighlighted(QWidget* widget, bool value)
 
     if (value)
     {
-        QPalette palette = widget->palette();
-        palette.setColor(QPalette::Active, QPalette::Base, QColor("#FFEBEE"));
-        palette.setColor(QPalette::Active, QPalette::Text, QColor("#C62828"));
-        widget->setPalette(palette);
+        QPalette sourcePalette = QApplication::palette();
+        QPalette targetPalette = widget->palette();
+
+        static const QColor ErrorColor(255, 0, 0);
+        static const int Blend = 30;
+
+        QColor baseActiveColor = sourcePalette.color(QPalette::Active, QPalette::Base);
+        targetPalette.setColor(QPalette::Active, QPalette::Base, blendColors(baseActiveColor, ErrorColor, Blend));
+
+        QColor baseInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Base);
+        targetPalette.setColor(QPalette::Inactive, QPalette::Base, blendColors(baseInactiveColor, ErrorColor, Blend));
+
+        QColor textActiveColor = sourcePalette.color(QPalette::Active, QPalette::Text);
+        targetPalette.setColor(QPalette::Active, QPalette::Text, blendColors(textActiveColor, ErrorColor, Blend));
+
+        QColor textInactiveColor = sourcePalette.color(QPalette::Inactive, QPalette::Text);
+        targetPalette.setColor(QPalette::Inactive, QPalette::Text, blendColors(textInactiveColor, ErrorColor, Blend));
+
+        widget->setPalette(targetPalette);
     }
     else
     {

@@ -7,9 +7,6 @@ set(PROJECT_VENDOR "Andrew N. Markin")
 
 set(PROJECT_DESCRIPTION "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel.")
 
-# Use https://redketchup.io/icon-converter to make icon
-set(PROJECT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/Shprot.ico")
-
 set(ORIGINAL_YEAR "2026")
 string(TIMESTAMP CURRENT_YEAR "%Y")
 
@@ -32,9 +29,11 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_options(/nologo /Zc:wchar_t)
-add_compile_definitions(UNICODE _UNICODE)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  set(LINUX TRUE)
+endif()
 
 add_definitions(
   -DPROJECT_NAME="${PROJECT_NAME}"
@@ -58,14 +57,6 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
 get_filename_component(QT_BINARY_DIR "${QT6_INSTALL_PREFIX}/bin" ABSOLUTE)
 get_filename_component(QT_PLUGINS_DIR "${QT6_INSTALL_PREFIX}/plugins" ABSOLUTE)
 
-# Configure executable resources
-
-configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/Shprot.rc.in
-  ${CMAKE_CURRENT_BINARY_DIR}/Shprot.rc
-  @ONLY
-)
-
 # Add the target
 
 add_executable(
@@ -82,29 +73,75 @@ add_executable(
   Resources.qrc
   Shprot.cpp
   Shprot.h
+  TweakStyle.cpp
+  TweakStyle.h
   Utilities.cpp
   Utilities.h
   Websites.cpp
   Websites.h
 )
 
-target_sources(
-  Shprot PRIVATE
-  ${CMAKE_CURRENT_BINARY_DIR}/Shprot.rc
-)
+if(WIN32)
+  # Use https://redketchup.io/icon-converter to make icon
+  set(PROJECT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/Shprot.ico")
+
+  # Configure executable resources
+
+  configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/Shprot.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/Shprot.rc
+    @ONLY
+  )
+
+  target_sources(
+    Shprot PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}/Shprot.rc
+  )
+elseif(LINUX)
+  set(PROJECT_ICON "${CMAKE_CURRENT_SOURCE_DIR}/Shprot.png")
+endif()
 
 target_link_libraries(
   Shprot PRIVATE
   Qt6::Widgets
   Qt6::Network
-  wtsapi32
 )
 
-target_compile_options(
-  Shprot PRIVATE
-  /utf-8
-  /permissive-
-)
+if (WIN32)
+  target_link_libraries(
+    Shprot PRIVATE
+    wtsapi32
+  )
+endif()
+
+if (WIN32)
+  target_compile_options(
+    Shprot PRIVATE
+    /utf-8
+    /nologo
+  )
+  target_compile_definitions(
+    Shprot PRIVATE
+    UNICODE
+    _UNICODE
+  )
+  set_target_properties(
+    Shprot PROPERTIES
+    MSVC_WCHAR_T_AS_BUILTIN_TYPE ON
+  )
+elseif(LINUX)
+  target_compile_options(
+    Shprot PRIVATE
+    -march=x86-64
+    -mtune=generic
+    -Wno-padded
+  )
+  target_link_options(
+    Shprot PRIVATE
+    -static-libgcc
+    -static-libstdc++
+  )
+endif()
 
 # Configure installation
 # Install the target
