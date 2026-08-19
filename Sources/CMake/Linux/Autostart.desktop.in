@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=@DESKTOP_NAME@
+Comment=@DESKTOP_NAME@ autostart
+Exec=@DESKTOP_AUTOSTART_EXEC@
+Hidden=false
+X-GNOME-Autostart-enabled=true

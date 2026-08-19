@@ -11,11 +11,14 @@
 #include <QRandomGenerator>
 #include <QRegularExpression>
 #include <QStandardPaths>
+#include <QThread>
 #include <QUrl>
 
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WINDOWS)
 #include <windows.h>
 #include <wtsapi32.h>
+#elif defined(Q_OS_LINUX)
+#include <utmp.h>
 #endif
 
 #include "HttpProxyServer.h"
@@ -26,6 +29,8 @@
 #include "Websites.h"
 
 namespace {
+
+static const int StartDelayTimeout = 5000; // 5s
 
 static const int SingleInstanceWaitTimeout = 500; // 500ms
 static const int SingleInstanceReadTimeout = 5000; // 5s
@@ -47,7 +52,7 @@ static const int StatusUpdateTimeout = 1000; // 1s
 
 QStringList getAllLoggedInUserNames()
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WINDOWS)
     PWTS_SESSION_INFO sessionsData = NULL;
     DWORD sessionsCount = 0;
 
@@ -82,6 +87,26 @@ QStringList getAllLoggedInUserNames()
     }
 
     WTSFreeMemory(sessionsData);
+    return userNamesSet.values();
+#elif defined(Q_OS_LINUX)
+    setutent();
+    struct utmp* entry;
+    QSet<QString> userNamesSet;
+
+    while ((entry = getutent()) != nullptr)
+    {
+        if (entry->ut_type == USER_PROCESS)
+        {
+            QString username = QString::fromLocal8Bit(entry->ut_user);
+
+            if (!username.isEmpty())
+            {
+                userNamesSet.insert(username);
+            }
+        }
+    }
+
+    endutent();
     return userNamesSet.values();
 #else
     return QStringList();
@@ -556,6 +581,11 @@ int main(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
 
+    if (arguments.contains("--delay"))
+    {
+        QThread::msleep(StartDelayTimeout);
+    }
+
     // Check for other instances already running
 
     QString singleInstanceServerName = getSingleInstanceServerName(Utilities::getCurrentUserName());
@@ -587,7 +617,7 @@ int main(int argc, char* argv[])
         qWarning() << "Unable to load default network backend.";
     }
 
-    application.setWindowIcon(QIcon(":/Shprot.ico"));
+    application.setWindowIcon(QIcon(":/Shprot.png"));
     application.setStyle(new TweakStyle(application.style()));
 
     Shprot shprot;
@@ -631,7 +661,7 @@ int main(int argc, char* argv[])
         }
     });
 
-    if (!arguments.contains("--auto"))
+    if (arguments.contains("--preferences"))
     {
         shprot.openPreferencesDialog();
     }
