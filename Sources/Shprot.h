@@ -1,6 +1,7 @@
 #ifndef SHPROT_H
 #define SHPROT_H
 
+#include <QElapsedTimer>
 #include <QMenu>
 #include <QNetworkInformation>
 #include <QNetworkProxy>
@@ -70,6 +71,7 @@ private:
     QIcon m_tunnelOpenIcon;
     QIcon m_tunnelClosedIcon;
     QSystemTrayIcon* m_systemTrayIcon;
+    QElapsedTimer m_systemTrayIconTriggerTimer;
 
     QTimer* m_statusTimer;
     bool m_tunnelIndicatedAsOpened = false;

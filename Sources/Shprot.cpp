@@ -3,7 +3,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QDir>
-#include <QElapsedTimer>
 #include <QLocalServer>
 #include <QLocalSocket>
 #include <QMessageBox>
@@ -524,7 +523,11 @@ void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason re
 {
     if (reason == QSystemTrayIcon::Trigger)
     {
-        openPreferencesDialog();
+        if (m_systemTrayIconTriggerTimer.isValid() && (m_systemTrayIconTriggerTimer.elapsed() < 100))
+        {
+            openPreferencesDialog();
+        }
+        m_systemTrayIconTriggerTimer.start();
     }
 }
 
