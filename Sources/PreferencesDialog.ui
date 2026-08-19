@@ -57,6 +57,9 @@
          <bool>false</bool>
         </property>
         <layout class="QVBoxLayout" name="sshProxyTunnelWidgetLayout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -71,6 +74,9 @@
          </property>
          <item>
           <layout class="QHBoxLayout" name="sshDestinationLabelLayout" stretch="1,0">
+           <property name="spacing">
+            <number>10</number>
+           </property>
            <item>
             <widget class="QLabel" name="sshDestinationLabel">
              <property name="text">
@@ -96,7 +102,7 @@
          <item>
           <layout class="QHBoxLayout" name="sshPrivateKeyLabelLayout" stretch="1,0,0,0">
            <property name="spacing">
-            <number>7</number>
+            <number>10</number>
            </property>
            <item>
             <widget class="QLabel" name="sshPrivateKeyLabel">
@@ -132,7 +138,26 @@
           <widget class="QPlainTextEdit" name="sshPrivateKeyEdit"/>
          </item>
          <item>
+          <spacer name="localSocks5ProxyWidgetsSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>10</width>
+             <height>10</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <layout class="QGridLayout" name="localSocks5ProxyAddresLayout" columnstretch="1,0">
+           <property name="spacing">
+            <number>10</number>
+           </property>
            <item row="1" column="0">
             <widget class="QLineEdit" name="localSocks5ProxyHostEdit">
              <property name="placeholderText">
@@ -176,8 +201,8 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>7</width>
-             <height>7</height>
+             <width>10</width>
+             <height>10</height>
             </size>
            </property>
           </spacer>
@@ -212,6 +237,9 @@
             </property>
             <property name="bottomMargin">
              <number>0</number>
+            </property>
+            <property name="spacing">
+             <number>10</number>
             </property>
             <item row="0" column="0">
              <widget class="QLabel" name="localHttpProxyAddresLabel">

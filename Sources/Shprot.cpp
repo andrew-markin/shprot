@@ -523,10 +523,11 @@ void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason re
 {
     if (reason == QSystemTrayIcon::Trigger)
     {
-        if (m_systemTrayIconTriggerTimer.isValid() && (m_systemTrayIconTriggerTimer.elapsed() < 100))
+        if (m_systemTrayIconTriggerTimer.isValid() && (m_systemTrayIconTriggerTimer.elapsed() < 500))
         {
             openPreferencesDialog();
         }
+
         m_systemTrayIconTriggerTimer.start();
     }
 }
