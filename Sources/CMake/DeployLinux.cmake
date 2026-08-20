@@ -1,5 +1,18 @@
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/Linux")
 
+# Configure deployment variables
+
+set(PROJECT_BINARIES_DEST_DIR "opt/${PROJECT_NAME}")
+set(PROJECT_QT_PLUGINS_DEST_DIR "${PROJECT_BINARIES_DEST_DIR}/Plugins")
+set(PROJECT_EXECUTABLE "${PROJECT_BINARIES_DEST_DIR}/Shprot")
+set(PROJECT_SEARCH_PATHS "${QT_LIBRARY_DIR}")
+
+# Install main executable
+
+install(TARGETS Shprot DESTINATION "${PROJECT_BINARIES_DEST_DIR}")
+
+# Configure target RPATH fixup
+
 set_target_properties(
     Shprot PROPERTIES
     INSTALL_RPATH "$ORIGIN"
@@ -12,18 +25,7 @@ set_target_properties(
 # versions, leading to "library not found" errors.
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--disable-new-dtags")
 
-# Configure deployment variables
-
-set(PROJECT_BINARIES_DEST_DIR "opt/${PROJECT_NAME}")
-set(PROJECT_QT_PLUGINS_DEST_DIR "${PROJECT_BINARIES_DEST_DIR}/Plugins")
-set(PROJECT_EXECUTABLE "${PROJECT_BINARIES_DEST_DIR}/Shprot")
-set(PROJECT_SEARCH_PATHS "${QT_LIBRARY_DIR}")
-
-# Install main executable
-
-install(TARGETS Shprot DESTINATION "${PROJECT_BINARIES_DEST_DIR}")
-
-# Install configuration files
+# Install Qt configuration files
 
 install(
     FILES "${CMAKE_CURRENT_LIST_DIR}/qt.conf"
