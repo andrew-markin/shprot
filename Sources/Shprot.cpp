@@ -521,7 +521,11 @@ void Shprot::handlePreferencesChange(const QStringList& changes)
 
 void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger)
+    if (reason == QSystemTrayIcon::DoubleClick)
+    {
+        openPreferencesDialog();
+    }
+    else if (reason == QSystemTrayIcon::Trigger)
     {
         if (m_systemTrayIconTriggerTimer.isValid() && (m_systemTrayIconTriggerTimer.elapsed() < 500))
         {
