@@ -39,7 +39,7 @@ set(
     "iconengines/libqsvgicon.so"
     "networkinformation/libqglib.so"
     "networkinformation/libqnetworkmanager.so"
-    "platforms/libqwayland-generic.so"
+    "platforms/libqwayland.so"
     "platforms/libqxcb.so"
     "platformthemes/libqgtk3.so"
 )

@@ -49,10 +49,6 @@ add_definitions(
     -DPROJECT_LINKEDIN_PROFILE="${PROJECT_LINKEDIN_PROFILE}"
 )
 
-# Include local environment configuration
-
-include("${PROJECT_SOURCE_DIR}/../Environment.txt" OPTIONAL)
-
 # Find required Qt libraries
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
