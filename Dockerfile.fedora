@@ -1,0 +1,171 @@
+# Fedora 39 is the oldest version that provides all build tools for Qt 6.11.2
+# Building here maximizes backward compatibility with older distros
+FROM fedora:39
+
+ENV QT_MIRROR=https://mirror.yandex.ru/mirrors/qt.io
+ENV QT_ARCHIVE_PATH=/archive/qt/6.11/6.11.2/single/qt-everywhere-src-6.11.2.tar.xz
+ENV QT_ARCHIVE_MD5SUM=669c1f3a41c37fdda389094882044d7a
+ENV QT_PREFIX="/usr/local/qt"
+
+# -----------------------------------------------------------------------------
+# Stage: Configure DNF mirrors for faster and reliable downloads
+# -----------------------------------------------------------------------------
+RUN echo -e "fastestmirror=True\nmax_parallel_downloads=20" >> /etc/dnf/dnf.conf
+
+# -----------------------------------------------------------------------------
+# Stage: Base build tools
+# -----------------------------------------------------------------------------
+RUN dnf install -y -v --verbose \
+    cmake \
+    file \
+    findutils \
+    gcc-c++ \
+    git \
+    glibc-static \
+    libstdc++-static \
+    make \
+    ninja-build \
+    openssl-devel \
+    patchelf \
+    perl \
+    python3 \
+    python3-pip \
+    rpm-build \
+    wget \
+    xz \
+    && dnf clean all
+
+# -----------------------------------------------------------------------------
+# Stage: Qt GUI dependencies (X11 + Wayland + font rendering)
+# -----------------------------------------------------------------------------
+# These cover both classic XCB and modern Wayland backends.
+# Additional GL/EGL/GBM libs are included for hardware-accelerated rendering.
+RUN dnf install -y -v --verbose \
+    dbus-devel \
+    fontconfig-devel \
+    freetype-devel \
+    glib2-devel \
+    gtk3-devel \
+    libICE-devel \
+    libSM-devel \
+    libX11-devel \
+    libXext-devel \
+    libxkbcommon-devel \
+    libxkbcommon-x11-devel \
+    mesa-libEGL-devel \
+    mesa-libgbm-devel \
+    mesa-libGL-devel \
+    pkgconfig \
+    wayland-devel \
+    wayland-protocols-devel \
+    xcb-util-cursor-devel \
+    xcb-util-devel \
+    xcb-util-image-devel \
+    xcb-util-keysyms-devel \
+    xcb-util-wm-devel \
+    && dnf clean all
+
+# -----------------------------------------------------------------------------
+# Stage: Download Qt source tarball from a reliable mirror
+# -----------------------------------------------------------------------------
+WORKDIR /qt
+
+RUN wget $QT_MIRROR/$QT_ARCHIVE_PATH --progress=dot:giga -O sources.tar.xz && \
+    echo "$QT_ARCHIVE_MD5SUM sources.tar.xz" | md5sum -c - && \
+    mkdir sources && \
+    tar -xf sources.tar.xz -C sources --strip-components=1 \
+        --checkpoint=1000 --checkpoint-action=dot && \
+    rm sources.tar.xz
+
+# -----------------------------------------------------------------------------
+# Stage: Configure Qt (shadow build outside source tree)
+# -----------------------------------------------------------------------------
+WORKDIR /qt/build
+
+# Configure with minimal set of modules to reduce build time.
+# We keep only what is strictly necessary:
+#   qtbase      – core + GUI + widgets
+#   qtsvg       – SVG rendering support
+#   qtimageformats – extra image formats (WebP, TIFF, etc.)
+#   qtwayland   – Wayland platform plugin
+#
+# Most other modules are skipped to keep the image small and build fast.
+# If you need additional modules, remove the corresponding `-skip` lines.
+RUN ../sources/configure \
+    -opensource \
+    -confirm-license \
+    -release \
+    -no-icu \
+    -xcb \
+    \
+    # Disable heavy / non‑essential modules
+    -skip qt3d \
+    -skip qt5compat \
+    -skip qtactiveqt \
+    -skip qtcanvaspainter \
+    -skip qtcharts \
+    -skip qtcoap \
+    -skip qtconnectivity \
+    -skip qtdatavis3d \
+    -skip qtdeclarative \
+    -skip qtdoc \
+    -skip qtgraphs \
+    -skip qtgrpc \
+    -skip qthttpserver \
+    -skip qtlanguageserver \
+    -skip qtlocation \
+    -skip qtlottie \
+    -skip qtmqtt \
+    -skip qtmultimedia \
+    -skip qtnetworkauth \
+    -skip qtopcua \
+    -skip qtopenapi \
+    -skip qtpositioning \
+    -skip qtquick3d \
+    -skip qtquick3dphysics \
+    -skip qtquickeffectmaker \
+    -skip qtquicktimeline \
+    -skip qtremoteobjects \
+    -skip qtscxml \
+    -skip qtsensors \
+    -skip qtserialbus \
+    -skip qtserialport \
+    -skip qtshadertools \
+    -skip qtspeech \
+    -skip qttasktree \
+    -skip qttools \
+    -skip qttranslations \
+    -skip qtvirtualkeyboard \
+    -skip qtwebchannel \
+    -skip qtwebengine \
+    -skip qtwebsockets \
+    -skip qtwebview \
+    \
+    # Disable rarely‑used features to reduce binary size
+    -no-feature-printer \
+    -no-feature-pdf \
+    -no-feature-sql \
+    -no-feature-vulkan \
+    \
+    # Skip building non-essential categories
+    -nomake examples \
+    -nomake tests \
+    \
+    # Set install prefix
+    -prefix $QT_PREFIX \
+    -- \
+    -G Ninja \
+    -DCMAKE_BUILD_TYPE=MinSizeRel \
+    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+
+# -----------------------------------------------------------------------------
+# Stage: Build and install only the required modules
+# -----------------------------------------------------------------------------
+# We explicitly list targets we need – this is faster than building 'all'.
+# After installation, the source and build directories are removed to save space.
+RUN cmake --build . --target qtbase qtsvg qtimageformats qtwayland --parallel $(nproc) && \
+    cmake --install . --strip && \
+    cd / && rm -rf /qt
+
+# Add Qt binaries to PATH for subsequent RUN commands (e.g., qmake, moc)
+ENV PATH="$QT_PREFIX/bin:$PATH"

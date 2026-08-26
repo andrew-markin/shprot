@@ -121,15 +121,15 @@ if (WIN32)
         /utf-8
         /nologo
     )
-target_compile_definitions(
-    Shprot PRIVATE
-    UNICODE
-    _UNICODE
-)
-set_target_properties(
-    Shprot PROPERTIES
-    MSVC_WCHAR_T_AS_BUILTIN_TYPE ON
-)
+    target_compile_definitions(
+        Shprot PRIVATE
+        UNICODE
+        _UNICODE
+    )
+    set_target_properties(
+        Shprot PROPERTIES
+        MSVC_WCHAR_T_AS_BUILTIN_TYPE ON
+    )
 elseif(LINUX)
     target_compile_options(
         Shprot PRIVATE
@@ -137,11 +137,11 @@ elseif(LINUX)
         -mtune=generic
         -Wno-padded
     )
-target_link_options(
-    Shprot PRIVATE
-    -static-libgcc
-    -static-libstdc++
-)
+    target_link_options(
+        Shprot PRIVATE
+        -static-libgcc
+        -static-libstdc++
+    )
 endif()
 
 include(Deploy)
