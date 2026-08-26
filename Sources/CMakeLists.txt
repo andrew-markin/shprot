@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(Shprot VERSION 1.1 LANGUAGES CXX)
+project(Shprot VERSION 1.2 LANGUAGES CXX)
 
 set(PROJECT_TITLE "Shprot")
 set(PROJECT_DESCRIPTION "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel.")
