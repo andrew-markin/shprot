@@ -1,6 +1,6 @@
 <h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="30"> Shprot</h1>
 
-🌐 **Languages:** [**English**](README.md) | [Русский](README.ru.md)
+🌐 **Languages:** [**English**](README.md) | [Русский](README.ru.md) | [简体中文](README.zh.md)
 
 **Shprot** is a desktop application that gives you a reliable, auto-recovering SOCKS5 proxy over SSH — without touching the command line.
 

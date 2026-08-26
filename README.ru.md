@@ -1,6 +1,6 @@
 <h1><img src="Assets/Shprot.svg" alt="Shprot Logo" width="30"> Shprot</h1>
 
-🌐 **Языки:** [English](README.md) | [**Русский**](README.ru.md)
+🌐 **Языки:** [English](README.md) | [**Русский**](README.ru.md) | [简体中文](README.zh.md)
 
 **Shprot** — это десктопное приложение, которое даёт вам надёжный, автоматически восстанавливающийся SOCKS5-прокси через SSH — без необходимости использовать командную строку.
 
