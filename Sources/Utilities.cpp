@@ -186,7 +186,7 @@ QString readFirstHostRecord(const QString& filePath)
     return QString();
 }
 
-QString probeActualHostRecord(const QString& address)
+QString probeActualHostRecord(const QString& address, quint16 port)
 {
     QString knownHostsPath = getTemporaryFilePath();
 
@@ -198,7 +198,7 @@ QString probeActualHostRecord(const QString& address)
 
     QProcess process;
     QStringList arguments;
-    arguments << QString("%1@%2").arg(probeUser).arg(address) << "-N";
+    arguments << QString("%1@%2").arg(probeUser).arg(address) << "-p" << QString::number(port) << "-N";
     arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=accept-new";
     arguments << "-o" << "BatchMode=yes";
@@ -287,6 +287,13 @@ QPair<QString, QString> getKeyTypeAndFingerprint(const QString& hostRecord)
     QByteArray keyFingerprint = QCryptographicHash::hash(keyData, QCryptographicHash::Sha256)
                                 .toBase64(QByteArray::OmitTrailingEquals);
     return { keyType, keyFingerprint };
+}
+
+quint16 parsePort(const QString& text, quint16 defaultValue)
+{
+    bool resultIsOk = false;
+    quint16 result = text.toUShort(&resultIsOk);
+    return resultIsOk ? result : defaultValue;
 }
 
 } // namespace Utilities

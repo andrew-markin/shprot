@@ -33,11 +33,12 @@ private:
     void connectHighlightReset(QLineEdit* edit);
     void connectHighlightReset(QPlainTextEdit* edit);
 
+    QStringList validateSshDestinationAndPort();
     QStringList validate();
 
 private slots:
     bool runTrustCheck(bool forceProbe);
-    bool runTrustCheckWithForcedProbe();
+    void handleTrustCheckButtonClick();
 
     void generateSshPrivateKey();
     void importSshPrivateKey();

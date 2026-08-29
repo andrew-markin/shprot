@@ -240,9 +240,11 @@ void Shprot::maybeRestartTunnelProcess()
         return; // SSH Proxy Tunnel is disabled
     }
 
-    QString destination = sshProxyTunnel.value("sshDestination").toString();
-    QString address = Utilities::getAddressFromSshDestination(destination);
-    QString knownHostsPath = Utilities::getKnownHostsPath(address);
+    QString sshDestination = sshProxyTunnel.value("sshDestination").toString();
+    quint16 sshPort = Utilities::parsePort(sshProxyTunnel.value("sshPort").toString(), 22);
+
+    QString sshAddress = Utilities::getAddressFromSshDestination(sshDestination);
+    QString knownHostsPath = Utilities::getKnownHostsPath(sshAddress);
 
     QString localSocks5ProxyHost = sshProxyTunnel.value("localSocks5ProxyHost", "localhost").toString();
 
@@ -251,14 +253,8 @@ void Shprot::maybeRestartTunnelProcess()
         localSocks5ProxyHost = "localhost";
     }
 
-    QString localSocks5ProxyPort = sshProxyTunnel.value("localSocks5ProxyPort", "1080").toString();
-
-    if (localSocks5ProxyPort.isEmpty())
-    {
-        localSocks5ProxyPort = "1080";
-    }
-
-    QString localSocks5ProxyAddress = QString("%1:%2").arg(localSocks5ProxyHost, localSocks5ProxyPort);
+    quint16 localSocks5ProxyPort = Utilities::parsePort(sshProxyTunnel.value("localSocks5ProxyPort").toString(), 1080);
+    QString localSocks5ProxyAddress = QString("%1:%2").arg(localSocks5ProxyHost).arg(localSocks5ProxyPort);
 
     QFile identityFile(m_identityFilePath);
 
@@ -275,12 +271,12 @@ void Shprot::maybeRestartTunnelProcess()
 
     m_tunnelSocksProxy.setType(QNetworkProxy::Socks5Proxy);
     m_tunnelSocksProxy.setHostName(localSocks5ProxyHost);
-    m_tunnelSocksProxy.setPort(localSocks5ProxyPort.toUShort());
+    m_tunnelSocksProxy.setPort(localSocks5ProxyPort);
     m_tunnelSocksProxy.setCapabilities(m_tunnelSocksProxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
 
     QStringList arguments;
     arguments << "-D" << localSocks5ProxyAddress;
-    arguments << "-N" << destination;
+    arguments << "-N" << sshDestination << "-p" << QString::number(sshPort);
     arguments << "-o" << QString("IdentityFile=%1").arg(QDir::toNativeSeparators(m_identityFilePath));
     arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=yes";
@@ -501,14 +497,8 @@ void Shprot::maybeStartHttpProxyServer()
         localHttpProxyHost = "localhost";
     }
 
-    QString localHttpProxyPort = sshProxyTunnel.value("localHttpProxyPort", "8080").toString();
-
-    if (localHttpProxyPort.isEmpty())
-    {
-        localHttpProxyPort = "8080";
-    }
-
-    m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort.toUShort(), m_tunnelSocksProxy);
+    quint16 localHttpProxyPort = Utilities::parsePort(sshProxyTunnel.value("localHttpProxyPort").toString(), 8080);
+    m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort, m_tunnelSocksProxy);
 }
 
 void Shprot::handlePreferencesChange(const QStringList& changes)

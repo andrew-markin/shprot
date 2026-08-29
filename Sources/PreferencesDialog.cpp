@@ -41,15 +41,16 @@ QColor blendColors(const QColor& background, const QColor& foreground, int alpha
     return QColor(r, g, b, 255);
 }
 
-bool proxyPortStringIsAcceptable(const QString& portString)
+bool portStringIsAcceptable(const QString& portString, bool system = false)
 {
     if (portString.isEmpty())
     {
         return true;
     }
 
-    int portNumber = portString.toInt();
-    return (portNumber >= 1024) && (portNumber <= 65535);
+    bool numberIsOk = false;
+    int portNumber = portString.toInt(&numberIsOk);
+    return numberIsOk && (system || (portNumber >= 1024)) && (portNumber <= 65535);
 }
 
 } // namespace
@@ -96,10 +97,16 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
         m_ui->sshProxyTunnelWidget->setEnabled(checked);
     });
 
-    static const QRegularExpression SshDestinationRegEx(R"(^[a-zA-Z0-9._-]+\@[a-zA-Z0-9.-]+(?::\d+)?$)");
+    static const QRegularExpression SshDestinationRegEx(R"(^[a-zA-Z0-9._-]+\@[a-zA-Z0-9.-]+$)");
     QRegularExpressionValidator* sshDestinationValidator = new QRegularExpressionValidator(SshDestinationRegEx, this);
     m_ui->sshDestinationEdit->setValidator(sshDestinationValidator);
     connectHighlightReset(m_ui->sshDestinationEdit);
+
+    static const QRegularExpression PortRegEx(R"(^([0-9]{0,5})$)");
+    QRegularExpressionValidator* portValidator = new QRegularExpressionValidator(PortRegEx, this);
+
+    m_ui->sshPortEdit->setValidator(portValidator);
+    connectHighlightReset(m_ui->sshPortEdit);
 
     QFont defaultFont = QApplication::font();
     QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
@@ -113,18 +120,15 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     connectHighlightReset(m_ui->sshPrivateKeyEdit);
 
     static const QRegularExpression HostRegEx(R"(^(\[[0-9a-fA-F:]+\]|[a-zA-Z0-9.-]*)$)");
-    QRegularExpressionValidator* proxyHostValidator = new QRegularExpressionValidator(HostRegEx, this);
+    QRegularExpressionValidator* hostValidator = new QRegularExpressionValidator(HostRegEx, this);
 
-    static const QRegularExpression PortRegEx(R"(^([0-9]*)$)");
-    QRegularExpressionValidator* proxyPortValidator = new QRegularExpressionValidator(PortRegEx, this);
-
-    m_ui->localSocks5ProxyHostEdit->setValidator(proxyHostValidator);
+    m_ui->localSocks5ProxyHostEdit->setValidator(hostValidator);
     connectHighlightReset(m_ui->localSocks5ProxyHostEdit);
 
-    m_ui->localSocks5ProxyPortEdit->setValidator(proxyPortValidator);
+    m_ui->localSocks5ProxyPortEdit->setValidator(portValidator);
     connectHighlightReset(m_ui->localSocks5ProxyPortEdit);
 
-    connect(m_ui->trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::runTrustCheckWithForcedProbe);
+    connect(m_ui->trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::handleTrustCheckButtonClick);
     connect(m_ui->generateSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::generateSshPrivateKey);
     connect(m_ui->importSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::importSshPrivateKey);
     connect(m_ui->copySshPublicKeyButton, &QToolButton::clicked, this, &PreferencesDialog::copySshPublicKey);
@@ -133,10 +137,10 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
         m_ui->localHttpProxyAddresWidget->setEnabled(checked);
     });
 
-    m_ui->localHttpProxyHostEdit->setValidator(proxyHostValidator);
+    m_ui->localHttpProxyHostEdit->setValidator(hostValidator);
     connectHighlightReset(m_ui->localHttpProxyHostEdit);
 
-    m_ui->localHttpProxyPortEdit->setValidator(proxyPortValidator);
+    m_ui->localHttpProxyPortEdit->setValidator(portValidator);
     connectHighlightReset(m_ui->localHttpProxyPortEdit);
 
     connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &PreferencesDialog::accept);
@@ -161,6 +165,7 @@ void PreferencesDialog::open()
 
     m_ui->sshProxyTunnelCheckBox->setChecked(sshProxyTunnel.value("enabled", false).toBool());
     m_ui->sshDestinationEdit->setText(sshProxyTunnel.value("sshDestination").toString());
+    m_ui->sshPortEdit->setText(sshProxyTunnel.value("sshPort").toString());
     m_ui->sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
     m_ui->localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
     m_ui->localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
@@ -198,13 +203,14 @@ void PreferencesDialog::accept()
         return;
     }
 
-    if (!runTrustCheck(false))
+    if (m_ui->sshProxyTunnelCheckBox->isChecked() && !runTrustCheck(false))
     {
         return;
     }
 
     QVariantMap sshProxyTunnel({{"enabled", m_ui->sshProxyTunnelCheckBox->isChecked()},
                                 {"sshDestination", m_ui->sshDestinationEdit->text()},
+                                {"sshPort", m_ui->sshPortEdit->text()},
                                 {"sshPrivateKey", m_ui->sshPrivateKeyEdit->toPlainText()},
                                 {"localSocks5ProxyHost", m_ui->localSocks5ProxyHostEdit->text()},
                                 {"localSocks5ProxyPort", m_ui->localSocks5ProxyPortEdit->text()},
@@ -252,19 +258,12 @@ void PreferencesDialog::connectHighlightReset(QPlainTextEdit* edit)
     });
 }
 
-QStringList PreferencesDialog::validate()
+QStringList PreferencesDialog::validateSshDestinationAndPort()
 {
     QStringList errors;
 
     setWidgetHighlighted(m_ui->sshDestinationEdit, false);
-    setWidgetHighlighted(m_ui->sshPrivateKeyEdit, false);
-    setWidgetHighlighted(m_ui->localSocks5ProxyHostEdit, false);
-    setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, false);
-
-    if (!m_ui->sshProxyTunnelCheckBox->isChecked())
-    {
-        return errors;
-    }
+    setWidgetHighlighted(m_ui->sshPortEdit, false);
 
     // SSH Destination
 
@@ -273,6 +272,36 @@ QStringList PreferencesDialog::validate()
         errors.append("Invalid SSH Destination");
         setWidgetHighlighted(m_ui->sshDestinationEdit, true);
     }
+
+    // SSH Port
+
+    if (!m_ui->sshPortEdit->hasAcceptableInput() || !portStringIsAcceptable(m_ui->sshPortEdit->text(), true))
+    {
+        errors.append("Invalid SSH Port");
+        setWidgetHighlighted(m_ui->sshPortEdit, true);
+    }
+
+    return errors;
+}
+
+QStringList PreferencesDialog::validate()
+{
+    QStringList errors;
+
+    setWidgetHighlighted(m_ui->sshDestinationEdit, false);
+    setWidgetHighlighted(m_ui->sshPortEdit, false);
+    setWidgetHighlighted(m_ui->sshPrivateKeyEdit, false);
+    setWidgetHighlighted(m_ui->localSocks5ProxyHostEdit, false);
+    setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, false);
+    setWidgetHighlighted(m_ui->localHttpProxyHostEdit, false);
+    setWidgetHighlighted(m_ui->localHttpProxyPortEdit, false);
+
+    if (!m_ui->sshProxyTunnelCheckBox->isChecked())
+    {
+        return errors;
+    }
+
+    errors = validateSshDestinationAndPort();
 
     // SSH Private Key
 
@@ -293,7 +322,7 @@ QStringList PreferencesDialog::validate()
     // Local SOCKS5 Proxy Port
 
     if (!m_ui->localSocks5ProxyPortEdit->hasAcceptableInput() ||
-        !proxyPortStringIsAcceptable(m_ui->localSocks5ProxyPortEdit->text()))
+        !portStringIsAcceptable(m_ui->localSocks5ProxyPortEdit->text()))
     {
         errors.append("Invalid Local SOCKS5 Proxy Port");
         setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, true);
@@ -314,7 +343,7 @@ QStringList PreferencesDialog::validate()
         // Local HTTP Proxy Port
 
         if (!m_ui->localHttpProxyPortEdit->hasAcceptableInput() ||
-            !proxyPortStringIsAcceptable(m_ui->localHttpProxyPortEdit->text()))
+            !portStringIsAcceptable(m_ui->localHttpProxyPortEdit->text()))
         {
             errors.append("Invalid Local HTTP Proxy Port");
             setWidgetHighlighted(m_ui->localHttpProxyPortEdit, true);
@@ -326,9 +355,11 @@ QStringList PreferencesDialog::validate()
 
 bool PreferencesDialog::runTrustCheck(bool forceProbe)
 {
-    if (!m_ui->sshDestinationEdit->hasAcceptableInput())
+    QStringList errors = validateSshDestinationAndPort();
+
+    if (!errors.isEmpty())
     {
-        QMessageBox::warning(this, "Trust Check Error", "Invalid SSH Destination", QMessageBox::Ok);
+        QMessageBox::warning(this, "Trust Check Error", "Invalid SSH Destination or Port", QMessageBox::Ok);
         return false;
     }
 
@@ -342,7 +373,15 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         return true;
     }
 
-    QString probeHostRecord = Utilities::probeActualHostRecord(address);
+    quint16 port = Utilities::parsePort(m_ui->sshPortEdit->text(), 22);
+    QString probeHostRecord = Utilities::probeActualHostRecord(address, port);
+
+    if (probeHostRecord.isEmpty())
+    {
+        QMessageBox::warning(this, "Trust Check Error", "Host probe failed", QMessageBox::Ok);
+        return false;
+    }
+
     auto [probeKeyType, probeKeyFingerprint] = Utilities::getKeyTypeAndFingerprint(probeHostRecord);
 
     if (!hostIsKnown)
@@ -411,9 +450,20 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
     return true;
 }
 
-bool PreferencesDialog::runTrustCheckWithForcedProbe()
+void PreferencesDialog::handleTrustCheckButtonClick()
 {
-    return runTrustCheck(true);
+    QToolButton* button = m_ui->trustCheckButton;
+    QString buttonSavedText = button->text();
+    button->setMinimumWidth(button->width());
+    button->setText("Checking Trust");
+    button->setEnabled(false);
+
+    QTimer::singleShot(50, this, [this, button, buttonSavedText]() {
+        runTrustCheck(true);
+        button->setText(buttonSavedText);
+        button->setMinimumWidth(0);
+        button->setEnabled(true);
+    });
 }
 
 void PreferencesDialog::generateSshPrivateKey()
@@ -459,15 +509,15 @@ void PreferencesDialog::importSshPrivateKey()
 
 void PreferencesDialog::copySshPublicKey()
 {
-    QToolButton* button = m_ui->copySshPublicKeyButton;
-    QString buttonSavedText = button->text();
-    button->setEnabled(false);
-
     QString privateKey = m_ui->sshPrivateKeyEdit->toPlainText();
     QString publicKey = Utilities::getSshPublicKey(privateKey);
     QGuiApplication::clipboard()->setText(publicKey);
+
+    QToolButton* button = m_ui->copySshPublicKeyButton;
     button->setMinimumWidth(button->width());
+    QString buttonSavedText = button->text();
     button->setText("Key Copied!");
+    button->setEnabled(false);
 
     QTimer::singleShot(1000, this, [button, buttonSavedText]() {
         button->setText(buttonSavedText);
