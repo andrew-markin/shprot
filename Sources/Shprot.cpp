@@ -301,39 +301,37 @@ void Shprot::stopTunnelProcess(int timeout)
 {
     qint64 pid = m_tunnelProcess->processId();
 
-    if ((m_tunnelProcess->state() == QProcess::NotRunning) || (pid <= 0))
+    if ((m_tunnelProcess->state() != QProcess::NotRunning) && (pid > 0))
     {
-        return;
-    }
+        m_tunnelStoppedIntentionally = true;
 
-    m_tunnelStoppedIntentionally = true;
+    #if defined(Q_OS_WIN)
+        FreeConsole();
 
-#if defined(Q_OS_WIN)
-    FreeConsole();
+        if (AttachConsole(static_cast<DWORD>(pid)))
+        {
+            SetConsoleCtrlHandler(NULL, TRUE);
+            GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
 
-    if (AttachConsole(static_cast<DWORD>(pid)))
-    {
-        SetConsoleCtrlHandler(NULL, TRUE);
-        GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0);
+            if (!m_tunnelProcess->waitForFinished(timeout))
+            {
+                m_tunnelProcess->kill();
+                m_tunnelProcess->waitForFinished();
+            }
+
+            SetConsoleCtrlHandler(NULL, FALSE);
+            FreeConsole();
+        }
+    #else
+        m_tunnelProcess->terminate();
 
         if (!m_tunnelProcess->waitForFinished(timeout))
         {
             m_tunnelProcess->kill();
             m_tunnelProcess->waitForFinished();
         }
-
-        SetConsoleCtrlHandler(NULL, FALSE);
-        FreeConsole();
+    #endif
     }
-#else
-    m_tunnelProcess->terminate();
-
-    if (!m_tunnelProcess->waitForFinished(timeout))
-    {
-        m_tunnelProcess->kill();
-        m_tunnelProcess->waitForFinished();
-    }
-#endif
 
     QFile::remove(m_identityFilePath);
 }
