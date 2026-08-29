@@ -277,10 +277,19 @@ void Shprot::maybeRestartTunnelProcess()
     QStringList arguments;
     arguments << "-D" << localSocks5ProxyAddress;
     arguments << "-N" << sshDestination << "-p" << QString::number(sshPort);
+    arguments << "-o" << "IdentitiesOnly=yes";
+    arguments << "-o" << "IdentityAgent=none";
+    arguments << "-o" << "PreferredAuthentications=publickey";
     arguments << "-o" << QString("IdentityFile=%1").arg(QDir::toNativeSeparators(m_identityFilePath));
     arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=yes";
     arguments << "-o" << "BatchMode=yes";
+
+#if defined(Q_OS_WIN)
+    arguments << "-F" << "NUL";
+#elif defined(Q_OS_LINUX)
+    arguments << "-F" << "/dev/null";
+#endif
 
     m_tunnelProcess->start("ssh", arguments);
     m_tunnelStoppedIntentionally = false;
