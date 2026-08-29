@@ -42,6 +42,15 @@ set(
     "platforms/libqwayland.so"
     "platforms/libqxcb.so"
     "platformthemes/libqgtk3.so"
+    "wayland-decoration-client/libadwaita.so"
+    "wayland-decoration-client/libbradient.so"
+    "wayland-graphics-integration-client/libdrm-egl-server.so"
+    "wayland-graphics-integration-client/libqt-plugin-wayland-egl.so"
+    "wayland-graphics-integration-client/libshm-emulation-server.so"
+    "wayland-shell-integration/libivi-shell.so"
+    "wayland-shell-integration/libqt-shell.so"
+    "wayland-shell-integration/libwl-shell-plugin.so"
+    "wayland-shell-integration/libxdg-shell.so"
 )
 
 foreach(REQUIRED_QT_PLUGIN ${REQUIRED_QT_PLUGINS})
