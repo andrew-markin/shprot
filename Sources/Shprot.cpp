@@ -41,7 +41,7 @@ static const int TunnelProcessRestartDelayLazy = 1000; // 1s
 static const int TunnelProcessRestartDelayStep = 200; // 200ms
 static const int TunnelProcessRestartDelayMax = 10000; // 10s
 
-static const int HealthCheckStartDelay = 5000; // 5s
+static const int HealthCheckStartDelay = 500; // 500ms
 static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
 static const int HealthCheckConnectionTimeout = 3000; // 3s
@@ -362,6 +362,7 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
     m_httpProxyServer->stop();
     stopHealthCheck();
 
+    m_internetReachable = false;
     m_statusTimer->start(StatusUpdateTimeout);
 
     if (m_tunnelStoppedIntentionally)
@@ -456,6 +457,9 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
         {
             m_healthCheckFailsCount = 0;
             m_healthCheckTimer->start(HealthCheckDelayLong);
+
+            m_internetReachable = true;
+            m_statusTimer->start(StatusUpdateTimeout);
         }
         else
         {
@@ -473,6 +477,9 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             {
                 maybeRestartTunnelProcessLater();
             }
+
+            m_internetReachable = false;
+            m_statusTimer->start(StatusUpdateTimeout);
         }
 
         break;
@@ -535,7 +542,7 @@ void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason re
 
 void Shprot::maybeUpdateStatus()
 {
-    bool tunnelIsOpened = m_tunnelProcess->state() == QProcess::Running;
+    bool tunnelIsOpened = (m_tunnelProcess->state() == QProcess::Running) && m_internetReachable;
 
     if (m_tunnelIndicatedAsOpened == tunnelIsOpened)
     {

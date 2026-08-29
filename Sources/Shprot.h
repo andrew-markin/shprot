@@ -74,6 +74,7 @@ private:
     QElapsedTimer m_systemTrayIconTriggerTimer;
 
     QTimer* m_statusTimer;
+    bool m_internetReachable = false;
     bool m_tunnelIndicatedAsOpened = false;
 
     PreferencesDialog* m_preferencesDialog;
