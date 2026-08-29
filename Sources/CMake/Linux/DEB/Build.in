@@ -25,7 +25,7 @@ Depends: @DEB_PACKAGE_DEPENDENCIES@
 Maintainer: @DEB_PACKAGE_MAINTAINER@
 Description: @DEB_PACKAGE_DESCRIPTION@
 Origin: @DEB_PACKAGE_URL@
-Installed-Size: $(du -sb --apparent-size "$PACKAGE_DIR" | awk '{print $1}')
+Installed-Size: $(du -sk --apparent-size "$PACKAGE_DIR" | awk '{print $1}')
 EOF
 
 if [ -n "$PACKAGE_POSTINSTALL" ] && [ -f "$PACKAGE_POSTINSTALL" ]; then
