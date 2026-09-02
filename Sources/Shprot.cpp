@@ -156,10 +156,11 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     m_httpProxyServer = new HttpProxyServer(this);
 
     m_contextMenu = new QMenu();
-    m_contextMenu->setDefaultAction(m_contextMenu->addAction(tr("Preferences…"), this, &Shprot::openPreferencesDialog));
-    m_contextMenu->addAction(tr("About %1").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
+    m_contextMenu->setDefaultAction(m_contextMenu->addAction(QString("%1 Preferences…").arg(PROJECT_TITLE),
+                                                             this, &Shprot::openPreferencesDialog));
 
     m_contextMenu->addSeparator();
+    m_contextMenu->addAction(QString("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
     m_tunnelOpenIcon = QIcon(":/Shprot.svg");
