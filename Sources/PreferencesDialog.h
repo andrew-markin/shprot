@@ -23,6 +23,7 @@ public:
 public slots:
     void open();
     void accept();
+    void reset();
 
 protected:
     void showEvent(QShowEvent* event) override;

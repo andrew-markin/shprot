@@ -10,6 +10,7 @@
 #include <QFileInfo>
 #include <QFontMetrics>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QRegularExpressionValidator>
 #include <QStringList>
 #include <QTimer>
@@ -143,6 +144,9 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     m_ui->localHttpProxyPortEdit->setValidator(portValidator);
     connectHighlightReset(m_ui->localHttpProxyPortEdit);
 
+    QPushButton* resetButton = m_ui->buttonBox->button(QDialogButtonBox::Reset);
+    connect(resetButton, &QPushButton::clicked, this, &PreferencesDialog::reset);
+
     connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &PreferencesDialog::accept);
     connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::reject);
 }
@@ -161,19 +165,7 @@ void PreferencesDialog::open()
         return;
     }
 
-    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
-
-    m_ui->sshProxyTunnelCheckBox->setChecked(sshProxyTunnel.value("enabled", false).toBool());
-    m_ui->sshDestinationEdit->setText(sshProxyTunnel.value("sshDestination").toString());
-    m_ui->sshPortEdit->setText(sshProxyTunnel.value("sshPort").toString());
-    m_ui->sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
-    m_ui->localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
-    m_ui->localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
-    m_ui->localHttpProxyCheckBox->setChecked(sshProxyTunnel.value("localHttpProxyEnabled", false).toBool());
-    m_ui->localHttpProxyHostEdit->setText(sshProxyTunnel.value("localHttpProxyHost").toString());
-    m_ui->localHttpProxyPortEdit->setText(sshProxyTunnel.value("localHttpProxyPort").toString());
-
-    validate();
+    reset();
 
     QDialog::open();
 }
@@ -221,6 +213,23 @@ void PreferencesDialog::accept()
     m_preferences->setValue("sshProxyTunnel", sshProxyTunnel);
 
     QDialog::accept();
+}
+
+void PreferencesDialog::reset()
+{
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    m_ui->sshProxyTunnelCheckBox->setChecked(sshProxyTunnel.value("enabled", false).toBool());
+    m_ui->sshDestinationEdit->setText(sshProxyTunnel.value("sshDestination").toString());
+    m_ui->sshPortEdit->setText(sshProxyTunnel.value("sshPort").toString());
+    m_ui->sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
+    m_ui->localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
+    m_ui->localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
+    m_ui->localHttpProxyCheckBox->setChecked(sshProxyTunnel.value("localHttpProxyEnabled", false).toBool());
+    m_ui->localHttpProxyHostEdit->setText(sshProxyTunnel.value("localHttpProxyHost").toString());
+    m_ui->localHttpProxyPortEdit->setText(sshProxyTunnel.value("localHttpProxyPort").toString());
+
+    validate();
 }
 
 void PreferencesDialog::showEvent(QShowEvent* event)
