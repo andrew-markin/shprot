@@ -229,10 +229,11 @@ void PreferencesDialog::showEvent(QShowEvent* event)
     activateWindow();
 }
 
-void PreferencesDialog::closeEvent(QCloseEvent* event)
+void PreferencesDialog::hideEvent(QHideEvent* event)
 {
     m_preferences->setValue("preferencesDialogGeometry", saveGeometry().toBase64());
-    QDialog::closeEvent(event);
+    QDialog::hideEvent(event);
+}
 }
 
 void PreferencesDialog::setWidgetHighlighted(QWidget* widget, bool value)

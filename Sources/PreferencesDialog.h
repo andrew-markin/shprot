@@ -25,8 +25,8 @@ public slots:
     void accept();
 
 protected:
-    void showEvent(QShowEvent* event);
-    void closeEvent(QCloseEvent* event);
+    void showEvent(QShowEvent* event) override;
+    void hideEvent(QHideEvent* event) override;
 
 private:
     void setWidgetHighlighted(QWidget* widget, bool value = true);
