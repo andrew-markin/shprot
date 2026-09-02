@@ -71,6 +71,10 @@ add_executable(
     PreferencesDialog.cpp
     PreferencesDialog.h
     PreferencesDialog.ui
+    PrivateKeyHighlighter.cpp
+    PrivateKeyHighlighter.h
+    PrivateKeyTextEdit.cpp
+    PrivateKeyTextEdit.h
     Resources.qrc
     Shprot.cpp
     Shprot.h
@@ -81,6 +85,8 @@ add_executable(
     Websites.cpp
     Websites.h
 )
+
+target_include_directories(Shprot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 if(WIN32)
     # Use https://redketchup.io/icon-converter to make icon

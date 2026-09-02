@@ -29,8 +29,10 @@ public slots:
 protected:
     void showEvent(QShowEvent* event) override;
     void hideEvent(QHideEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 
 private:
+    void clearChildrenFocus();
     void setWidgetHighlighted(QWidget* widget, bool value = true);
     void connectHighlightReset(QLineEdit* edit);
     void connectHighlightReset(QPlainTextEdit* edit);

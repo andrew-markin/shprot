@@ -1,14 +1,12 @@
 #include "PreferencesDialog.h"
 #include "ui_PreferencesDialog.h"
 
-#include <QApplication>
 #include <QClipboard>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QFontMetrics>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
@@ -108,15 +106,6 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     m_ui->sshPortEdit->setValidator(portValidator);
     connectHighlightReset(m_ui->sshPortEdit);
-
-    QFont defaultFont = QApplication::font();
-    QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    fixedFont.setPointSizeF(defaultFont.pointSizeF());
-    m_ui->sshPrivateKeyEdit->setFont(fixedFont);
-
-    QFontMetrics fixedFontMetrics(fixedFont);
-    m_ui->sshPrivateKeyEdit->setMinimumWidth(fixedFontMetrics.horizontalAdvance(QByteArray(75, 'W')));
-    m_ui->sshPrivateKeyEdit->setMinimumHeight(fixedFontMetrics.lineSpacing() * 10);
 
     connectHighlightReset(m_ui->sshPrivateKeyEdit);
 
@@ -247,6 +236,7 @@ void PreferencesDialog::reset()
 void PreferencesDialog::showEvent(QShowEvent* event)
 {
     QDialog::showEvent(event);
+    clearChildrenFocus();
     activateWindow();
 }
 
@@ -255,6 +245,21 @@ void PreferencesDialog::hideEvent(QHideEvent* event)
     m_preferences->setValue("preferencesDialogGeometry", saveGeometry().toBase64());
     QDialog::hideEvent(event);
 }
+
+void PreferencesDialog::mousePressEvent(QMouseEvent* event)
+{
+    clearChildrenFocus();
+    QWidget::mousePressEvent(event);
+}
+
+void PreferencesDialog::clearChildrenFocus()
+{
+    QWidget* focusWidget = QDialog::focusWidget();
+
+    if (focusWidget)
+    {
+        focusWidget->clearFocus();
+    }
 }
 
 void PreferencesDialog::setWidgetHighlighted(QWidget* widget, bool value)
@@ -505,6 +510,7 @@ void PreferencesDialog::handleTrustCheckButtonClick()
 void PreferencesDialog::generateSshPrivateKey()
 {
     m_ui->sshPrivateKeyEdit->setPlainText(Utilities::generateSshPrivateKey());
+    m_ui->sshPrivateKeyEdit->reveal();
 }
 
 void PreferencesDialog::importSshPrivateKey()
@@ -532,6 +538,7 @@ void PreferencesDialog::importSshPrivateKey()
         if (Utilities::sshPrivateKeyLooksValid(privateKey))
         {
             m_ui->sshPrivateKeyEdit->setPlainText(privateKey);
+            m_ui->sshPrivateKeyEdit->reveal();
             return;
         }
     }

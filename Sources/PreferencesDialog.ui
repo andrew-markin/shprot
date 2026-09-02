@@ -188,11 +188,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QPlainTextEdit" name="sshPrivateKeyEdit">
-           <property name="lineWrapMode">
-            <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
-           </property>
-          </widget>
+          <widget class="PrivateKeyTextEdit" name="sshPrivateKeyEdit"/>
          </item>
          <item>
           <spacer name="localSocks5ProxyWidgetsSpacer">
@@ -374,6 +370,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PrivateKeyTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>PrivateKeyTextEdit.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>sshProxyTunnelCheckBox</tabstop>
   <tabstop>sshDestinationEdit</tabstop>
