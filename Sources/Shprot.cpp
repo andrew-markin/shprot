@@ -160,6 +160,17 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
                                                              this, &Shprot::openPreferencesDialog));
 
     m_contextMenu->addSeparator();
+
+    QAction* showNotificationsAction = m_contextMenu->addAction("Show Notifications");
+    showNotificationsAction->setCheckable(true);
+    showNotificationsAction->setChecked(m_preferences->value("showNotifications", true).toBool());
+
+    connect(showNotificationsAction, &QAction::toggled, this, [this](bool checked) {
+        m_preferences->setValue("showNotifications", checked);
+    });
+
+    m_contextMenu->addSeparator();
+
     m_contextMenu->addAction(QString("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
@@ -560,15 +571,25 @@ void Shprot::maybeUpdateStatus()
         return;
     }
 
+    bool showNotifications = m_preferences->value("showNotifications", true).toBool();
+
     if (tunnelIsOpened)
     {
         m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
-        m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
+
+        if (showNotifications)
+        {
+            m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
+        }
     }
     else
     {
         m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
-        m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available", QSystemTrayIcon::NoIcon);
+
+        if (showNotifications)
+        {
+            m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available", QSystemTrayIcon::NoIcon);
+        }
     }
 
     m_tunnelIndicatedAsOpened = tunnelIsOpened;
