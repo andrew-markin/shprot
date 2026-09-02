@@ -37,17 +37,18 @@ static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
 static const int TunnelProcessUptimeLimit = 1000; // 1s
+static const int TunnelProcessWarmupTime = 5000; // 5s
 static const int TunnelProcessRestartDelayLazy = 1000; // 1s
 static const int TunnelProcessRestartDelayStep = 200; // 200ms
 static const int TunnelProcessRestartDelayMax = 10000; // 10s
 
-static const int HealthCheckStartDelay = 500; // 500ms
+static const int HealthCheckStartDelay = 100; // 100ms
 static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
 static const int HealthCheckConnectionTimeout = 3000; // 3s
 static const int HealthCheckFailsLimit = 3;
 
-static const int StatusUpdateTimeout = 1000; // 1s
+static const int StatusUpdateTimeout = 500; // 500ms
 
 QStringList getAllLoggedInUserNames()
 {
@@ -453,16 +454,28 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
 
         m_healthCheckSocket = nullptr;
 
+        qint64 tunnelProcessUptime = QDateTime::currentMSecsSinceEpoch() -
+                                     m_tunnelProcess->property("startedAt").toLongLong();
+
         if (socket->property("success").toBool())
         {
-            m_healthCheckFailsCount = 0;
-            m_healthCheckTimer->start(HealthCheckDelayLong);
-
             m_internetReachable = true;
             m_statusTimer->start(StatusUpdateTimeout);
+
+            m_healthCheckFailsCount = 0;
+            m_healthCheckTimer->start(HealthCheckDelayLong);
+        }
+        else if (tunnelProcessUptime < TunnelProcessWarmupTime)
+        {
+            m_internetReachable = false;
+            m_statusTimer->start(StatusUpdateTimeout);
+            m_healthCheckTimer->start(HealthCheckStartDelay);
         }
         else
         {
+            m_internetReachable = false;
+            m_statusTimer->start(StatusUpdateTimeout);
+
             m_healthCheckFailsCount += 1;
 
             qWarning() << qPrintable(QString("Health check failed (%1) for %2")
@@ -477,9 +490,6 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             {
                 maybeRestartTunnelProcessLater();
             }
-
-            m_internetReachable = false;
-            m_statusTimer->start(StatusUpdateTimeout);
         }
 
         break;
