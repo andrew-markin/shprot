@@ -23,6 +23,7 @@ public:
 public slots:
     void open();
     void accept();
+    void reject();
     void reset();
 
 protected:
@@ -33,6 +34,8 @@ private:
     void setWidgetHighlighted(QWidget* widget, bool value = true);
     void connectHighlightReset(QLineEdit* edit);
     void connectHighlightReset(QPlainTextEdit* edit);
+
+    bool hasChanges() const;
 
     QStringList validateSshDestinationAndPort();
     QStringList validate();

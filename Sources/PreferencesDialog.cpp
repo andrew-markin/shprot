@@ -215,6 +215,18 @@ void PreferencesDialog::accept()
     QDialog::accept();
 }
 
+void PreferencesDialog::reject()
+{
+    if (hasChanges() && (QMessageBox::question(this, "Unsaved Changes",
+                                               "You have unsaved changes. Do you want to exit without saving?",
+                                               QMessageBox::Yes | QMessageBox::No) == QMessageBox::No))
+    {
+        return;
+    }
+
+    QDialog::reject();
+}
+
 void PreferencesDialog::reset()
 {
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
@@ -266,6 +278,20 @@ void PreferencesDialog::connectHighlightReset(QPlainTextEdit* edit)
     connect(edit, &QPlainTextEdit::textChanged, this, [this, edit]() {
         setWidgetHighlighted(edit, false);
     });
+}
+
+bool PreferencesDialog::hasChanges() const
+{
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+    return (m_ui->sshProxyTunnelCheckBox->isChecked() != sshProxyTunnel.value("enabled", false).toBool()) ||
+            (m_ui->sshDestinationEdit->text() != sshProxyTunnel.value("sshDestination").toString()) ||
+            (m_ui->sshPortEdit->text() != sshProxyTunnel.value("sshPort").toString()) ||
+            (m_ui->sshPrivateKeyEdit->toPlainText() != sshProxyTunnel.value("sshPrivateKey").toString()) ||
+            (m_ui->localSocks5ProxyHostEdit->text() != sshProxyTunnel.value("localSocks5ProxyHost").toString()) ||
+            (m_ui->localSocks5ProxyPortEdit->text() != sshProxyTunnel.value("localSocks5ProxyPort").toString()) ||
+            (m_ui->localHttpProxyCheckBox->isChecked() != sshProxyTunnel.value("localHttpProxyEnabled", false).toBool()) ||
+            (m_ui->localHttpProxyHostEdit->text() != sshProxyTunnel.value("localHttpProxyHost").toString()) ||
+            (m_ui->localHttpProxyPortEdit->text() != sshProxyTunnel.value("localHttpProxyPort").toString());
 }
 
 QStringList PreferencesDialog::validateSshDestinationAndPort()
