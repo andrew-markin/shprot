@@ -16,6 +16,7 @@ public slots:
     void reveal(int delay = 1000);
 
 protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void paintEvent(QPaintEvent* event) override;

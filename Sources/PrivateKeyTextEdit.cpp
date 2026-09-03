@@ -1,9 +1,9 @@
 #include "PrivateKeyTextEdit.h"
 
 #include <QApplication>
+#include <QMenu>
 #include <QPainter>
 #include <QTextBlock>
-#include <QTextCharFormat>
 #include <QTimer>
 
 #include "PrivateKeyHighlighter.h"
@@ -39,6 +39,16 @@ void PrivateKeyTextEdit::reveal(int delay)
     m_concealTimer->start(delay);
 }
 
+void PrivateKeyTextEdit::contextMenuEvent(QContextMenuEvent* event)
+{
+    m_revealed = true;
+    QMenu* menu = createStandardContextMenu();
+    menu->exec(QCursor::pos());
+    menu->deleteLater();
+    m_revealed = false;
+    setFocus();
+}
+
 void PrivateKeyTextEdit::focusInEvent(QFocusEvent* event)
 {
     QPlainTextEdit::focusInEvent(event);
@@ -47,10 +57,6 @@ void PrivateKeyTextEdit::focusInEvent(QFocusEvent* event)
 
 void PrivateKeyTextEdit::focusOutEvent(QFocusEvent* event)
 {
-    QTextCursor cursor = textCursor();
-    cursor.clearSelection();
-    setTextCursor(cursor);
-
     QPlainTextEdit::focusOutEvent(event);
     viewport()->update();
 }
