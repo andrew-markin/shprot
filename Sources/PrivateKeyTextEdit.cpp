@@ -77,6 +77,7 @@ void PrivateKeyTextEdit::paintEvent(QPaintEvent* event)
 
     painter.setPen(palette.color(QPalette::Text));
     painter.setFont(viewport->font());
+    painter.setOpacity(0.75);
 
     qreal documentMargin = document()->documentMargin();
     QFontMetrics fontMetrics = viewport->fontMetrics();
