@@ -248,10 +248,12 @@ void Shprot::maybeRestartTunnelProcess()
     stopTunnelProcess();
 
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+    QNetworkInformation* networkInformation = QNetworkInformation::instance();
 
-    if (!sshProxyTunnel.value("enabled", false).toBool())
+    if (!sshProxyTunnel.value("enabled", false).toBool() ||
+        (networkInformation->reachability() != QNetworkInformation::Reachability::Online))
     {
-        return; // SSH Proxy Tunnel is disabled
+        return; // SSH Proxy Tunnel is disabled or the Internet is not currently reachable
     }
 
     QString sshDestination = sshProxyTunnel.value("sshDestination").toString();
