@@ -62,6 +62,8 @@ get_filename_component(QT_PLUGINS_DIR "${QT6_INSTALL_PREFIX}/plugins" ABSOLUTE)
 
 add_executable(
     Shprot WIN32
+    Logs.cpp
+    Logs.h
     HttpProxyServer.cpp
     HttpProxyServer.h
     HttpProxyStream.cpp

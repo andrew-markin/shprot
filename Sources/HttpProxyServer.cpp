@@ -13,7 +13,11 @@ void HttpProxyServer::start(const QString& host, quint16 port, const QNetworkPro
     stop();
     m_socksProxy = socksProxy;
     QHostAddress address(host.toLower() == "localhost" ? QHostAddress::LocalHost : QHostAddress(host));
-    m_tcpServer->listen(address, port);
+
+    if (!m_tcpServer->listen(address, port))
+    {
+        qWarning() << "Unable to start HTTP proxy server:" << m_tcpServer->errorString();
+    }
 }
 
 void HttpProxyServer::stop()

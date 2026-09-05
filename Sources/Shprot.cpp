@@ -21,6 +21,7 @@
 #endif
 
 #include "HttpProxyServer.h"
+#include "Logs.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
 #include "TweakStyle.h"
@@ -384,6 +385,12 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
         return;
     }
 
+    if (exitCode != 0)
+    {
+        qWarning() << "Tunnel process ended with error:" << exitCode
+                   << m_tunnelProcess->readAllStandardError().trimmed();
+    }
+
     qint64 uptime = QDateTime::currentMSecsSinceEpoch() - m_tunnelProcess->property("startedAt").toLongLong();
 
     if (uptime < TunnelProcessUptimeLimit)
@@ -599,10 +606,16 @@ void Shprot::maybeUpdateStatus()
 
 int main(int argc, char* argv[])
 {
-    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] %{message}");
-
     QApplication::setApplicationName(PROJECT_NAME);
     QApplication::setQuitOnLastWindowClosed(false);
+
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    QDir appDataDir(appDataPath);
+    appDataDir.mkpath(".");
+
+    QString logsDirPath = appDataDir.filePath("Logs");
+    Logs::init(logsDirPath);
 
     QApplication application(argc, argv);
     QStringList arguments = QCoreApplication::arguments();
