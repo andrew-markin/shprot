@@ -98,11 +98,13 @@ Shprot 适用于 Windows 和 Linux 平台。请从 **[Releases](../../releases)*
 
 Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅依赖其内部设置以实现更强的隔离和安全性。
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
-    <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="610" height="580">
-</picture>
+<div align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="750" height="701">
+    </picture>
+</div>
 
 请按照以下步骤配置代理隧道：
 

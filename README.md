@@ -98,11 +98,13 @@ Once configured, use `tunnel` as the **SSH username** (and leave the Port field 
 
 Shprot operates completely independently of your system's global SSH configurations or pre-existing user keys, relying solely on its internal settings for enhanced isolation and security.
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
-    <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="610" height="580">
-</picture>
+<div align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="750" height="701">
+    </picture>
+</div>
 
 Follow these steps to configure the proxy tunnel:
 

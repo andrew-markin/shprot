@@ -98,11 +98,13 @@ Shprot доступен для платформ Windows и Linux. Выберит
 
 Shprot работает полностью независимо от глобальных конфигураций SSH вашей системы или ранее созданных ключей пользователя, опираясь исключительно на собственные внутренние настройки для лучшей изоляции и безопасности.
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
-    <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="610" height="580">
-</picture>
+<div align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="750" height="701">
+    </picture>
+</div>
 
 Выполните следующие шаги для настройки прокси-туннеля:
 
