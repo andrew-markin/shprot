@@ -92,13 +92,17 @@ Shprot 适用于 Windows 和 Linux 平台。请从 **[Releases](../../releases)*
     sudo chmod 600 /home/tunnel/.ssh/authorized_keys
     sudo chown -R tunnel:tunnel /home/tunnel/
 
-配置完成后，在 Shprot 桌面应用程序中设置连接时，使用 `tunnel` 作为 **SSH 用户名**。
+配置完成后，在 Shprot 桌面应用程序中设置连接时，使用 `tunnel` 作为 **SSH 用户名**（如果您的服务器不使用标准端口，请将 Port 字段保留为 `22`）。
 
 ## 🔧 应用程序配置
 
 Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅依赖其内部设置以实现更强的隔离和安全性。
 
-<img src="Assets/Screenshot.png" alt="Shprot 界面概览" width="571" height="547">
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
+    <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="610" height="580">
+</picture>
 
 请按照以下步骤配置代理隧道：
 
@@ -107,8 +111,9 @@ Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅�
    * *注意：在勾选此复选框之前，所有其他配置控件将被禁用。您可以随时取消勾选以暂时禁用隧道，而不会丢失设置。*
 
 ### 步骤 2：配置远程服务器
-1. 在 **"SSH Destination"** 字段中，使用标准格式输入连接详细信息：`username@host[:port]`（例如 `tunnel@192.0.2.1:22`）。
-2. *（可选）* 点击字段上方的 **"Run Trust Check"** 按钮。这将测试 Shprot 是否已经信任该主机密钥。您可以在服务器重新安装或怀疑网络异常时使用此按钮进行手动故障排除。
+1. 在 **"SSH Destination"** 字段中，使用格式输入连接详细信息：`username@host`（例如 `tunnel@192.0.2.1`）。
+2. 在 **"Port"** 字段中，指定 SSH 连接的端口号。默认值为 `22`，这是标准的 SSH 端口。仅当您的服务器使用非标准端口时才需要更改此设置。
+3. *（可选）* 点击下方的 **"Run Trust Check"** 按钮。这将测试 Shprot 是否已经信任该主机密钥。您可以在服务器重新安装或怀疑网络异常时使用此按钮进行手动故障排除。
 
 ### 步骤 3：设置客户端密钥认证
 1. 转到 **"SSH Private Key"** 区域。要提供安全的客户端密钥，您可以：
