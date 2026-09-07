@@ -24,9 +24,10 @@ include(InstallRequiredSystemLibraries)
 
 set(
     REQUIRED_QT_PLUGINS
+    "iconengines/qsvgicon.dll"
+    "networkinformation/qnetworklistmanager.dll"
     "platforms/qwindows.dll"
     "styles/qmodernwindowsstyle.dll"
-    "iconengines/qsvgicon.dll"
 )
 
 foreach(REQUIRED_QT_PLUGIN ${REQUIRED_QT_PLUGINS})
