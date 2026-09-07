@@ -35,12 +35,6 @@ set(RPM_PACKAGE_DEPENDENCIES
     # Font rendering - required for text display in Qt
     "fontconfig"             # Font configuration and customization library
     "freetype"               # FreeType font rendering engine
-
-    # Wayland support
-    "libwayland-client"      # Wayland client library
-    "libwayland-cursor"      # Wayland cursor handling
-    "libwayland-egl"         # EGL implementation for Wayland
-    "libxkbcommon"           # Keyboard handling for Wayland
 )
 
 set(RPM_PACKAGE_REQUIRES "")

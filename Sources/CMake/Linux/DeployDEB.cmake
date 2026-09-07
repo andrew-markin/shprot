@@ -12,6 +12,7 @@ set(DEB_PACKAGE_DEPENDENCIES
     # Core system libraries
     "libc6 (>= 2.31)"      # GNU C Library - fundamental system library
     "libstdc++6 (>= 11)"   # GNU Standard C++ Library v3
+    "libpcre2-16-0"        # Perl Compatible Regular Expression Library (16-bit) - required by QtCore
 
     # X11 core libraries - required for QtGui platform plugin
     "libxcb1"              # X C Binding - base X11 protocol library
@@ -31,16 +32,11 @@ set(DEB_PACKAGE_DEPENDENCIES
 
     # OpenGL dependencies - required even for 2D apps (QtGui uses GL)
     "libgl1"               # OpenGL library - required for QtGui rendering
+    "libopengl0"           # Vendor-neutral OpenGL dispatch library (required for Qt6 on modern Linux)
 
     # Font rendering - required for text display in Qt
     "libfontconfig1"       # Font configuration and customization library
     "libfreetype6"         # FreeType font rendering engine
-
-    # Wayland support
-    "libwayland-client0"   # Wayland client library
-    "libwayland-cursor0"   # Wayland cursor handling
-    "libwayland-egl1"      # EGL implementation for Wayland
-    "libxkbcommon0"        # Keyboard handling for Wayland
 )
 
 string(

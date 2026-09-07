@@ -608,6 +608,10 @@ void Shprot::maybeUpdateStatus()
 
 int main(int argc, char* argv[])
 {
+#if defined(Q_OS_LINUX)
+    qputenv("QT_QPA_PLATFORM", "xcb");
+#endif
+
     QApplication::setApplicationName(PROJECT_NAME);
     QApplication::setQuitOnLastWindowClosed(false);
 
