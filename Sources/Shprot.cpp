@@ -17,7 +17,7 @@
 #include <windows.h>
 #include <wtsapi32.h>
 #elif defined(Q_OS_LINUX)
-#include <utmp.h>
+#include <QtDBus>
 #endif
 
 #include "HttpProxyServer.h"
@@ -54,6 +54,7 @@ static const int StatusUpdateTimeout = 500; // 500ms
 QStringList getAllLoggedInUserNames()
 {
 #if defined(Q_OS_WINDOWS)
+
     PWTS_SESSION_INFO sessionsData = NULL;
     DWORD sessionsCount = 0;
 
@@ -89,25 +90,65 @@ QStringList getAllLoggedInUserNames()
 
     WTSFreeMemory(sessionsData);
     return userNamesSet.values();
+
 #elif defined(Q_OS_LINUX)
-    setutent();
-    struct utmp* entry;
+
+    if (!QDBusConnection::systemBus().isConnected())
+    {
+        qWarning() << "D-Bus system bus is not available.";
+        return QStringList();
+    }
+
+    QDBusInterface managerInterface("org.freedesktop.login1", "/org/freedesktop/login1",
+                                    "org.freedesktop.login1.Manager", QDBusConnection::systemBus());
+
+    if (!managerInterface.isValid())
+    {
+        qWarning() << "Failed to connect to systemd-logind interface:"
+                   << managerInterface.lastError().message();
+        return QStringList();
+    }
+
+    QDBusMessage reply = managerInterface.call("ListUsers");
+
+    if (reply.type() == QDBusMessage::ErrorMessage)
+    {
+        qWarning() << "Error calling ListUsers method:" << reply.errorMessage();
+        return QStringList();
+    }
+
     QSet<QString> userNamesSet;
 
-    while ((entry = getutent()) != nullptr)
+    if (!reply.arguments().isEmpty())
     {
-        if (entry->ut_type == USER_PROCESS)
-        {
-            QString username = QString::fromLocal8Bit(entry->ut_user);
+        const QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
 
-            if (!username.isEmpty())
+        if (arg.currentType() == QDBusArgument::ArrayType)
+        {
+            arg.beginArray();
+
+            while (!arg.atEnd())
             {
-                userNamesSet.insert(username);
+                arg.beginStructure();
+
+                uint32_t uid;
+                QString username;
+                QDBusObjectPath path;
+
+                arg >> uid >> username >> path;
+
+                if ((uid >= 1000) && !username.isEmpty())
+                {
+                    userNamesSet.insert(username);
+                }
+
+                arg.endStructure();
             }
+
+            arg.endArray();
         }
     }
 
-    endutent();
     return userNamesSet.values();
 #else
     return QStringList();
@@ -612,8 +653,7 @@ int main(int argc, char* argv[])
     qputenv("QT_QPA_PLATFORM", "xcb");
 #endif
 
-    QApplication::setApplicationName(PROJECT_NAME);
-    QApplication::setQuitOnLastWindowClosed(false);
+    QCoreApplication::setApplicationName(PROJECT_NAME);
 
     QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
@@ -623,8 +663,12 @@ int main(int argc, char* argv[])
     QString logsDirPath = appDataDir.filePath("Logs");
     Logs::init(logsDirPath);
 
-    QApplication application(argc, argv);
-    QStringList arguments = QCoreApplication::arguments();
+    QStringList arguments;
+
+    for (int i = 0; i < argc; i++)
+    {
+        arguments.append(QString::fromLocal8Bit(argv[i]));
+    }
 
     if (arguments.contains("--shutdown"))
     {
@@ -648,6 +692,8 @@ int main(int argc, char* argv[])
     {
         QThread::msleep(StartDelayTimeout);
     }
+
+    QApplication application(argc, argv);
 
     // Check for other instances already running
 
@@ -680,8 +726,9 @@ int main(int argc, char* argv[])
         qWarning() << "Unable to load default network backend.";
     }
 
-    application.setWindowIcon(QIcon(":/Shprot.png"));
-    application.setStyle(new TweakStyle(application.style()));
+    QApplication::setWindowIcon(QIcon(":/Shprot.png"));
+    QApplication::setStyle(new TweakStyle(application.style()));
+    QApplication::setQuitOnLastWindowClosed(false);
 
     Shprot shprot;
     shprot.start();

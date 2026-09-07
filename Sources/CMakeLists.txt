@@ -53,6 +53,10 @@ add_definitions(
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
 
+if(LINUX)
+    find_package(Qt6 REQUIRED COMPONENTS DBus)
+endif()
+
 get_filename_component(QT_BINARY_DIR "${QT6_INSTALL_PREFIX}/bin" ABSOLUTE)
 get_filename_component(QT_LIBRARY_DIR "${QT6_INSTALL_PREFIX}/lib" ABSOLUTE)
 get_filename_component(QT_INCLUDE_DIR "${QT6_INSTALL_PREFIX}/include" ABSOLUTE)
@@ -120,6 +124,11 @@ if (WIN32)
     target_link_libraries(
         Shprot PRIVATE
         wtsapi32
+    )
+elseif(LINUX)
+    target_link_libraries(
+        Shprot PRIVATE
+        Qt6::DBus
     )
 endif()
 
