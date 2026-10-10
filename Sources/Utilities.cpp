@@ -199,7 +199,7 @@ QString probeActualHostRecord(const QString& address, quint16 port)
     QProcess process;
     QStringList arguments;
     arguments << QString("%1@%2").arg(probeUser).arg(address) << "-p" << QString::number(port) << "-N";
-    arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
+    arguments << "-o" << QString("UserKnownHostsFile='%1'").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=accept-new";
     arguments << "-o" << "BatchMode=yes";
 

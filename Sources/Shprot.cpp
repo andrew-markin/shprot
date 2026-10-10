@@ -337,8 +337,8 @@ void Shprot::maybeRestartTunnelProcess()
     arguments << "-o" << "IdentitiesOnly=yes";
     arguments << "-o" << "IdentityAgent=none";
     arguments << "-o" << "PreferredAuthentications=publickey";
-    arguments << "-o" << QString("IdentityFile=%1").arg(QDir::toNativeSeparators(m_identityFilePath));
-    arguments << "-o" << QString("UserKnownHostsFile=%1").arg(QDir::toNativeSeparators(knownHostsPath));
+    arguments << "-o" << QString("IdentityFile='%1'").arg(QDir::toNativeSeparators(m_identityFilePath));
+    arguments << "-o" << QString("UserKnownHostsFile='%1'").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=yes";
     arguments << "-o" << "BatchMode=yes";
 
