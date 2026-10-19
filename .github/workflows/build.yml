@@ -179,6 +179,7 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
+          name: Shprot ${{ github.ref_name }}
           files: packages/*
           generate_release_notes: true
           draft: true # Published manually after review
