@@ -237,7 +237,7 @@ Produces an `.rpm` package using `rpmbuild`, compatible with Fedora 39 and newer
 
 **Important notes about Docker builds:**
 
-- **First build takes time:** The initial run of either script can take **over an hour** as it builds Docker images and compiles a lightweight, customized version of Qt 6.11.2 from source. This is a one-time setup.
+- **First build takes time:** The initial run of either script typically takes **10 to 40 minutes**, depending on your CPU and network speed, as it builds Docker images and compiles a lightweight, customized version of Qt 6.11.2 from source. This is a one-time setup.
 - **Subsequent builds are fast:** After the Docker images are cached locally, all following builds will be significantly faster (typically a few minutes).
 - **No local Qt required:** Since Qt is bundled inside the Docker containers, you don't need to configure `.env` or install Qt on your host system.
 - **Output location:** All generated packages (`.deb` or `.rpm`) will appear in the **`Release`** folder, just like the Windows installer.
