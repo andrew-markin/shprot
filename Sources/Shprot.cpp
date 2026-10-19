@@ -532,7 +532,12 @@ void Shprot::maybeRunHealthCheck()
 
 void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState state)
 {
-    QTcpSocket* socket = reinterpret_cast<QTcpSocket*>(sender());
+    QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());
+
+    if (!socket)
+    {
+        return;
+    }
 
     switch (state)
     {

@@ -42,7 +42,8 @@ void HttpProxyServer::handleNewConnection()
         m_streams.append(stream);
 
         connect(stream, &QObject::destroyed, this, [this](QObject* object) {
-            HttpProxyStream* stream = reinterpret_cast<HttpProxyStream*>(object);
+            // Not qobject_cast: the stream part of the object is already destroyed at this point
+            HttpProxyStream* stream = static_cast<HttpProxyStream*>(object);
             m_streams.removeOne(stream);
         });
     }
