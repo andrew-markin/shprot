@@ -149,6 +149,13 @@ jobs:
           path: packages
           merge-multiple: true
 
+      # Lets users verify downloads with "sha256sum -c SHA256SUMS --ignore-missing"
+      - name: Calculate checksums
+        working-directory: packages
+        run: |
+          sha256sum -- * > SHA256SUMS
+          cat SHA256SUMS
+
       - name: Publish release
         uses: softprops/action-gh-release@v3
         with:
