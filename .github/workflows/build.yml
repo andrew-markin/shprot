@@ -63,6 +63,14 @@ jobs:
           QT_PREFIX: ${{ env.QT_ROOT_DIR }}
         run: call ReleaseWindows.cmd
 
+      - name: Run tests
+        shell: bash
+        run: |
+          cmake -S Sources -B Builds/Tests -G "Visual Studio 17 2022" -A x64 \
+                -DCMAKE_PREFIX_PATH="$QT_ROOT_DIR" -DSHPROT_BUILD_TESTS=ON
+          cmake --build Builds/Tests --config Release --target TestUtilities TestHttpProxy --parallel
+          ctest --test-dir Builds/Tests -C Release --output-on-failure --no-tests=error
+
       - uses: actions/upload-artifact@v7
         with:
           name: package-windows
@@ -129,6 +137,18 @@ jobs:
 
       - name: Build package
         run: ./${{ matrix.script }}
+
+      # Tests are built with the same Qt and toolchain as the package, inside the builder image.
+      # Host user accounts are mounted because ssh-keygen refuses to work for a user without passwd entry.
+      - name: Run tests
+        run: |
+          docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/workspace" -w /workspace \
+                     -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro \
+                     "shprot-${{ matrix.distro }}-builder" /bin/bash -ec '
+            cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH="$QT_PREFIX" -DSHPROT_BUILD_TESTS=ON
+            cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+            ctest --test-dir Builds/Tests --output-on-failure --no-tests=error
+          '
 
       - uses: actions/upload-artifact@v7
         with:
