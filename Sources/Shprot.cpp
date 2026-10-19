@@ -13,6 +13,8 @@
 #include <QThread>
 #include <QUrl>
 
+#include <memory>
+
 #if defined(Q_OS_WINDOWS)
 #include <windows.h>
 #include <wtsapi32.h>
@@ -34,6 +36,7 @@ static const int StartDelayTimeout = 5000; // 5s
 
 static const int SingleInstanceWaitTimeout = 500; // 500ms
 static const int SingleInstanceReadTimeout = 5000; // 5s
+static const int SingleInstanceMessageSizeMax = 64;
 static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
@@ -793,30 +796,58 @@ int main(int argc, char* argv[])
                 return;
             }
 
-            QByteArray message;
-            QElapsedTimer timer;
-            timer.start();
+            // The message is complete when the sender disconnects
+            std::shared_ptr<QByteArray> message = std::make_shared<QByteArray>();
 
-            while (((socket->state() == QLocalSocket::ConnectedState) || (socket->bytesAvailable() > 0)) &&
-                   (timer.elapsed() < SingleInstanceReadTimeout))
-            {
+            auto readMessage = [socket, message]() {
                 if (socket->bytesAvailable() <= 0)
                 {
-                    socket->waitForReadyRead(SingleInstanceReadTimeout);
+                    return; // Nothing to read (reading a closed socket produces warnings)
                 }
 
-                message.append(socket->readAll());
-            }
+                message->append(socket->readAll());
 
-            socket->deleteLater();
+                if (message->size() > SingleInstanceMessageSizeMax)
+                {
+                    message->clear();
+                    socket->abort(); // Not a message from another instance
+                }
+            };
 
-            if (message == "activate")
+            auto handleMessage = [socket, message, &shprot]() {
+                if (socket->property("handled").toBool())
+                {
+                    return;
+                }
+
+                socket->setProperty("handled", true);
+                socket->deleteLater();
+
+                if (*message == "activate")
+                {
+                    shprot.openPreferencesDialog();
+                }
+                else if (*message == "quit")
+                {
+                    qApp->quit();
+                }
+            };
+
+            QObject::connect(socket, &QLocalSocket::readyRead, socket, readMessage);
+            QObject::connect(socket, &QLocalSocket::disconnected, socket, [readMessage, handleMessage]() {
+                readMessage();
+                handleMessage();
+            });
+
+            QTimer::singleShot(SingleInstanceReadTimeout, socket, [socket]() {
+                socket->abort(); // Sender did not disconnect in time
+            });
+
+            readMessage(); // Sender may have already sent the message and disconnected
+
+            if (socket->state() == QLocalSocket::UnconnectedState)
             {
-                shprot.openPreferencesDialog();
-            }
-            else if (message == "quit")
-            {
-                qApp->quit();
+                handleMessage();
             }
         }
     });
