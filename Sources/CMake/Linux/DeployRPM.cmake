@@ -11,31 +11,9 @@ set(RPM_PACKAGER ${PROJECT_DEVELOPER})
 set(RPM_PACKAGE_URL ${PROJECT_HOME_URL})
 set(RPM_PACKAGE_ARCH "x86_64")
 
+# Shared library dependencies are detected by rpmbuild automatically,
+# only dependencies that can't be detected from binaries are listed here
 set(RPM_PACKAGE_DEPENDENCIES
-    # Core system libraries
-    "glibc"                  # GNU C Library - fundamental system library
-    "libstdc++"              # GNU Standard C++ Library v3
-
-    # X11 core libraries - required for QtGui platform plugin
-    "libxcb"                 # X C Binding - base X11 protocol library
-    "libX11"                 # X11 client-side library - core X11 functions
-
-    # XCB utility libraries - combined into single package in Fedora
-    # Includes: icccm, image, keysyms, randr, render-util, shape, xfixes, sync, xinerama, xkb
-    "xcb-util"               # XCB utility libraries (ICCCM, image, keysyms, randr, render-util, shape, xfixes, sync, xinerama, xkb)
-
-    "xcb-util-cursor"        # XCB cursor library (mouse pointer support)
-
-    # Keyboard handling
-    "libxkbcommon-x11"       # X11 support for libxkbcommon (keyboard layouts)
-
-    # OpenGL dependencies - required even for 2D apps (QtGui uses GL)
-    "mesa-libGL"             # OpenGL library - required for QtGui rendering
-
-    # Font rendering - required for text display in Qt
-    "fontconfig"             # Font configuration and customization library
-    "freetype"               # FreeType font rendering engine
-
     # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
     "openssh-clients"        # OpenSSH client (ssh; ssh-keygen comes with required openssh package)
 )

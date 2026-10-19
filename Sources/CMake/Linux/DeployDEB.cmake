@@ -8,36 +8,9 @@ set(DEB_PACKAGE_MAINTAINER ${PROJECT_DEVELOPER})
 set(DEB_PACKAGE_URL ${PROJECT_HOME_URL})
 set(DEB_PACKAGE_ARCH "amd64")
 
+# Shared library dependencies are detected by dpkg-shlibdeps when the package is built,
+# only dependencies that can't be detected from binaries are listed here
 set(DEB_PACKAGE_DEPENDENCIES
-    # Core system libraries
-    "libc6 (>= 2.31)"      # GNU C Library - fundamental system library
-    "libstdc++6 (>= 11)"   # GNU Standard C++ Library v3
-    "libpcre2-16-0"        # Perl Compatible Regular Expression Library (16-bit) - required by QtCore
-
-    # X11 core libraries - required for QtGui platform plugin
-    "libxcb1"              # X C Binding - base X11 protocol library
-    "libx11-6"             # X11 client-side library - core X11 functions
-    "libxcb-icccm4"        # XCB ICCCM (Inter-Client Communication) utilities
-    "libxcb-image0"        # XCB image handling utilities
-    "libxcb-keysyms1"      # XCB keysyms handling (keyboard events)
-    "libxcb-randr0"        # XCB RandR extension (screen resize/rotation)
-    "libxcb-render-util0"  # XCB render utilities (drawing operations)
-    "libxcb-shape0"        # XCB shape extension (non-rectangular windows)
-    "libxcb-xfixes0"       # XCB XFixes extension (fixed protocol issues)
-    "libxcb-sync1"         # XCB sync extension (operation synchronization)
-    "libxcb-xinerama0"     # XCB Xinerama extension (multiple monitors)
-    "libxcb-xkb1"          # XCB X Keyboard Extension (advanced keyboard)
-    "libxkbcommon-x11-0"   # X11 support for libxkbcommon (keyboard layouts)
-    "libxcb-cursor0"       # XCB cursor library (mouse pointer support)
-
-    # OpenGL dependencies - required even for 2D apps (QtGui uses GL)
-    "libgl1"               # OpenGL library - required for QtGui rendering
-    "libopengl0"           # Vendor-neutral OpenGL dispatch library (required for Qt6 on modern Linux)
-
-    # Font rendering - required for text display in Qt
-    "libfontconfig1"       # Font configuration and customization library
-    "libfreetype6"         # FreeType font rendering engine
-
     # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
     "openssh-client"       # OpenSSH client (ssh, ssh-keygen)
 )
