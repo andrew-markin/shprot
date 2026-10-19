@@ -19,6 +19,28 @@ Whether you're a developer, tester, or just need a stable proxy for daily browsi
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
 - **Optional HTTP Proxy Support:** In addition to the SOCKS5 proxy, you can enable a separate HTTP proxy that routes traffic through the same SSH tunnel. This is useful for legacy applications or scripts that only support HTTP proxies.
   
+## 🤔 Why Not Just `ssh -D`?
+
+`ssh -D 1080 user@server` gives you a SOCKS5 proxy in one command — until the connection silently stops working. Shprot runs the same OpenSSH client and takes care of everything the command alone doesn't:
+
+| | `ssh -D` | Shprot |
+|---|---|---|
+| Network change, Wi-Fi switch, wake from sleep | Restart it yourself | Reconnects automatically |
+| Tunnel connected but not passing traffic | Goes unnoticed | Detected by health checks through the proxy |
+| Repeated authentication failures | Up to your scripts | Rare retries, so the server doesn't ban your IP |
+| Client keys | `ssh-keygen` and files in `~/.ssh` | Generate or import, copy the public key in one click |
+| Server identity check | Terminal prompt | Dialog with the host key fingerprint |
+| Apps without SOCKS5 support | Not covered | Optional HTTP proxy through the same tunnel |
+| Tunnel status | Terminal window | Tray icon and notifications with the failure reason |
+
+Tools like `autossh` help with restarts, but still need manual setup and have no user interface.
+
+**Typical uses:**
+
+- **Your own infrastructure:** reach internal dashboards, staging environments and admin tools that are only accessible from your server's network.
+- **Untrusted networks:** send your traffic through your own server when using public Wi-Fi in cafés, hotels or airports.
+- **Remote work on a laptop:** keep a stable proxy on a machine that sleeps and changes networks all day.
+
 ## 💻 System Requirements
 
 Shprot is available for **Windows** and **Linux** platforms:
