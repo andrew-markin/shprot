@@ -19,36 +19,30 @@ RUN apt-get update && apt-get install -y \
     fakeroot \
     file \
     git \
-    libssl-dev \
     ninja-build \
     patchelf \
     perl \
     python3 \
     python3-pip \
-    && apt-get clean
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------------------------------------------------------
-# Stage: Qt GUI dependencies (X11 + Wayland + font rendering)
+# Stage: Qt GUI dependencies (X11 + font rendering)
 # -----------------------------------------------------------------------------
-# These cover both classic XCB and modern Wayland backends.
-# Additional GL/EGL/GBM libs are included for hardware-accelerated rendering.
+# The application always uses the XCB platform plugin (QT_QPA_PLATFORM=xcb),
+# so neither Wayland nor OpenGL libraries are needed.
 RUN apt-get update && apt-get install -y \
     fontconfig \
     libdbus-1-dev \
-    libegl1-mesa-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
-    libgbm-dev \
-    libgl1-mesa-dev \
     libglib2.0-dev \
     libgtk-3-dev \
     libice-dev \
     libsm-dev \
-    libwayland-dev \
     libx11-dev \
     libx11-xcb-dev \
     libxcb-cursor-dev \
-    libxcb-glx0-dev \
     libxcb-icccm4-dev \
     libxcb-image0-dev \
     libxcb-keysyms1-dev \
@@ -67,8 +61,7 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
     pkg-config \
-    wayland-protocols \
-    && apt-get clean
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Upgrade CMake to a version recent enough for Qt 6.11+
 # (system cmake on Ubuntu 22.04 is too old)
@@ -91,8 +84,10 @@ ENV QT_ARCHIVE_SHA256SUM=6dcfbca271d76a6502741a2c0dc6fc98ef7dd0b7b4cfd0abcebb285
 # -----------------------------------------------------------------------------
 WORKDIR /qt
 
+# Mirror servers are not always in sync and may answer 404 now and then, so the download is retried
 RUN apt-get update && apt-get install -y wget xz-utils && \
-    wget $QT_MIRROR/$QT_ARCHIVE_PATH --progress=dot:giga -O sources.tar.xz && \
+    wget "$QT_MIRROR/$QT_ARCHIVE_PATH" --progress=dot:giga -O sources.tar.xz \
+         --tries=10 --waitretry=10 --retry-on-http-error=404,429,500,502,503,504 && \
     echo "$QT_ARCHIVE_SHA256SUM  sources.tar.xz" | sha256sum -c - && \
     mkdir sources && \
     tar -xf sources.tar.xz -C sources --strip-components=1 \
@@ -106,11 +101,11 @@ WORKDIR /qt/build
 
 # Configure with minimal set of modules to reduce build time.
 # We keep only what is strictly necessary:
-#   qtbase      – core + GUI + widgets
-#   qtshadertools – required for Qt Quick / shader compilation
-#   qtsvg       – SVG rendering support
-#   qtimageformats – extra image formats (WebP, TIFF, etc.)
-#   qtwayland   – Wayland platform plugin
+#   qtbase      – core + GUI + widgets + network + D-Bus
+#   qtsvg       – SVG icons support
+#
+# Image formats other than built-in PNG and the Wayland platform plugin are not deployed
+# with the application, so qtimageformats and qtwayland are skipped too.
 #
 # Most other modules are skipped to keep the image small and build fast.
 # If you need additional modules, remove the corresponding `-skip` lines.
@@ -118,8 +113,16 @@ RUN ../sources/configure \
     -opensource \
     -confirm-license \
     -release \
+    -optimize-size \
+    -ltcg \
     -no-icu \
     -xcb \
+    \
+    # Not used by the application: widgets are rendered without OpenGL, there are
+    # no TLS connections and no compressed HTTP downloads (fewer runtime dependencies)
+    -no-opengl \
+    -no-openssl \
+    -no-feature-brotli \
     \
     # Disable heavy / non‑essential modules
     -skip qt3d \
@@ -134,6 +137,7 @@ RUN ../sources/configure \
     -skip qtdoc \
     -skip qtgraphs \
     -skip qtgrpc \
+    -skip qtimageformats \
     -skip qthttpserver \
     -skip qtlanguageserver \
     -skip qtlocation \
@@ -162,6 +166,7 @@ RUN ../sources/configure \
     -skip qtwebchannel \
     -skip qtwebengine \
     -skip qtwebsockets \
+    -skip qtwayland \
     -skip qtwebview \
     \
     # Disable rarely‑used features to reduce binary size
@@ -177,16 +182,14 @@ RUN ../sources/configure \
     # Set install prefix
     -prefix $QT_PREFIX \
     -- \
-    -G Ninja \
-    -DCMAKE_BUILD_TYPE=MinSizeRel \
-    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON
+    -G Ninja
 
 # -----------------------------------------------------------------------------
 # Stage: Build and install only the required modules
 # -----------------------------------------------------------------------------
 # We explicitly list targets we need – this is faster than building 'all'.
 # Sources and build directories are left behind in this stage and never reach the final image.
-RUN cmake --build . --target qtbase qtsvg qtimageformats qtwayland --parallel $(nproc) && \
+RUN cmake --build . --target qtbase qtsvg --parallel $(nproc) && \
     cmake --install . --strip
 
 # =============================================================================
