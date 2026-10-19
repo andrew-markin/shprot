@@ -37,6 +37,23 @@ QString getCurrentUserName()
 #endif
 }
 
+// Returns an empty string if the OpenSSH tool is available, or a hint on how to install it otherwise
+QString getMissingSshToolMessage(const QString& tool)
+{
+    if (!QStandardPaths::findExecutable(tool).isEmpty())
+    {
+        return QString();
+    }
+
+#ifdef Q_OS_WIN
+    return QString("OpenSSH client (%1) is not installed. Install \"OpenSSH Client\" "
+                   "in Windows Settings, Optional features.").arg(tool);
+#else
+    return QString("OpenSSH client (%1) is not installed. "
+                   "Install the OpenSSH client package (e.g. openssh-client).").arg(tool);
+#endif
+}
+
 QString generateSshPrivateKey()
 {
     QString result;

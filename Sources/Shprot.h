@@ -49,6 +49,7 @@ private slots:
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
     void maybeUpdateStatus();
+    void setLastError(const QString& error);
 
 private:
     Preferences* m_preferences;
@@ -78,6 +79,9 @@ private:
     QTimer* m_statusTimer;
     bool m_internetReachable = false;
     bool m_tunnelIndicatedAsOpened = false;
+    QString m_lastError; // Why the tunnel is not opened, shown in notifications and tray icon tool tip
+    QString m_notifiedError;
+    QString m_httpProxyError;
 
     PreferencesDialog* m_preferencesDialog;
 };

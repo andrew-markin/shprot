@@ -8,7 +8,7 @@ HttpProxyServer::HttpProxyServer(QObject* parent) : QObject(parent)
     connect(m_tcpServer, &QTcpServer::newConnection, this, &HttpProxyServer::handleNewConnection);
 }
 
-void HttpProxyServer::start(const QString& host, quint16 port, const QNetworkProxy& socksProxy)
+bool HttpProxyServer::start(const QString& host, quint16 port, const QNetworkProxy& socksProxy)
 {
     stop();
     m_socksProxy = socksProxy;
@@ -17,7 +17,15 @@ void HttpProxyServer::start(const QString& host, quint16 port, const QNetworkPro
     if (!m_tcpServer->listen(address, port))
     {
         qWarning() << "Unable to start HTTP proxy server:" << m_tcpServer->errorString();
+        return false;
     }
+
+    return true;
+}
+
+QString HttpProxyServer::errorString() const
+{
+    return m_tcpServer->errorString();
 }
 
 void HttpProxyServer::stop()

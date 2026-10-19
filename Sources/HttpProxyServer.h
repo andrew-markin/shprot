@@ -14,8 +14,10 @@ class HttpProxyServer : public QObject
 public:
     HttpProxyServer(QObject* parent = nullptr);
 
+    QString errorString() const;
+
 public slots:
-    void start(const QString& host, quint16 port, const QNetworkProxy& socksProxy);
+    bool start(const QString& host, quint16 port, const QNetworkProxy& socksProxy);
     void stop();
 
 private slots:

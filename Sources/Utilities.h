@@ -7,6 +7,8 @@ namespace Utilities {
 
 QString getCurrentUserName();
 
+QString getMissingSshToolMessage(const QString& tool);
+
 QString generateSshPrivateKey();
 QString getSshPublicKey(const QString& privateKey);
 bool sshPrivateKeyLooksValid(const QString& privateKey);

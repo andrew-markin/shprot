@@ -52,6 +52,9 @@ static const int TunnelProcessRestartDelayMax = 60000; // 1m
 static const int TunnelProcessRestartDelayAuthBase = 60000; // 1m
 static const int TunnelProcessRestartDelayAuthMax = 1800000; // 30m
 
+// Installed OpenSSH client is picked up without restarting the application
+static const int TunnelProcessRestartDelaySshMissing = 60000; // 1m
+
 static const int HealthCheckStartDelay = 100; // 100ms
 static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
@@ -167,6 +170,41 @@ QStringList getAllLoggedInUserNames()
 QString getSingleInstanceServerName(const QString& userName)
 {
     return QString("%1:%2").arg(PROJECT_NAME).arg(userName);
+}
+
+// Turns ssh error output into a short explanation for the user
+QString describeSshError(const QByteArray& errorOutput)
+{
+    static const QList<QPair<QStringList, QString>> KnownErrors = {
+        {{"Permission denied (", "Too many authentication failures"},
+         "Authentication failed: the server rejected the private key"},
+        {{"Host key verification failed", "REMOTE HOST IDENTIFICATION HAS CHANGED"},
+         "Server identity verification failed, run Trust Check in Preferences"},
+        {{"Could not resolve hostname"}, "Unable to resolve the server address"},
+        {{"Connection refused"}, "Connection refused by the server"},
+        {{"Connection timed out", "Operation timed out"}, "Connection to the server timed out"},
+        {{"Network is unreachable", "No route to host"}, "Server is unreachable"},
+        {{"Address already in use", "cannot listen to port"}, "Local SOCKS5 proxy port is already in use"},
+        {{"Timeout, server"}, "Server stopped responding"},
+        {{"closed by remote host", "Connection reset", "Broken pipe"}, "Connection was closed by the server"}
+    };
+
+    QString output = QString::fromUtf8(errorOutput);
+
+    for (const auto& [patterns, description] : KnownErrors)
+    {
+        for (const QString& pattern : patterns)
+        {
+            if (output.contains(pattern, Qt::CaseInsensitive))
+            {
+                return description;
+            }
+        }
+    }
+
+    // Unknown error: the last line of ssh output usually explains it best
+    QStringList lines = output.split('\n', Qt::SkipEmptyParts);
+    return lines.isEmpty() ? QString() : lines.last().trimmed().left(200);
 }
 
 } // namespace
@@ -300,10 +338,25 @@ void Shprot::maybeRestartTunnelProcess()
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
     QNetworkInformation* networkInformation = QNetworkInformation::instance();
 
-    if (!sshProxyTunnel.value("enabled", false).toBool() ||
-        (networkInformation->reachability() != QNetworkInformation::Reachability::Online))
+    if (!sshProxyTunnel.value("enabled", false).toBool())
     {
-        return; // SSH Proxy Tunnel is disabled or the Internet is not currently reachable
+        setLastError(QString());
+        return; // SSH Proxy Tunnel is disabled
+    }
+
+    if (networkInformation->reachability() != QNetworkInformation::Reachability::Online)
+    {
+        return; // The Internet is not currently reachable
+    }
+
+    QString missingSshMessage = Utilities::getMissingSshToolMessage("ssh");
+
+    if (!missingSshMessage.isEmpty())
+    {
+        qWarning() << qPrintable(missingSshMessage);
+        setLastError(missingSshMessage);
+        m_tunnelTimer->start(TunnelProcessRestartDelaySshMissing);
+        return;
     }
 
     QString sshDestination = sshProxyTunnel.value("sshDestination").toString();
@@ -369,6 +422,8 @@ void Shprot::maybeRestartTunnelProcess()
     if (!m_tunnelProcess->waitForStarted(TunnelProcessStartTimeout))
     {
         qWarning() << "Failed to start tunnel process:" << m_tunnelProcess->errorString();
+        setLastError(QString("Unable to start ssh: %1").arg(m_tunnelProcess->errorString()));
+        m_tunnelTimer->start(TunnelProcessRestartDelaySshMissing);
         return;
     }
 }
@@ -453,6 +508,13 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
     if (exitCode != 0)
     {
         qWarning() << "Tunnel process ended with error:" << exitCode << errorOutput;
+    }
+
+    QString errorDescription = describeSshError(errorOutput);
+
+    if (!errorDescription.isEmpty())
+    {
+        setLastError(errorDescription);
     }
 
     // "Permission denied (publickey)." – not to be confused with "bind ...: Permission denied"
@@ -572,6 +634,9 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             m_healthCheckFailsCount = 0;
             m_failedRestartsCount = 0;
             m_healthCheckTimer->start(HealthCheckDelayLong);
+
+            m_lastError.clear();
+            m_notifiedError.clear();
         }
         else if (tunnelProcessUptime < TunnelProcessWarmupTime)
         {
@@ -596,6 +661,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             }
             else
             {
+                setLastError("Connected to the server, but websites are not reachable through the tunnel");
                 scheduleTunnelProcessRestart(false);
             }
         }
@@ -619,6 +685,7 @@ void Shprot::maybeStartHttpProxyServer()
     if (!sshProxyTunnel.value("enabled", false).toBool() ||
         !sshProxyTunnel.value("localHttpProxyEnabled", false).toBool())
     {
+        m_httpProxyError.clear();
         return; // SSH Proxy Tunnel or Local HTTP Proxy are disabled
     }
 
@@ -630,7 +697,22 @@ void Shprot::maybeStartHttpProxyServer()
     }
 
     quint16 localHttpProxyPort = Utilities::parsePort(sshProxyTunnel.value("localHttpProxyPort").toString(), 8080);
-    m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort, m_tunnelSocksProxy);
+    QString httpProxyError;
+
+    if (!m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort, m_tunnelSocksProxy))
+    {
+        httpProxyError = QString("Local HTTP proxy is not available: %1").arg(m_httpProxyServer->errorString());
+    }
+
+    // Notify once per new problem, the tunnel itself keeps working
+    if (!httpProxyError.isEmpty() && (httpProxyError != m_httpProxyError) &&
+        m_preferences->value("showNotifications", true).toBool())
+    {
+        m_systemTrayIcon->showMessage("HTTP proxy failed", httpProxyError, QSystemTrayIcon::NoIcon);
+    }
+
+    m_httpProxyError = httpProxyError;
+    m_statusTimer->start(StatusUpdateTimeout);
 }
 
 void Shprot::handlePreferencesChange(const QStringList& changes)
@@ -638,6 +720,9 @@ void Shprot::handlePreferencesChange(const QStringList& changes)
     if (changes.contains("sshProxyTunnel"))
     {
         m_failedRestartsCount = 0;
+        m_lastError.clear(); // New settings deserve fresh notifications
+        m_notifiedError.clear();
+        m_httpProxyError.clear();
         m_tunnelTimer->start(0);
     }
 }
@@ -661,35 +746,76 @@ void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason re
 
 void Shprot::maybeUpdateStatus()
 {
+    bool tunnelIsEnabled = m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool();
     bool tunnelIsOpened = (m_tunnelProcess->state() == QProcess::Running) && m_internetReachable;
-
-    if (m_tunnelIndicatedAsOpened == tunnelIsOpened)
-    {
-        return;
-    }
-
     bool showNotifications = m_preferences->value("showNotifications", true).toBool();
 
-    if (tunnelIsOpened)
-    {
-        m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
+    QString status;
 
-        if (showNotifications)
-        {
-            m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
-        }
+    if (!tunnelIsEnabled)
+    {
+        status = "Tunnel is disabled";
+    }
+    else if (tunnelIsOpened)
+    {
+        status = "Tunnel is opened";
     }
     else
     {
-        m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
+        status = m_lastError.isEmpty() ? QString("Tunnel is closed") : QString("Tunnel is closed: %1").arg(m_lastError);
+    }
+
+    if (!m_httpProxyError.isEmpty())
+    {
+        status += "\n" + m_httpProxyError;
+    }
+
+    m_systemTrayIcon->setToolTip(QString("%1\n%2").arg(PROJECT_TITLE, status));
+
+    if (m_tunnelIndicatedAsOpened != tunnelIsOpened)
+    {
+        m_tunnelIndicatedAsOpened = tunnelIsOpened;
+
+        if (tunnelIsOpened)
+        {
+            m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
+
+            if (showNotifications)
+            {
+                m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
+            }
+        }
+        else
+        {
+            m_systemTrayIcon->setIcon(m_tunnelClosedIcon);
+            m_notifiedError = m_lastError;
+
+            if (showNotifications)
+            {
+                QString message = m_lastError.isEmpty() ? QString("Proxy is not available") : m_lastError;
+                m_systemTrayIcon->showMessage("Tunnel closed", message, QSystemTrayIcon::NoIcon);
+            }
+        }
+
+        return;
+    }
+
+    // The tunnel may fail without ever being opened, so report each new reason once, not every retry
+    if (!tunnelIsOpened && !m_lastError.isEmpty() && (m_lastError != m_notifiedError))
+    {
+        m_notifiedError = m_lastError;
 
         if (showNotifications)
         {
-            m_systemTrayIcon->showMessage("Tunnel closed", "Proxy is not available", QSystemTrayIcon::NoIcon);
+            m_systemTrayIcon->showMessage("Unable to open tunnel", m_lastError, QSystemTrayIcon::NoIcon);
         }
     }
+}
 
-    m_tunnelIndicatedAsOpened = tunnelIsOpened;
+void Shprot::setLastError(const QString& error)
+{
+    m_lastError = error;
+    m_statusTimer->start(StatusUpdateTimeout);
 }
 
 // Main function

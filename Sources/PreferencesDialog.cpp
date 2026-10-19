@@ -509,6 +509,14 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         return true;
     }
 
+    QString missingSshMessage = Utilities::getMissingSshToolMessage("ssh");
+
+    if (!missingSshMessage.isEmpty())
+    {
+        QMessageBox::warning(this, "Trust Check Error", missingSshMessage, QMessageBox::Ok);
+        return false;
+    }
+
     quint16 port = Utilities::parsePort(m_ui->sshPortEdit->text(), 22);
     QString probeHostRecord = Utilities::probeActualHostRecord(address, port);
 
@@ -604,6 +612,14 @@ void PreferencesDialog::handleTrustCheckButtonClick()
 
 void PreferencesDialog::generateSshPrivateKey()
 {
+    QString missingSshKeygenMessage = Utilities::getMissingSshToolMessage("ssh-keygen");
+
+    if (!missingSshKeygenMessage.isEmpty())
+    {
+        QMessageBox::warning(this, "SSH Private Key Generation Error", missingSshKeygenMessage, QMessageBox::Ok);
+        return;
+    }
+
     m_ui->sshPrivateKeyEdit->setPlainText(Utilities::generateSshPrivateKey());
     m_ui->sshPrivateKeyEdit->reveal();
 }
@@ -647,6 +663,14 @@ void PreferencesDialog::importSshPrivateKey()
 
 void PreferencesDialog::copySshPublicKey()
 {
+    QString missingSshKeygenMessage = Utilities::getMissingSshToolMessage("ssh-keygen");
+
+    if (!missingSshKeygenMessage.isEmpty())
+    {
+        QMessageBox::warning(this, "SSH Public Key Error", missingSshKeygenMessage, QMessageBox::Ok);
+        return;
+    }
+
     QString privateKey = m_ui->sshPrivateKeyEdit->toPlainText();
     QString publicKey = Utilities::getSshPublicKey(privateKey);
     QGuiApplication::clipboard()->setText(publicKey);
