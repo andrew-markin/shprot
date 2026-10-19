@@ -74,7 +74,8 @@ FROM base AS qt
 # download server with --build-arg QT_MIRROR=https://download.qt.io
 ARG QT_MIRROR=https://mirror.yandex.ru/mirrors/qt.io
 ENV QT_ARCHIVE_PATH=/archive/qt/6.11/6.11.2/single/qt-everywhere-src-6.11.2.tar.xz
-ENV QT_ARCHIVE_MD5SUM=669c1f3a41c37fdda389094882044d7a
+# SHA-256 is not listed by Qt, but download.qt.io returns it for <archive URL>.sha256
+ENV QT_ARCHIVE_SHA256SUM=6dcfbca271d76a6502741a2c0dc6fc98ef7dd0b7b4cfd0abcebb285a86a26f33
 
 # -----------------------------------------------------------------------------
 # Stage: Download Qt source tarball from a reliable mirror
@@ -82,7 +83,7 @@ ENV QT_ARCHIVE_MD5SUM=669c1f3a41c37fdda389094882044d7a
 WORKDIR /qt
 
 RUN wget $QT_MIRROR/$QT_ARCHIVE_PATH --progress=dot:giga -O sources.tar.xz && \
-    echo "$QT_ARCHIVE_MD5SUM sources.tar.xz" | md5sum -c - && \
+    echo "$QT_ARCHIVE_SHA256SUM  sources.tar.xz" | sha256sum -c - && \
     mkdir sources && \
     tar -xf sources.tar.xz -C sources --strip-components=1 \
         --checkpoint=1000 --checkpoint-action=dot && \
