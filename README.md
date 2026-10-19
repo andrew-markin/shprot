@@ -26,6 +26,7 @@ Shprot is available for **Windows** and **Linux** platforms:
 - **Windows:** Windows 10 / 11 (64-bit)
 - **Linux (DEB-based):** Ubuntu 22.04 or newer, Debian 12 or newer, and other compatible distributions
 - **Linux (RPM-based):** Fedora 39 or newer, RHEL 9 / AlmaLinux 9 or newer
+- **All platforms:** OpenSSH client (`ssh` and `ssh-keygen`). On Windows it is usually installed already; if not, add **"OpenSSH Client"** in Windows Settings, *Optional features*. On Linux, install the `openssh-client` package (Ubuntu/Debian) or `openssh-clients` (Fedora/RHEL). Shprot warns you if the client is missing.
 
 ## 🚀 Installation
 
@@ -52,6 +53,17 @@ Or on Fedora/RHEL with DNF:
     sudo dnf install ./shprot-*.rpm
 
 The package is built on Fedora 39 and should work on Fedora 39+, RHEL 9+, AlmaLinux 9+, and compatible distributions.
+
+### Verifying the Download
+Every release includes a `SHA256SUMS` file with checksums of all packages. Download it next to your package and check that the package was not altered:
+
+- **Linux:**
+
+      sha256sum -c SHA256SUMS --ignore-missing
+
+- **Windows (PowerShell):** compare the output with the line for your file in `SHA256SUMS`:
+
+      Get-FileHash .\Shprot-*.exe -Algorithm SHA256
 
 ## 🖥️ Server-Side Setup (Secure Hardening)
 
@@ -153,7 +165,8 @@ The HTTP proxy works **through** the same SSH tunnel as the SOCKS5 proxy, so it 
 ### 📊 Connection Status Indicators
 You can easily track the tunnel status without opening the main window:
 * **System Tray Icon:** A vibrant, **colored icon** means the tunnel is active and the SOCKS5 proxy is successfully serving traffic. A **grayscale icon** indicates that the tunnel is closed or disconnected.
-* **Toast Notifications:** The app will send native system tray notifications whenever the tunnel successfully connects or drops.
+* **Tray Icon Tooltip:** Hover over the tray icon to see the current tunnel state and, if the tunnel is closed, the reason (for example, an authentication failure or an unreachable server).
+* **Toast Notifications:** The app will send native system tray notifications whenever the tunnel successfully connects or drops. If the tunnel cannot be opened, the notification explains why; each new reason is reported once rather than on every reconnection attempt.
 
 ## 🛠 Building and Development
 
@@ -264,9 +277,19 @@ For Linux development, you can use the same Docker-based approach or install Qt 
 
 Now you can write code, debug, and run the application directly from the IDE. Intermediate build files will be kept safe inside the `Builds` folder.
 
+### 🧪 Running Tests
+
+Unit tests (Qt Test) cover utility functions and the HTTP proxy. They are not built by default; enable them with the `SHPROT_BUILD_TESTS` CMake option:
+
+    cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH=<path to Qt 6.11.2> -DSHPROT_BUILD_TESTS=ON
+    cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+    ctest --test-dir Builds/Tests --output-on-failure
+
+On Windows with the Visual Studio generator, add `--config Release` to the build command and `-C Release` to the `ctest` command.
+
 ### 🤖 Automated Builds and Releases
 
-The repository includes a GitHub Actions workflow (`.github/workflows/build.yml`) that builds the Windows installer and the DEB and RPM packages on every push to `main` and for every pull request. The resulting packages are available as workflow artifacts.
+The repository includes a GitHub Actions workflow (`.github/workflows/build.yml`) that builds the Windows installer and the DEB and RPM packages on every push to `main` and for every pull request. Unit tests are run on all three platforms as a part of the same workflow, and the resulting packages are available as workflow artifacts.
 
 To publish a release:
 

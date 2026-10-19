@@ -26,6 +26,7 @@ Shprot 适用于 **Windows** 和 **Linux** 平台：
 - **Windows：** Windows 10 / 11（64 位）
 - **Linux（基于 DEB）：** Ubuntu 22.04 或更新版本，Debian 12 或更新版本，以及其他兼容发行版
 - **Linux（基于 RPM）：** Fedora 39 或更新版本，RHEL 9 / AlmaLinux 9 或更新版本
+- **所有平台：** OpenSSH 客户端（`ssh` 和 `ssh-keygen`）。Windows 上通常已预装；如果没有，请在 Windows 设置的 *可选功能* 中添加 **"OpenSSH Client"**。Linux 上请安装 `openssh-client`（Ubuntu/Debian）或 `openssh-clients`（Fedora/RHEL）软件包。如果缺少客户端，Shprot 会给出提示。
 
 ## 🚀 安装
 
@@ -52,6 +53,17 @@ Shprot 适用于 Windows 和 Linux 平台。请从 **[Releases](../../releases)*
     sudo dnf install ./shprot-*.rpm
 
 该软件包在 Fedora 39 上构建，应适用于 Fedora 39+、RHEL 9+、AlmaLinux 9+ 和兼容发行版。
+
+### 验证下载的文件
+每个版本都附带一个 `SHA256SUMS` 文件，其中包含所有软件包的校验和。将其下载到软件包所在的文件夹，并确认软件包未被篡改：
+
+- **Linux：**
+
+      sha256sum -c SHA256SUMS --ignore-missing
+
+- **Windows（PowerShell）：** 将输出与 `SHA256SUMS` 中对应文件的行进行比较：
+
+      Get-FileHash .\Shprot-*.exe -Algorithm SHA256
 
 ## 🖥️ 服务端配置（安全加固）
 
@@ -153,7 +165,8 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 ### 📊 连接状态指示器
 您无需打开主窗口即可轻松跟踪隧道状态：
 * **系统托盘图标：** 鲜艳的 **彩色图标** 表示隧道已激活且 SOCKS5 代理正在成功服务流量。**灰度图标** 表示隧道已关闭或断开。
-* **通知消息：** 每当隧道成功连接或断开时，应用程序将发送本机系统托盘通知。
+* **托盘图标提示：** 将鼠标悬停在托盘图标上，即可查看隧道的当前状态；如果隧道已关闭，还会显示原因（例如认证失败或服务器不可达）。
+* **通知消息：** 每当隧道成功连接或断开时，应用程序将发送本机系统托盘通知。如果无法打开隧道，通知会说明原因；每个新的原因只提示一次，而不是在每次重连尝试时都提示。
 
 ## 🛠 构建与开发
 
@@ -264,9 +277,19 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
 现在您可以直接在 IDE 中编写代码、调试和运行应用程序。中间构建文件将安全地保存在 `Builds` 文件夹中。
 
+### 🧪 运行测试
+
+单元测试（Qt Test）覆盖了工具函数和 HTTP 代理。默认情况下不会构建测试；可通过 CMake 选项 `SHPROT_BUILD_TESTS` 启用：
+
+    cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH=<Qt 6.11.2 的路径> -DSHPROT_BUILD_TESTS=ON
+    cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+    ctest --test-dir Builds/Tests --output-on-failure
+
+在 Windows 上使用 Visual Studio 生成器时，请在构建命令中添加 `--config Release`，并在 `ctest` 命令中添加 `-C Release`。
+
 ### 🤖 自动构建与发布
 
-仓库包含一个 GitHub Actions 工作流（`.github/workflows/build.yml`），会在每次推送到 `main` 以及每个 pull request 时构建 Windows 安装程序以及 DEB 和 RPM 软件包。生成的软件包可在工作流的 artifacts 中获取。
+仓库包含一个 GitHub Actions 工作流（`.github/workflows/build.yml`），会在每次推送到 `main` 以及每个 pull request 时构建 Windows 安装程序以及 DEB 和 RPM 软件包。同一工作流还会在所有三个平台上运行单元测试，生成的软件包可在工作流的 artifacts 中获取。
 
 发布新版本的步骤：
 
