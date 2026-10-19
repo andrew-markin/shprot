@@ -755,6 +755,12 @@ int main(int argc, char* argv[])
     QLocalServer::removeServer(singleInstanceServerName);
     QLocalServer singleInstanceServer;
 
+#if defined(Q_OS_LINUX)
+    // Allow the owner only: root bypasses file permissions, so package scripts can still send "quit".
+    // Windows named pipes are already writable by the owner, administrators and LocalSystem only.
+    singleInstanceServer.setSocketOptions(QLocalServer::UserAccessOption);
+#endif
+
     if (!singleInstanceServer.listen(singleInstanceServerName))
     {
         return EXIT_FAILURE; // Unable to start single instance server
