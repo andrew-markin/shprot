@@ -12,22 +12,22 @@ static const int ChunkSize = 65536; // 64KB
 static const int RequestTimeout = 30000; // 30s
 
 // Parses "host", "host:port" or "[ipv6]:port" (user info is ignored)
-bool parseAuthority(QByteArray authority, quint16 defaultPort, QString& host, quint16& port)
+bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& host, quint16& port)
 {
-    authority = authority.mid(authority.lastIndexOf('@') + 1);
+    QByteArray hostAndPort = authority.mid(authority.lastIndexOf('@') + 1);
     QByteArray portPart;
 
-    if (authority.startsWith('['))
+    if (hostAndPort.startsWith('['))
     {
-        int end = authority.indexOf(']');
+        int end = hostAndPort.indexOf(']');
 
         if (end < 0)
         {
             return false;
         }
 
-        host = QString::fromLatin1(authority.mid(1, end - 1));
-        portPart = authority.mid(end + 1);
+        host = QString::fromLatin1(hostAndPort.mid(1, end - 1));
+        portPart = hostAndPort.mid(end + 1);
 
         if (QHostAddress(host).protocol() != QAbstractSocket::IPv6Protocol)
         {
@@ -36,15 +36,15 @@ bool parseAuthority(QByteArray authority, quint16 defaultPort, QString& host, qu
     }
     else
     {
-        int colon = authority.indexOf(':');
+        int colon = hostAndPort.indexOf(':');
 
-        if ((colon >= 0) && (authority.lastIndexOf(':') != colon))
+        if ((colon >= 0) && (hostAndPort.lastIndexOf(':') != colon))
         {
             return false; // IPv6 address must be enclosed in brackets
         }
 
-        host = QString::fromLatin1(colon >= 0 ? authority.left(colon) : authority);
-        portPart = (colon >= 0) ? authority.mid(colon) : QByteArray();
+        host = QString::fromLatin1(colon >= 0 ? hostAndPort.left(colon) : hostAndPort);
+        portPart = (colon >= 0) ? hostAndPort.mid(colon) : QByteArray();
     }
 
     if (host.isEmpty())
