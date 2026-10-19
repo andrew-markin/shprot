@@ -63,13 +63,14 @@ jobs:
           QT_PREFIX: ${{ env.QT_ROOT_DIR }}
         run: call ReleaseWindows.cmd
 
+      # cmd and not Git Bash, so tests use Windows OpenSSH (as users do) instead of the one bundled with Git
       - name: Run tests
-        shell: bash
+        shell: cmd
         run: |
-          cmake -S Sources -B Builds/Tests -G "Visual Studio 17 2022" -A x64 \
-                -DCMAKE_PREFIX_PATH="$QT_ROOT_DIR" -DSHPROT_BUILD_TESTS=ON
-          cmake --build Builds/Tests --config Release --target TestUtilities TestHttpProxy --parallel
-          ctest --test-dir Builds/Tests -C Release --output-on-failure --no-tests=error
+          where ssh ssh-keygen
+          cmake -S Sources -B Builds\Tests -G "Visual Studio 17 2022" -A x64 -DCMAKE_PREFIX_PATH="%QT_ROOT_DIR%" -DSHPROT_BUILD_TESTS=ON || exit /b 1
+          cmake --build Builds\Tests --config Release --target TestUtilities TestHttpProxy --parallel || exit /b 1
+          ctest --test-dir Builds\Tests -C Release --verbose --no-tests=error || exit /b 1
 
       - uses: actions/upload-artifact@v7
         with:
