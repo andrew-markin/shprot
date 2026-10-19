@@ -33,6 +33,8 @@ private slots:
     void maybeRestartTunnelProcess();
     void maybeRestartTunnelProcessLater();
     void stopTunnelProcess(int timeout = 3000);
+    void scheduleTunnelProcessRestart(bool authenticationFailed);
+    void handleNetworkChange();
 
     void handleTunnelProcessStart();
     void handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitStatus);
@@ -56,7 +58,7 @@ private:
     QProcess* m_tunnelProcess;
     QNetworkProxy m_tunnelSocksProxy;
     bool m_tunnelStoppedIntentionally = false;
-    int m_frequentRestartsCount = 0;
+    int m_failedRestartsCount = 0;
 
     QTimer* m_healthCheckTimer;
     QTcpSocket* m_healthCheckSocket = nullptr;

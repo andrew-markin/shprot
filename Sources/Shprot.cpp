@@ -37,11 +37,17 @@ static const int SingleInstanceReadTimeout = 5000; // 5s
 static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
-static const int TunnelProcessUptimeLimit = 1000; // 1s
 static const int TunnelProcessWarmupTime = 5000; // 5s
 static const int TunnelProcessRestartDelayLazy = 1000; // 1s
-static const int TunnelProcessRestartDelayStep = 200; // 200ms
-static const int TunnelProcessRestartDelayMax = 10000; // 10s
+
+// Restart delay doubles after each failed attempt until the tunnel passes a health check
+static const int TunnelProcessRestartDelayBase = 1000; // 1s
+static const int TunnelProcessRestartDelayMax = 60000; // 1m
+
+// Authentication failures are not going to fix themselves, so retry rarely to avoid being banned
+// by tools like fail2ban (default policy is 5 failures within 10 minutes)
+static const int TunnelProcessRestartDelayAuthBase = 60000; // 1m
+static const int TunnelProcessRestartDelayAuthMax = 1800000; // 30m
 
 static const int HealthCheckStartDelay = 100; // 100ms
 static const int HealthCheckDelayLong = 20000; // 20s
@@ -237,10 +243,10 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     QNetworkInformation* networkInformation = QNetworkInformation::instance();
 
     connect(networkInformation, &QNetworkInformation::reachabilityChanged,
-            this, &Shprot::maybeRestartTunnelProcessLater);
+            this, &Shprot::handleNetworkChange);
 
     connect(networkInformation, &QNetworkInformation::transportMediumChanged,
-            this, &Shprot::maybeRestartTunnelProcessLater);
+            this, &Shprot::handleNetworkChange);
 
     maybeUpdateStatus();
 }
@@ -431,28 +437,47 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
 
     if (m_tunnelStoppedIntentionally)
     {
-        m_frequentRestartsCount = 0;
         return;
     }
 
+    QByteArray errorOutput = m_tunnelProcess->readAllStandardError().trimmed();
+
     if (exitCode != 0)
     {
-        qWarning() << "Tunnel process ended with error:" << exitCode
-                   << m_tunnelProcess->readAllStandardError().trimmed();
+        qWarning() << "Tunnel process ended with error:" << exitCode << errorOutput;
     }
 
-    qint64 uptime = QDateTime::currentMSecsSinceEpoch() - m_tunnelProcess->property("startedAt").toLongLong();
+    // "Permission denied (publickey)." – not to be confused with "bind ...: Permission denied"
+    bool authenticationFailed = errorOutput.contains("Permission denied (") ||
+                                errorOutput.contains("Too many authentication failures") ||
+                                errorOutput.contains("Host key verification failed");
 
-    if (uptime < TunnelProcessUptimeLimit)
+    scheduleTunnelProcessRestart(authenticationFailed);
+}
+
+void Shprot::scheduleTunnelProcessRestart(bool authenticationFailed)
+{
+    int baseDelay = authenticationFailed ? TunnelProcessRestartDelayAuthBase : TunnelProcessRestartDelayBase;
+    int maxDelay = authenticationFailed ? TunnelProcessRestartDelayAuthMax : TunnelProcessRestartDelayMax;
+
+    qint64 delay = qint64(baseDelay) << qMin(m_failedRestartsCount, 16);
+    delay = qMin(delay, qint64(maxDelay));
+
+    m_failedRestartsCount++;
+
+    if (delay >= TunnelProcessRestartDelayMax)
     {
-        m_frequentRestartsCount++;
-    }
-    else
-    {
-        m_frequentRestartsCount = 0;
+        qWarning() << qPrintable(QString("Tunnel restart #%1 is scheduled in %2s")
+                                 .arg(m_failedRestartsCount).arg(delay / 1000));
     }
 
-    m_tunnelTimer->start(qMin(m_frequentRestartsCount * TunnelProcessRestartDelayStep, TunnelProcessRestartDelayMax));
+    m_tunnelTimer->start(static_cast<int>(delay));
+}
+
+void Shprot::handleNetworkChange()
+{
+    m_failedRestartsCount = 0; // New network deserves a fresh start
+    maybeRestartTunnelProcessLater();
 }
 
 void Shprot::stopHealthCheck()
@@ -532,6 +557,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             m_statusTimer->start(StatusUpdateTimeout);
 
             m_healthCheckFailsCount = 0;
+            m_failedRestartsCount = 0;
             m_healthCheckTimer->start(HealthCheckDelayLong);
         }
         else if (tunnelProcessUptime < TunnelProcessWarmupTime)
@@ -557,7 +583,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             }
             else
             {
-                maybeRestartTunnelProcessLater();
+                scheduleTunnelProcessRestart(false);
             }
         }
 
@@ -598,6 +624,7 @@ void Shprot::handlePreferencesChange(const QStringList& changes)
 {
     if (changes.contains("sshProxyTunnel"))
     {
+        m_failedRestartsCount = 0;
         m_tunnelTimer->start(0);
     }
 }
