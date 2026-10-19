@@ -13,6 +13,9 @@ Preferences::Preferences(const QString& path, QObject* parent) : QObject(parent)
         return;
     }
 
+    // Restrict access to settings file created by previous versions (it contains private key)
+    file.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
+
     QByteArray data = file.readAll();
 
     QJsonParseError jsonParseError;
@@ -41,6 +44,9 @@ void Preferences::save()
         qCritical() << "Unable to open settings file for writing";
         return;
     }
+
+    // Applied to the underlying temporary file, so the settings never become readable by others
+    file.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
 
     QJsonDocument jsonDocument = QJsonDocument::fromVariant(m_values);
     QByteArray data = jsonDocument.toJson(QJsonDocument::Compact);

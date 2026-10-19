@@ -89,13 +89,12 @@ QString getSshPublicKey(const QString& privateKey)
 
     QFile privateKeyFile(privateKeyPath);
 
-    if (!privateKeyFile.open(QIODevice::WriteOnly))
+    if (!privateKeyFile.open(QIODevice::WriteOnly | QIODevice::NewOnly, QFile::ReadOwner | QFile::WriteOwner))
     {
         qWarning() << "Unable to create temporary file";
         return QString();
     }
 
-    privateKeyFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
     privateKeyFile.write(privateKey.toUtf8());
     privateKeyFile.close();
 

@@ -313,16 +313,17 @@ void Shprot::maybeRestartTunnelProcess()
     quint16 localSocks5ProxyPort = Utilities::parsePort(sshProxyTunnel.value("localSocks5ProxyPort").toString(), 1080);
     QString localSocks5ProxyAddress = QString("%1:%2").arg(localSocks5ProxyHost).arg(localSocks5ProxyPort);
 
+    // Permissions are applied on creation only, so make sure the file does not exist yet
+    QFile::remove(m_identityFilePath);
     QFile identityFile(m_identityFilePath);
 
-    if (!identityFile.open(QIODevice::WriteOnly))
+    if (!identityFile.open(QIODevice::WriteOnly, QFile::ReadOwner | QFile::WriteOwner))
     {
         qCritical() << "Unable to write identity file";
         return;
     }
 
     QString privateKey = sshProxyTunnel.value("sshPrivateKey").toString();
-    identityFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner);
     identityFile.write(privateKey.toUtf8());
     identityFile.close();
 
