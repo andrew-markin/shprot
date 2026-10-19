@@ -3,6 +3,7 @@
 
 #include <QNetworkProxy>
 #include <QTcpSocket>
+#include <QTimer>
 
 class HttpProxyStream : public QObject
 {
@@ -15,16 +16,33 @@ public slots:
     void closeAndDeleteLater();
 
 private slots:
-    void readClientSocket();
-    void finishHandshake();
-    void readTargetSocket();
+    void readRequest();
+    void handleTargetConnect();
+    void handleTargetError(QAbstractSocket::SocketError error);
+    void handleTimeout();
+    void pump();
 
 private:
+    enum class State
+    {
+        ReadingRequest,
+        Connecting,
+        Tunneling,
+        Closing
+    };
+
+    bool parseRequest(const QByteArray& headers, const QByteArray& remainder);
+    void respondAndClose(const QByteArray& status);
+
+private:
+    State m_state = State::ReadingRequest;
     QTcpSocket* m_clientSocket;
     QTcpSocket* m_targetSocket;
-    QNetworkProxy m_socksProxy;
-    QByteArray m_handshakeBuffer;
-    bool m_handshakeFinished = false;
+    QTimer* m_timeoutTimer;
+    QByteArray m_requestBuffer;
+    QByteArray m_targetHost;
+    bool m_tunnelRequested = false;
+    bool m_deleteScheduled = false;
 };
 
 #endif // HTTPPROXYSTREAM_H
