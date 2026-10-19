@@ -15,6 +15,7 @@ public:
     HttpProxyServer(QObject* parent = nullptr);
 
     QString errorString() const;
+    quint16 serverPort() const;
 
 public slots:
     bool start(const QString& host, quint16 port, const QNetworkProxy& socksProxy);

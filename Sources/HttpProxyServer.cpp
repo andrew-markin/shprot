@@ -28,6 +28,11 @@ QString HttpProxyServer::errorString() const
     return m_tcpServer->errorString();
 }
 
+quint16 HttpProxyServer::serverPort() const
+{
+    return m_tcpServer->serverPort();
+}
+
 void HttpProxyServer::stop()
 {
     m_tcpServer->close();

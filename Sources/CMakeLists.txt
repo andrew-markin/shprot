@@ -161,4 +161,13 @@ elseif(LINUX)
     )
 endif()
 
+# Unit tests are optional and not a part of release packages
+
+option(SHPROT_BUILD_TESTS "Build unit tests" OFF)
+
+if(SHPROT_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(Tests)
+endif()
+
 include(Deploy)
