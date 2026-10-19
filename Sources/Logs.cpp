@@ -51,9 +51,14 @@ void post(const QString& message, bool save = false)
     normalizedMessage.replace("\r", "\\r");
     normalizedMessage.replace("\n", "\\n");
     QString timestamp = currentDateTime.toString("hh:mm:ss.zzz");
-    QString record = QString("[%1] %2\r\n").arg(timestamp).arg(normalizedMessage);
+    QString record = QString("[%1] %2").arg(timestamp).arg(normalizedMessage);
 
-    stdoutStream << record << Qt::endl << Qt::flush;
+    stdoutStream << record << Qt::endl; // Qt::endl flushes the stream
+
+    if (!save)
+    {
+        return; // Debug and info messages are not saved to the log file
+    }
 
     if (!logFile.isWritable() || (currentDate != logFileDate))
     {
@@ -84,7 +89,7 @@ void post(const QString& message, bool save = false)
         removeOldLogs();
     }
 
-    logFile.write(record.toUtf8());
+    logFile.write(record.toUtf8() + "\r\n");
     logFile.flush();
 }
 
