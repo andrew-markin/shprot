@@ -389,6 +389,12 @@ void Shprot::stopTunnelProcess(int timeout)
             SetConsoleCtrlHandler(NULL, FALSE);
             FreeConsole();
         }
+        else
+        {
+            qWarning() << "Unable to attach to tunnel process console, killing it...";
+            m_tunnelProcess->kill();
+            m_tunnelProcess->waitForFinished();
+        }
     #else
         m_tunnelProcess->terminate();
 
