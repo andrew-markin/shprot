@@ -13,6 +13,7 @@
 - **自动化 SSH 隧道：** 轻松建立和管理安全的 SSH 隧道，通过本地 SOCKS5 代理路由流量。
 - **智能连接恢复：** 自动监控互联网状态和网络切换（例如切换 Wi-Fi 网络或从睡眠中唤醒），并透明地重启隧道。
 - **高级健康检查：** 定期通过代理测试热门网站的可用性来验证连接完整性，如果底层 SSH 进程停滞，则立即恢复隧道。
+- **对服务器友好的重连机制：** 重复的重启尝试会以逐渐增加的间隔进行，认证失败后的重试频率不超过每分钟一次（间隔最长可增加到 30 分钟），因此配置错误的密钥不会导致您的 IP 地址被 fail2ban 等工具封禁。
 - **内置密钥管理：** 通过内置的 SSH 密钥生成简化客户端认证，让您轻松将公钥复制到远程服务器的 `authorized_keys` 文件中。
 - **友好的身份验证：** 提供清晰的界面来管理远程服务器凭证和服务器/客户端认证参数。
 - **可配置的网络设置：** 完全控制本地绑定地址和 SOCKS5 代理服务器的端口设置。
@@ -130,11 +131,15 @@ Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅�
    * **Local SOCKS5 Proxy Address：** 默认为 `localhost`（仅限本地计算机访问）。如果要与 LAN 中的其他设备共享代理，请将其更改为 `0.0.0.0`。
    * **Port：** 默认为 `1080`。如果系统中 `1080` 已被其他服务占用，您可以更改此端口。
 
+> ⚠️ **安全提示：** 代理没有身份验证。使用 `0.0.0.0`（或任何非回环地址）时，任何能够访问此端口的人都可以使用您的 SSH 隧道。保存此类地址时，Shprot 会要求您确认。请仅在受信任的网络中共享代理，并考虑使用防火墙限制访问。
+
 ### 步骤 5：可选的本地 HTTP 代理（高级）
 如果您需要除 SOCKS5 之外的 HTTP 代理，请勾选 **"Enable Local HTTP Proxy"** 复选框。这将解锁以下两个控件：
 
 - **Local HTTP Proxy Address：** 默认设置为 `localhost`（与 SOCKS5 相同）。更改为 `0.0.0.0` 以与 LAN 中的其他设备共享 HTTP 代理。
 - **Port：** 默认为 `8080`。如果此端口已被使用，您可以更改它。
+
+步骤 4 中的安全提示同样适用于 HTTP 代理：它也没有身份验证。
 
 HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外的服务端配置。启用后，两个代理将同时可用。
 
@@ -223,6 +228,10 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 - **后续构建很快：** Docker 镜像在本地缓存后，所有后续构建将显著加快（通常只需几分钟）。
 - **不需要本地 Qt：** 由于 Qt 捆绑在 Docker 容器中，您无需配置 `.env` 或在主机系统上安装 Qt。
 - **输出位置：** 所有生成的软件包（`.deb` 或 `.rpm`）将出现在 **`Release`** 文件夹中，与 Windows 安装程序相同。
+- **更新构建镜像：** 脚本仅在 Docker 镜像不存在时才会构建它。修改 `Dockerfile.ubuntu` 或 `Dockerfile.fedora` 后，请删除旧镜像（`docker rmi shprot-ubuntu-builder` 或 `docker rmi shprot-fedora-builder`），以便下次运行时重新构建。
+- **Qt 源代码镜像：** 默认从 Yandex 镜像下载 Qt 源代码。如需使用其他镜像，请手动构建镜像，例如：
+
+      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-ubuntu-builder - < Dockerfile.ubuntu
 
 #### Linux 构建（替代方案：本地构建）
 
@@ -254,6 +263,18 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 对于 Linux 开发，您可以使用相同的基于 Docker 的方法或在系统上本地安装 Qt 6.11.2。
 
 现在您可以直接在 IDE 中编写代码、调试和运行应用程序。中间构建文件将安全地保存在 `Builds` 文件夹中。
+
+### 🤖 自动构建与发布
+
+仓库包含一个 GitHub Actions 工作流（`.github/workflows/build.yml`），会在每次推送到 `main` 以及每个 pull request 时构建 Windows 安装程序以及 DEB 和 RPM 软件包。生成的软件包可在工作流的 artifacts 中获取。
+
+发布新版本的步骤：
+
+1. 在 `Sources/CMakeLists.txt` 中更新版本号（`project(Shprot VERSION X.Y ...)`）。
+2. 创建并推送对应的标签，例如 `git tag v1.5 && git push origin v1.5`。如果标签与项目版本不一致，工作流会立即停止。
+3. 所有构建成功后，Releases 页面上会出现一个 **草稿** 版本，其中包含三个软件包和自动生成的发布说明。检查后请手动发布。
+
+Docker 构建镜像缓存在 GitHub Container Registry（`ghcr.io`）中，仅在 Dockerfile 发生变化时才会重新构建，因此只有首次运行以及修改 Dockerfile 后的运行耗时较长。
 
 ## 🤝 参与贡献
 

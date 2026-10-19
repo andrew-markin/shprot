@@ -13,6 +13,7 @@ Whether you're a developer, tester, or just need a stable proxy for daily browsi
 - **Automated SSH Tunneling:** Easily establish and manage secure SSH tunnels that route traffic through a local SOCKS5 proxy.
 - **Smart Connection Resilience:** Automatically monitors internet status and network switches (e.g., changing Wi-Fi networks or waking from sleep) and transparently restarts the tunnel.
 - **Advanced Health Checks:** Periodically verifies connection integrity by testing popular website availability through the proxy, reviving the tunnel instantly if the underlying SSH process stalls.
+- **Server-Friendly Reconnection:** Repeated restart attempts are spaced out with a growing delay, and authentication failures are retried no more than once a minute (backing off up to 30 minutes), so a misconfigured key will not get your IP address banned by tools like fail2ban.
 - **Integrated Key Management:** Simplifies client authentication with built-in SSH key generation, allowing you to easily copy your public key to the remote server's `authorized_keys`.
 - **User-Friendly Authentication:** Provides a clean interface for managing remote server credentials and server/client authentication parameters.
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
@@ -130,11 +131,15 @@ Follow these steps to configure the proxy tunnel:
    * **Local SOCKS5 Proxy Address:** Defaults to `localhost` (restricts traffic to your local computer). Change it to `0.0.0.0` if you want to share the proxy with other devices in your LAN.
    * **Port:** Defaults to `1080`. You can change this if `1080` is already occupied by another service on your system.
 
+> ⚠️ **Security note:** The proxy has no authentication. With `0.0.0.0` (or any other non-loopback address), anyone who can reach this port can use your SSH tunnel. Shprot asks for confirmation when you save such an address. Share the proxy only on trusted networks and consider restricting access with a firewall.
+
 ### Step 5: Optional Local HTTP Proxy (Advanced)
 If you need an HTTP proxy in addition to the SOCKS5 one, check the **"Enable Local HTTP Proxy"** checkbox. This will unlock the following two controls:
 
 - **Local HTTP Proxy Address:** By default, this is set to `localhost` (same as SOCKS5). Change it to `0.0.0.0` to share the HTTP proxy with other devices on your LAN.
 - **Port:** Defaults to `8080`. You can change it if this port is already in use.
+
+The security note from Step 4 applies to the HTTP proxy as well: it has no authentication either.
 
 The HTTP proxy works **through** the same SSH tunnel as the SOCKS5 proxy, so it does not require any additional server-side configuration. Once you enable it, both proxies will be available simultaneously.
 
@@ -223,6 +228,10 @@ Produces an `.rpm` package using `rpmbuild`, compatible with Fedora 39 and newer
 - **Subsequent builds are fast:** After the Docker images are cached locally, all following builds will be significantly faster (typically a few minutes).
 - **No local Qt required:** Since Qt is bundled inside the Docker containers, you don't need to configure `.env` or install Qt on your host system.
 - **Output location:** All generated packages (`.deb` or `.rpm`) will appear in the **`Release`** folder, just like the Windows installer.
+- **Updating builder images:** The scripts build a Docker image only if it does not exist yet. After `Dockerfile.ubuntu` or `Dockerfile.fedora` changes, remove the old image (`docker rmi shprot-ubuntu-builder` or `docker rmi shprot-fedora-builder`) so that the next run rebuilds it.
+- **Qt sources mirror:** Qt sources are downloaded from the Yandex mirror by default. To use another mirror, build the image manually, for example:
+
+      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-ubuntu-builder - < Dockerfile.ubuntu
 
 #### Linux Build (Alternative: Native)
 
@@ -254,6 +263,18 @@ If you want to modify the code, fix bugs, or add features, you should use **Qt C
 For Linux development, you can use the same Docker-based approach or install Qt 6.11.2 natively on your system.
 
 Now you can write code, debug, and run the application directly from the IDE. Intermediate build files will be kept safe inside the `Builds` folder.
+
+### 🤖 Automated Builds and Releases
+
+The repository includes a GitHub Actions workflow (`.github/workflows/build.yml`) that builds the Windows installer and the DEB and RPM packages on every push to `main` and for every pull request. The resulting packages are available as workflow artifacts.
+
+To publish a release:
+
+1. Bump the version in `Sources/CMakeLists.txt` (`project(Shprot VERSION X.Y ...)`).
+2. Create and push a matching tag, for example `git tag v1.5 && git push origin v1.5`. The workflow stops immediately if the tag does not match the project version.
+3. Once all builds succeed, a **draft** release with the three packages and auto-generated release notes appears on the Releases page. Review it and publish it manually.
+
+Docker builder images are cached in GitHub Container Registry (`ghcr.io`) and rebuilt only when a Dockerfile changes, so only the first run and runs after Dockerfile changes take long.
 
 ## 🤝 Contributing
 
