@@ -172,41 +172,6 @@ QString getSingleInstanceServerName(const QString& userName)
     return QString("%1:%2").arg(PROJECT_NAME).arg(userName);
 }
 
-// Turns ssh error output into a short explanation for the user
-QString describeSshError(const QByteArray& errorOutput)
-{
-    static const QList<QPair<QStringList, QString>> KnownErrors = {
-        {{"Permission denied (", "Too many authentication failures"},
-         "Authentication failed: the server rejected the private key"},
-        {{"Host key verification failed", "REMOTE HOST IDENTIFICATION HAS CHANGED"},
-         "Server identity verification failed, run Trust Check in Preferences"},
-        {{"Could not resolve hostname"}, "Unable to resolve the server address"},
-        {{"Connection refused"}, "Connection refused by the server"},
-        {{"Connection timed out", "Operation timed out"}, "Connection to the server timed out"},
-        {{"Network is unreachable", "No route to host"}, "Server is unreachable"},
-        {{"Address already in use", "cannot listen to port"}, "Local SOCKS5 proxy port is already in use"},
-        {{"Timeout, server"}, "Server stopped responding"},
-        {{"closed by remote host", "Connection reset", "Broken pipe"}, "Connection was closed by the server"}
-    };
-
-    QString output = QString::fromUtf8(errorOutput);
-
-    for (const auto& [patterns, description] : KnownErrors)
-    {
-        for (const QString& pattern : patterns)
-        {
-            if (output.contains(pattern, Qt::CaseInsensitive))
-            {
-                return description;
-            }
-        }
-    }
-
-    // Unknown error: the last line of ssh output usually explains it best
-    QStringList lines = output.split('\n', Qt::SkipEmptyParts);
-    return lines.isEmpty() ? QString() : lines.last().trimmed().left(200);
-}
-
 } // namespace
 
 Shprot::Shprot(QObject* parent) : QObject(parent)
@@ -510,7 +475,7 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
         qWarning() << "Tunnel process ended with error:" << exitCode << errorOutput;
     }
 
-    QString errorDescription = describeSshError(errorOutput);
+    QString errorDescription = Utilities::describeSshError(errorOutput);
 
     if (!errorDescription.isEmpty())
     {

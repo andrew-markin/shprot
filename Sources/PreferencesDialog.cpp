@@ -7,7 +7,6 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QHostAddress>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
@@ -51,26 +50,6 @@ bool portStringIsAcceptable(const QString& portString, bool system = false)
     bool numberIsOk = false;
     int portNumber = portString.toInt(&numberIsOk);
     return numberIsOk && (system || (portNumber >= 1024)) && (portNumber <= 65535);
-}
-
-// Anything except loopback is reachable from other computers. Host names other than "localhost"
-// are treated as exposed too, since they are not resolved here and may point anywhere.
-bool hostIsExposed(const QString& host)
-{
-    QString normalizedHost = host.trimmed();
-
-    if (normalizedHost.isEmpty() || (normalizedHost.compare("localhost", Qt::CaseInsensitive) == 0))
-    {
-        return false;
-    }
-
-    if (normalizedHost.startsWith('[') && normalizedHost.endsWith(']'))
-    {
-        normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
-    }
-
-    QHostAddress address(normalizedHost);
-    return address.isNull() || !address.isLoopback();
 }
 
 QString formatProxyAddress(const QLineEdit* hostEdit, const QLineEdit* portEdit)
@@ -355,7 +334,8 @@ bool PreferencesDialog::confirmExposure()
 
     // Ask only when the proxy becomes exposed, so already accepted settings are not questioned again
     auto becomesExposed = [](bool enabled, const QString& host, bool savedEnabled, const QString& savedHost) {
-        return enabled && hostIsExposed(host) && !(savedEnabled && hostIsExposed(savedHost) && (host == savedHost));
+        bool wasExposed = savedEnabled && Utilities::hostIsExposed(savedHost) && (host == savedHost);
+        return enabled && Utilities::hostIsExposed(host) && !wasExposed;
     };
 
     QStringList exposedProxies;

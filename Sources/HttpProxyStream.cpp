@@ -1,8 +1,9 @@
 #include "HttpProxyStream.h"
 
 #include <QDebug>
-#include <QHostAddress>
 #include <QRegularExpression>
+
+#include "Utilities.h"
 
 namespace {
 
@@ -10,63 +11,6 @@ static const int MaxRequestHeadersSize = 65536; // 64KB
 static const int MaxPendingBytes = 262144; // 256KB per direction
 static const int ChunkSize = 65536; // 64KB
 static const int RequestTimeout = 30000; // 30s
-
-// Parses "host", "host:port" or "[ipv6]:port" (user info is ignored)
-bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& host, quint16& port)
-{
-    QByteArray hostAndPort = authority.mid(authority.lastIndexOf('@') + 1);
-    QByteArray portPart;
-
-    if (hostAndPort.startsWith('['))
-    {
-        int end = hostAndPort.indexOf(']');
-
-        if (end < 0)
-        {
-            return false;
-        }
-
-        host = QString::fromLatin1(hostAndPort.mid(1, end - 1));
-        portPart = hostAndPort.mid(end + 1);
-
-        if (QHostAddress(host).protocol() != QAbstractSocket::IPv6Protocol)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        int colon = hostAndPort.indexOf(':');
-
-        if ((colon >= 0) && (hostAndPort.lastIndexOf(':') != colon))
-        {
-            return false; // IPv6 address must be enclosed in brackets
-        }
-
-        host = QString::fromLatin1(colon >= 0 ? hostAndPort.left(colon) : hostAndPort);
-        portPart = (colon >= 0) ? hostAndPort.mid(colon) : QByteArray();
-    }
-
-    if (host.isEmpty())
-    {
-        return false;
-    }
-
-    if (portPart.isEmpty())
-    {
-        port = defaultPort;
-        return true;
-    }
-
-    if (!portPart.startsWith(':'))
-    {
-        return false;
-    }
-
-    bool portIsOk = false;
-    port = portPart.mid(1).toUShort(&portIsOk);
-    return portIsOk && (port > 0);
-}
 
 void forwardData(QTcpSocket* source, QTcpSocket* destination)
 {
@@ -184,7 +128,7 @@ bool HttpProxyStream::parseRequest(const QByteArray& headers, const QByteArray& 
 
     if (method == "CONNECT")
     {
-        if (!parseAuthority(target, 443, host, port))
+        if (!Utilities::parseAuthority(target, 443, host, port))
         {
             return false;
         }
@@ -217,7 +161,7 @@ bool HttpProxyStream::parseRequest(const QByteArray& headers, const QByteArray& 
             path.prepend('/');
         }
 
-        if (!parseAuthority(authority, 80, host, port))
+        if (!Utilities::parseAuthority(authority, 80, host, port))
         {
             return false;
         }

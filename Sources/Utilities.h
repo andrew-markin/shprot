@@ -25,6 +25,10 @@ QString getKeyTypeLabel(const QString& keyType);
 QPair<QString, QString> getKeyTypeAndFingerprint(const QString& hostRecord);
 
 quint16 parsePort(const QString& text, quint16 defaultValue);
+bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& host, quint16& port);
+bool hostIsExposed(const QString& host);
+
+QString describeSshError(const QByteArray& errorOutput);
 
 } // namespace Utilities
 

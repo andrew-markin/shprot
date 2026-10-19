@@ -3,6 +3,7 @@
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QDir>
+#include <QHostAddress>
 #include <QHostInfo>
 #include <QProcess>
 #include <QProcessEnvironment>
@@ -310,6 +311,118 @@ quint16 parsePort(const QString& text, quint16 defaultValue)
     bool resultIsOk = false;
     quint16 result = text.toUShort(&resultIsOk);
     return resultIsOk ? result : defaultValue;
+}
+
+// Parses "host", "host:port" or "[ipv6]:port" (user info is ignored)
+bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& host, quint16& port)
+{
+    QByteArray hostAndPort = authority.mid(authority.lastIndexOf('@') + 1);
+    QByteArray portPart;
+
+    if (hostAndPort.startsWith('['))
+    {
+        int end = hostAndPort.indexOf(']');
+
+        if (end < 0)
+        {
+            return false;
+        }
+
+        host = QString::fromLatin1(hostAndPort.mid(1, end - 1));
+        portPart = hostAndPort.mid(end + 1);
+
+        if (QHostAddress(host).protocol() != QAbstractSocket::IPv6Protocol)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        int colon = hostAndPort.indexOf(':');
+
+        if ((colon >= 0) && (hostAndPort.lastIndexOf(':') != colon))
+        {
+            return false; // IPv6 address must be enclosed in brackets
+        }
+
+        host = QString::fromLatin1(colon >= 0 ? hostAndPort.left(colon) : hostAndPort);
+        portPart = (colon >= 0) ? hostAndPort.mid(colon) : QByteArray();
+    }
+
+    if (host.isEmpty())
+    {
+        return false;
+    }
+
+    if (portPart.isEmpty())
+    {
+        port = defaultPort;
+        return true;
+    }
+
+    if (!portPart.startsWith(':'))
+    {
+        return false;
+    }
+
+    bool portIsOk = false;
+    port = portPart.mid(1).toUShort(&portIsOk);
+    return portIsOk && (port > 0);
+}
+
+// Anything except loopback is reachable from other computers. Host names other than "localhost"
+// are treated as exposed too, since they are not resolved here and may point anywhere.
+bool hostIsExposed(const QString& host)
+{
+    QString normalizedHost = host.trimmed();
+
+    if (normalizedHost.isEmpty() || (normalizedHost.compare("localhost", Qt::CaseInsensitive) == 0))
+    {
+        return false;
+    }
+
+    if (normalizedHost.startsWith('[') && normalizedHost.endsWith(']'))
+    {
+        normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
+    }
+
+    QHostAddress address(normalizedHost);
+    return address.isNull() || !address.isLoopback();
+}
+
+// Turns ssh error output into a short explanation for the user
+QString describeSshError(const QByteArray& errorOutput)
+{
+    static const QList<QPair<QStringList, QString>> KnownErrors = {
+        {{"Permission denied (", "Too many authentication failures"},
+         "Authentication failed: the server rejected the private key"},
+        {{"Host key verification failed", "REMOTE HOST IDENTIFICATION HAS CHANGED"},
+         "Server identity verification failed, run Trust Check in Preferences"},
+        {{"Could not resolve hostname"}, "Unable to resolve the server address"},
+        {{"Connection refused"}, "Connection refused by the server"},
+        {{"Connection timed out", "Operation timed out"}, "Connection to the server timed out"},
+        {{"Network is unreachable", "No route to host"}, "Server is unreachable"},
+        {{"Address already in use", "cannot listen to port"}, "Local SOCKS5 proxy port is already in use"},
+        {{"Timeout, server"}, "Server stopped responding"},
+        {{"closed by remote host", "Connection reset", "Broken pipe"}, "Connection was closed by the server"}
+    };
+
+    QString output = QString::fromUtf8(errorOutput);
+
+    for (const auto& [patterns, description] : KnownErrors)
+    {
+        for (const QString& pattern : patterns)
+        {
+            if (output.contains(pattern, Qt::CaseInsensitive))
+            {
+                return description;
+            }
+        }
+    }
+
+    // Unknown error: the last line of ssh output usually explains it best
+    QStringList lines = output.split('\n', Qt::SkipEmptyParts);
+    return lines.isEmpty() ? QString() : lines.last().trimmed().left(200);
 }
 
 } // namespace Utilities
