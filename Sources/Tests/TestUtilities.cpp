@@ -1,4 +1,6 @@
+#include <QFile>
 #include <QStandardPaths>
+#include <QTemporaryDir>
 #include <QTest>
 
 #include "Utilities.h"
@@ -32,6 +34,8 @@ private slots:
     void getKeyTypeAndFingerprint();
 
     void getMissingSshToolMessage();
+
+    void writePrivateKeyFile();
 
     void generateSshKeys();
 };
@@ -260,6 +264,30 @@ void TestUtilities::getMissingSshToolMessage()
     }
 
     QVERIFY(Utilities::getMissingSshToolMessage("ssh").isEmpty());
+}
+
+void TestUtilities::writePrivateKeyFile()
+{
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+
+    QString path = directory.filePath("Identity");
+    QByteArray privateKey("-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----\n");
+
+    // An existing file is replaced, so permissions of a new file are applied
+    QVERIFY(Utilities::writePrivateKeyFile(path, "old content"));
+    QVERIFY(Utilities::writePrivateKeyFile(path, privateKey));
+
+    QFile file(path);
+    QVERIFY(file.open(QIODevice::ReadOnly));
+    QCOMPARE(file.readAll(), privateKey);
+
+#ifndef Q_OS_WIN
+    // On Windows the file inherits the profile directory ACL, which QFile::permissions() doesn't reflect
+    QFileDevice::Permissions others = QFileDevice::ReadGroup | QFileDevice::WriteGroup | QFileDevice::ExeGroup |
+                                      QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther;
+    QCOMPARE(file.permissions() & others, QFileDevice::Permissions());
+#endif
 }
 
 void TestUtilities::generateSshKeys()

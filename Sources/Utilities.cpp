@@ -55,6 +55,30 @@ QString getMissingSshToolMessage(const QString& tool)
 #endif
 }
 
+// Writes a private key to a new file accessible by its owner only, otherwise ssh ignores the key
+bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey)
+{
+    // Permissions are applied on creation only, so make sure the file does not exist yet
+    QFile::remove(path);
+    QFile file(path);
+
+#ifdef Q_OS_WIN
+    // With explicit permissions Qt creates the file with its own ACL, which Windows OpenSSH rejects
+    // as "too open" (it includes a mandatory label entry). Without them the file inherits the ACL of
+    // the user profile directory (AppData, Temp), which grants access to the owner and system only.
+    bool fileIsOpened = file.open(QIODevice::WriteOnly | QIODevice::NewOnly);
+#else
+    bool fileIsOpened = file.open(QIODevice::WriteOnly | QIODevice::NewOnly, QFile::ReadOwner | QFile::WriteOwner);
+#endif
+
+    if (!fileIsOpened)
+    {
+        return false;
+    }
+
+    return file.write(privateKey) == privateKey.size();
+}
+
 QString generateSshPrivateKey()
 {
     QString result;
@@ -105,16 +129,11 @@ QString getSshPublicKey(const QString& privateKey)
         QFile::remove(privateKeyPath);
     });
 
-    QFile privateKeyFile(privateKeyPath);
-
-    if (!privateKeyFile.open(QIODevice::WriteOnly | QIODevice::NewOnly, QFile::ReadOwner | QFile::WriteOwner))
+    if (!writePrivateKeyFile(privateKeyPath, privateKey.toUtf8()))
     {
         qWarning() << "Unable to create temporary file";
         return QString();
     }
-
-    privateKeyFile.write(privateKey.toUtf8());
-    privateKeyFile.close();
 
     QProcess process;
     process.start("ssh-keygen", {"-y", "-f", privateKeyPath});

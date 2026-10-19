@@ -9,6 +9,8 @@ QString getCurrentUserName();
 
 QString getMissingSshToolMessage(const QString& tool);
 
+bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey);
+
 QString generateSshPrivateKey();
 QString getSshPublicKey(const QString& privateKey);
 bool sshPrivateKeyLooksValid(const QString& privateKey);
