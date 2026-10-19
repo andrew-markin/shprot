@@ -39,6 +39,8 @@ private:
 
     bool hasChanges() const;
 
+    bool confirmExposure();
+
     QStringList validateSshDestinationAndPort();
     QStringList validate();
 

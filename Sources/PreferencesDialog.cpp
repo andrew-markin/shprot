@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QHostAddress>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
@@ -50,6 +51,44 @@ bool portStringIsAcceptable(const QString& portString, bool system = false)
     bool numberIsOk = false;
     int portNumber = portString.toInt(&numberIsOk);
     return numberIsOk && (system || (portNumber >= 1024)) && (portNumber <= 65535);
+}
+
+// Anything except loopback is reachable from other computers. Host names other than "localhost"
+// are treated as exposed too, since they are not resolved here and may point anywhere.
+bool hostIsExposed(const QString& host)
+{
+    QString normalizedHost = host.trimmed();
+
+    if (normalizedHost.isEmpty() || (normalizedHost.compare("localhost", Qt::CaseInsensitive) == 0))
+    {
+        return false;
+    }
+
+    if (normalizedHost.startsWith('[') && normalizedHost.endsWith(']'))
+    {
+        normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
+    }
+
+    QHostAddress address(normalizedHost);
+    return address.isNull() || !address.isLoopback();
+}
+
+QString formatProxyAddress(const QLineEdit* hostEdit, const QLineEdit* portEdit)
+{
+    QString host = hostEdit->text().trimmed();
+    QString port = portEdit->text().trimmed();
+
+    if (port.isEmpty())
+    {
+        port = portEdit->placeholderText();
+    }
+
+    if (host.contains(':') && !host.startsWith('['))
+    {
+        host = QString("[%1]").arg(host); // IPv6 address
+    }
+
+    return QString("%1:%2").arg(host, port);
 }
 
 } // namespace
@@ -184,6 +223,11 @@ void PreferencesDialog::accept()
         return;
     }
 
+    if (!confirmExposure())
+    {
+        return;
+    }
+
     if (m_ui->sshProxyTunnelCheckBox->isChecked() && !runTrustCheck(false))
     {
         return;
@@ -297,6 +341,57 @@ bool PreferencesDialog::hasChanges() const
             (m_ui->localHttpProxyCheckBox->isChecked() != sshProxyTunnel.value("localHttpProxyEnabled", false).toBool()) ||
             (m_ui->localHttpProxyHostEdit->text() != sshProxyTunnel.value("localHttpProxyHost").toString()) ||
             (m_ui->localHttpProxyPortEdit->text() != sshProxyTunnel.value("localHttpProxyPort").toString());
+}
+
+bool PreferencesDialog::confirmExposure()
+{
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    bool tunnelEnabled = m_ui->sshProxyTunnelCheckBox->isChecked();
+    bool httpProxyEnabled = tunnelEnabled && m_ui->localHttpProxyCheckBox->isChecked();
+
+    bool savedTunnelEnabled = sshProxyTunnel.value("enabled", false).toBool();
+    bool savedHttpProxyEnabled = savedTunnelEnabled && sshProxyTunnel.value("localHttpProxyEnabled", false).toBool();
+
+    // Ask only when the proxy becomes exposed, so already accepted settings are not questioned again
+    auto becomesExposed = [](bool enabled, const QString& host, bool savedEnabled, const QString& savedHost) {
+        return enabled && hostIsExposed(host) && !(savedEnabled && hostIsExposed(savedHost) && (host == savedHost));
+    };
+
+    QStringList exposedProxies;
+
+    if (becomesExposed(tunnelEnabled, m_ui->localSocks5ProxyHostEdit->text(),
+                       savedTunnelEnabled, sshProxyTunnel.value("localSocks5ProxyHost").toString()))
+    {
+        exposedProxies.append(QString("SOCKS5 proxy at %1")
+                              .arg(formatProxyAddress(m_ui->localSocks5ProxyHostEdit,
+                                                      m_ui->localSocks5ProxyPortEdit)));
+    }
+
+    if (becomesExposed(httpProxyEnabled, m_ui->localHttpProxyHostEdit->text(),
+                       savedHttpProxyEnabled, sshProxyTunnel.value("localHttpProxyHost").toString()))
+    {
+        exposedProxies.append(QString("HTTP proxy at %1")
+                              .arg(formatProxyAddress(m_ui->localHttpProxyHostEdit,
+                                                      m_ui->localHttpProxyPortEdit)));
+    }
+
+    if (exposedProxies.isEmpty())
+    {
+        return true;
+    }
+
+    QMessageBox messageBox(this);
+    messageBox.setWindowTitle("Proxy Accessible from Network");
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setText(QString("Local %1 will be accessible from other computers without authentication.")
+                       .arg(exposedProxies.join(" and ")));
+    messageBox.setInformativeText("Anyone who can reach this address can use your SSH tunnel. "
+                                  "Do you want to save these settings anyway?");
+    messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    messageBox.setDefaultButton(QMessageBox::Cancel);
+
+    return messageBox.exec() == QMessageBox::Save;
 }
 
 QStringList PreferencesDialog::validateSshDestinationAndPort()
