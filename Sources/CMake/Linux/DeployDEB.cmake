@@ -37,6 +37,9 @@ set(DEB_PACKAGE_DEPENDENCIES
     # Font rendering - required for text display in Qt
     "libfontconfig1"       # Font configuration and customization library
     "libfreetype6"         # FreeType font rendering engine
+
+    # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
+    "openssh-client"       # OpenSSH client (ssh, ssh-keygen)
 )
 
 string(

@@ -35,6 +35,9 @@ set(RPM_PACKAGE_DEPENDENCIES
     # Font rendering - required for text display in Qt
     "fontconfig"             # Font configuration and customization library
     "freetype"               # FreeType font rendering engine
+
+    # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
+    "openssh-clients"        # OpenSSH client (ssh; ssh-keygen comes with required openssh package)
 )
 
 set(RPM_PACKAGE_REQUIRES "")
