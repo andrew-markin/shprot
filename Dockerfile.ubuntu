@@ -1,13 +1,13 @@
 # Ubuntu 22.04 is the oldest LTS that provides Qt 6.11.2 compatibility.
 # Building here maximizes forward compatibility with newer distros.
-FROM ubuntu:22.04
+# =============================================================================
+# Stage "base": System packages shared by Qt build and the final image
+# =============================================================================
+FROM ubuntu:22.04 AS base
 
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV QT_MIRROR=https://mirror.yandex.ru/mirrors/qt.io
-ENV QT_ARCHIVE_PATH=/archive/qt/6.11/6.11.2/single/qt-everywhere-src-6.11.2.tar.xz
-ENV QT_ARCHIVE_MD5SUM=669c1f3a41c37fdda389094882044d7a
 ENV QT_PREFIX="/usr/local/qt"
 
 # -----------------------------------------------------------------------------
@@ -73,6 +73,17 @@ RUN apt-get update && apt-get install -y \
 # Upgrade CMake to a version recent enough for Qt 6.11+
 # (system cmake on Ubuntu 22.04 is too old)
 RUN pip3 install --upgrade cmake
+
+# =============================================================================
+# Stage "qt": Build Qt from sources (sources and build files stay in this stage)
+# =============================================================================
+FROM base AS qt
+
+# Mirror for Qt sources: Yandex is faster for local builds, CI passes the official
+# download server with --build-arg QT_MIRROR=https://download.qt.io
+ARG QT_MIRROR=https://mirror.yandex.ru/mirrors/qt.io
+ENV QT_ARCHIVE_PATH=/archive/qt/6.11/6.11.2/single/qt-everywhere-src-6.11.2.tar.xz
+ENV QT_ARCHIVE_MD5SUM=669c1f3a41c37fdda389094882044d7a
 
 # -----------------------------------------------------------------------------
 # Stage: Download Qt source tarball from a reliable mirror
@@ -173,10 +184,16 @@ RUN ../sources/configure \
 # Stage: Build and install only the required modules
 # -----------------------------------------------------------------------------
 # We explicitly list targets we need – this is faster than building 'all'.
-# After installation, the source and build directories are removed to save space.
+# Sources and build directories are left behind in this stage and never reach the final image.
 RUN cmake --build . --target qtbase qtsvg qtimageformats qtwayland --parallel $(nproc) && \
-    cmake --install . --strip && \
-    cd / && rm -rf /qt
+    cmake --install . --strip
+
+# =============================================================================
+# Final stage: Build dependencies and installed Qt only
+# =============================================================================
+FROM base
+
+COPY --from=qt $QT_PREFIX $QT_PREFIX
 
 # Add Qt binaries to PATH for subsequent RUN commands (e.g., qmake, moc)
 ENV PATH="$QT_PREFIX/bin:$PATH"
