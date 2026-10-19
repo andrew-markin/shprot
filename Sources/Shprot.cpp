@@ -348,6 +348,11 @@ void Shprot::maybeRestartTunnelProcess()
     arguments << "-o" << QString("UserKnownHostsFile='%1'").arg(QDir::toNativeSeparators(knownHostsPath));
     arguments << "-o" << "StrictHostKeyChecking=yes";
     arguments << "-o" << "BatchMode=yes";
+    arguments << "-o" << "ExitOnForwardFailure=yes";
+    arguments << "-o" << "ConnectTimeout=10";
+    arguments << "-o" << "ServerAliveInterval=15";
+    arguments << "-o" << "ServerAliveCountMax=3";
+    arguments << "-o" << "TCPKeepAlive=yes";
 
 #if defined(Q_OS_WIN)
     arguments << "-F" << "NUL";
