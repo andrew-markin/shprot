@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>Inactive.svg</file>
+        <file alias="Licenses/GPL-3.txt">../LICENSE</file>
+        <file>Licenses/LGPL-3.txt</file>
+        <file>Licenses/ThirdParty.txt</file>
         <file>Shprot.svg</file>
         <file>Shprot.ico</file>
         <file>Shprot.png</file>

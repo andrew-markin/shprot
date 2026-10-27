@@ -5,7 +5,6 @@
 #include <QDir>
 #include <QLocalServer>
 #include <QLocalSocket>
-#include <QMessageBox>
 #include <QNetworkProxy>
 #include <QRandomGenerator>
 #include <QRegularExpression>
@@ -22,6 +21,7 @@
 #include <QtDBus>
 #endif
 
+#include "AboutDialog.h"
 #include "HttpProxyServer.h"
 #include "Logs.h"
 #include "Preferences.h"
@@ -262,6 +262,7 @@ Shprot::~Shprot()
     stop();
     delete m_contextMenu;
     delete m_preferencesDialog;
+    delete m_aboutDialog;
 }
 
 void Shprot::start()
@@ -281,16 +282,13 @@ void Shprot::openPreferencesDialog()
 
 void Shprot::openAboutDialog()
 {
-    QMessageBox messageBox;
-    messageBox.setWindowTitle(QString("%1 version %2").arg(PROJECT_TITLE).arg(PROJECT_VERSION));
-    messageBox.setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::TextSelectableByMouse);
-    messageBox.setText(QString("%1<br><br><a href='%2'>GitHub repository</a>,&nbsp;"
-                               "<a href='%3'>LinkedIn profile</a><br><br>%4")
-                       .arg(PROJECT_DESCRIPTION)
-                       .arg(PROJECT_GITHUB_REPOSITORY)
-                       .arg(PROJECT_LINKEDIN_PROFILE)
-                       .arg(PROJECT_COPYRIGHT));
-    messageBox.exec();
+    // Created on demand, since license texts take some memory
+    if (!m_aboutDialog)
+    {
+        m_aboutDialog = new AboutDialog();
+    }
+
+    m_aboutDialog->open();
 }
 
 void Shprot::maybeRestartTunnelProcess()

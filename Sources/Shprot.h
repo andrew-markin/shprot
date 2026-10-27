@@ -10,6 +10,7 @@
 #include <QTcpSocket>
 #include <QTimer>
 
+class AboutDialog;
 class HttpProxyServer;
 class Preferences;
 class PreferencesDialog;
@@ -84,6 +85,7 @@ private:
     QString m_httpProxyError;
 
     PreferencesDialog* m_preferencesDialog;
+    AboutDialog* m_aboutDialog = nullptr;
 };
 
 #endif // SHPROT_H

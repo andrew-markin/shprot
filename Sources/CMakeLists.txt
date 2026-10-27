@@ -18,7 +18,7 @@ else()
     set(COPYRIGHT_YEARS "${ORIGINAL_YEAR}-${CURRENT_YEAR}")
 endif()
 
-set(PROJECT_COPYRIGHT "Copyright (C) ${COPYRIGHT_YEARS} ${PROJECT_DEVELOPER_TITLE}. All rights reserved.")
+set(PROJECT_COPYRIGHT "Copyright (C) ${COPYRIGHT_YEARS} ${PROJECT_DEVELOPER_TITLE}")
 
 set(PROJECT_GITHUB_REPOSITORY "https://github.com/andrew-markin/shprot")
 set(PROJECT_LINKEDIN_PROFILE "https://www.linkedin.com/in/andrew-markin-08396831")
@@ -71,6 +71,8 @@ get_filename_component(QT_PLUGINS_DIR "${QT6_INSTALL_PREFIX}/plugins" ABSOLUTE)
 
 add_executable(
     Shprot WIN32
+    AboutDialog.cpp
+    AboutDialog.h
     Logs.cpp
     Logs.h
     HttpProxyServer.cpp
@@ -98,6 +100,17 @@ add_executable(
 )
 
 target_include_directories(Shprot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Build timestamp is taken at configure time (release builds are always configured from scratch)
+# and passed to a single source file, so it does not trigger rebuilding of the whole project.
+# SOURCE_DATE_EPOCH environment variable is respected for reproducible builds.
+
+string(TIMESTAMP PROJECT_BUILD_TIMESTAMP "%Y-%m-%dT%H:%M:%SZ" UTC)
+
+set_source_files_properties(
+    AboutDialog.cpp PROPERTIES
+    COMPILE_DEFINITIONS PROJECT_BUILD_TIMESTAMP="${PROJECT_BUILD_TIMESTAMP}"
+)
 
 if(WIN32)
     # Use https://redketchup.io/icon-converter to make icon
