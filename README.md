@@ -18,6 +18,7 @@ Whether you're a developer, tester, or just need a stable proxy for daily browsi
 - **User-Friendly Authentication:** Provides a clean interface for managing remote server credentials and server/client authentication parameters.
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
 - **Optional HTTP Proxy Support:** In addition to the SOCKS5 proxy, you can enable a separate HTTP proxy that routes traffic through the same SSH tunnel. This is useful for legacy applications or scripts that only support HTTP proxies.
+- **Multilingual Interface:** The interface is translated into 49 languages and follows the system UI language, with right-to-left layout for Arabic, Persian, Hebrew and Urdu.
   
 ## Why Not Just `ssh -D`?
 
@@ -330,6 +331,14 @@ Unit tests (Qt Test) cover utility functions and the HTTP proxy. They are not bu
     ctest --test-dir Builds/Tests --output-on-failure
 
 On Windows with the Visual Studio generator, add `--config Release` to the build command and `-C Release` to the `ctest` command.
+
+### Translations
+
+Translations are kept in `Sources/Translations` as Qt Linguist `.ts` files and compiled into the application. The list of languages is set by `TRANSLATION_LANGUAGES` in `Sources/CMakeLists.txt`. After texts in the code are changed, update all `.ts` files and translate new texts (for example, in Qt Linguist):
+
+    cmake --build Builds/Tests --target update_translations
+
+Texts of Qt itself shown by the application (standard buttons, context menus of text fields) are listed in `Sources/Translations.cpp` and translated in the same files, since Qt translations are not deployed.
 
 ### README Screenshots
 
