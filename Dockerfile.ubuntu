@@ -103,6 +103,7 @@ WORKDIR /qt/build
 # We keep only what is strictly necessary:
 #   qtbase      – core + GUI + widgets + network + D-Bus
 #   qtsvg       – SVG icons support
+#   qttools     – lrelease to compile translations (other tools are disabled below)
 #
 # Image formats other than built-in PNG and the Wayland platform plugin are not deployed
 # with the application, so qtimageformats and qtwayland are skipped too.
@@ -160,7 +161,6 @@ RUN ../sources/configure \
     -skip qtshadertools \
     -skip qtspeech \
     -skip qttasktree \
-    -skip qttools \
     -skip qttranslations \
     -skip qtvirtualkeyboard \
     -skip qtwebchannel \
@@ -174,6 +174,17 @@ RUN ../sources/configure \
     -no-feature-pdf \
     -no-feature-sql \
     -no-feature-vulkan \
+    \
+    # Only Qt Linguist tools of qttools are needed
+    -no-feature-assistant \
+    -no-feature-clang \
+    -no-feature-designer \
+    -no-feature-distancefieldgenerator \
+    -no-feature-kmap2qmap \
+    -no-feature-pixeltool \
+    -no-feature-qdoc \
+    -no-feature-qtdiag \
+    -no-feature-qtplugininfo \
     \
     # Skip building non-essential categories
     -nomake examples \
@@ -189,7 +200,7 @@ RUN ../sources/configure \
 # -----------------------------------------------------------------------------
 # We explicitly list targets we need – this is faster than building 'all'.
 # Sources and build directories are left behind in this stage and never reach the final image.
-RUN cmake --build . --target qtbase qtsvg --parallel $(nproc) && \
+RUN cmake --build . --target qtbase qtsvg qttools --parallel $(nproc) && \
     cmake --install . --strip
 
 # =============================================================================

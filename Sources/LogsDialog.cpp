@@ -29,7 +29,7 @@ static const int LogTextRows = 24;
 LogsDialog::LogsDialog(QWidget* parent) : QDialog(parent)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setWindowTitle(QString("%1 Logs").arg(PROJECT_TITLE));
+    setWindowTitle(tr("%1 Logs").arg(PROJECT_TITLE));
 
     // QTextEdit is used instead of QPlainTextEdit, since the latter ignores block indents
 
@@ -64,7 +64,7 @@ LogsDialog::LogsDialog(QWidget* parent) : QDialog(parent)
 
     QDialogButtonBox* buttonBox = Metrics::setupDialogLayout(this, contentLayout);
     buttonBox->setStandardButtons(QDialogButtonBox::Close);
-    QPushButton* openFolderButton = buttonBox->addButton("Open Logs Folder", QDialogButtonBox::ActionRole);
+    QPushButton* openFolderButton = buttonBox->addButton(tr("Open Logs Folder"), QDialogButtonBox::ActionRole);
 
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(openFolderButton, &QPushButton::clicked, this, &LogsDialog::openLogsFolder);

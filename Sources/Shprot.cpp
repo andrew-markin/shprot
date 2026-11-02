@@ -29,6 +29,7 @@
 #include "LogsDialog.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
+#include "Translations.h"
 #include "TweakStyle.h"
 #include "Utilities.h"
 #include "Websites.h"
@@ -214,7 +215,7 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_statusAction = m_contextMenu->addAction(QString());
     m_statusAction->setEnabled(false);
 
-    m_tunnelEnabledAction = m_contextMenu->addAction("Enable SSH Proxy Tunnel");
+    m_tunnelEnabledAction = m_contextMenu->addAction(tr("Enable SSH Proxy Tunnel"));
     m_tunnelEnabledAction->setCheckable(true);
     m_tunnelEnabledAction->setChecked(m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool());
 
@@ -232,9 +233,9 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
 
     m_contextMenu->addSeparator();
 
-    m_contextMenu->setDefaultAction(m_contextMenu->addAction("Preferences…", this, &Shprot::openPreferencesDialog));
+    m_contextMenu->setDefaultAction(m_contextMenu->addAction(tr("Preferences…"), this, &Shprot::openPreferencesDialog));
 
-    QAction* showNotificationsAction = m_contextMenu->addAction("Show Notifications");
+    QAction* showNotificationsAction = m_contextMenu->addAction(tr("Show Notifications"));
     showNotificationsAction->setCheckable(true);
     showNotificationsAction->setChecked(m_preferences->value("showNotifications", true).toBool());
 
@@ -243,7 +244,7 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     });
 
     // Autostart entry is always installed, the application started by it exits if this is turned off
-    QAction* startAtLoginAction = m_contextMenu->addAction("Start at Login");
+    QAction* startAtLoginAction = m_contextMenu->addAction(tr("Start at Login"));
     startAtLoginAction->setCheckable(true);
     startAtLoginAction->setChecked(m_preferences->value("startAtLogin", true).toBool());
 
@@ -253,8 +254,8 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
 
     m_contextMenu->addSeparator();
 
-    m_contextMenu->addAction("Show Logs…", this, &Shprot::openLogsDialog);
-    m_contextMenu->addAction(QString("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
+    m_contextMenu->addAction(tr("Show Logs…"), this, &Shprot::openLogsDialog);
+    m_contextMenu->addAction(tr("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
 
     m_contextMenu->addSeparator();
 
@@ -430,7 +431,7 @@ void Shprot::maybeRestartTunnelProcess()
     if (!m_tunnelProcess->waitForStarted(TunnelProcessStartTimeout))
     {
         qWarning() << "Failed to start tunnel process:" << m_tunnelProcess->errorString();
-        setLastError(QString("Unable to start ssh: %1").arg(m_tunnelProcess->errorString()));
+        setLastError(tr("Unable to start ssh: %1").arg(m_tunnelProcess->errorString()));
         m_tunnelTimer->start(TunnelProcessRestartDelaySshMissing);
         return;
     }
@@ -669,7 +670,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             }
             else
             {
-                setLastError("Connected to the server, but websites are not reachable through the tunnel");
+                setLastError(tr("Connected to the server, but websites are not reachable through the tunnel"));
                 scheduleTunnelProcessRestart(false);
             }
         }
@@ -714,14 +715,14 @@ void Shprot::maybeStartHttpProxyServer()
     }
     else
     {
-        httpProxyError = QString("Local HTTP proxy is not available: %1").arg(m_httpProxyServer->errorString());
+        httpProxyError = tr("Local HTTP proxy is not available: %1").arg(m_httpProxyServer->errorString());
     }
 
     // Notify once per new problem, the tunnel itself keeps working
     if (!httpProxyError.isEmpty() && (httpProxyError != m_httpProxyError) &&
         m_preferences->value("showNotifications", true).toBool())
     {
-        m_systemTrayIcon->showMessage("HTTP proxy failed", httpProxyError, QSystemTrayIcon::NoIcon);
+        m_systemTrayIcon->showMessage(tr("HTTP proxy failed"), httpProxyError, QSystemTrayIcon::NoIcon);
     }
 
     m_httpProxyError = httpProxyError;
@@ -788,15 +789,15 @@ void Shprot::maybeUpdateStatus()
 
     if (!tunnelIsEnabled)
     {
-        status = "Tunnel is disabled";
+        status = tr("Tunnel is disabled");
     }
     else if (tunnelIsOpened)
     {
-        status = "Tunnel is open";
+        status = tr("Tunnel is open");
     }
     else
     {
-        status = m_lastError.isEmpty() ? QString("Tunnel is closed") : QString("Tunnel is closed: %1").arg(m_lastError);
+        status = m_lastError.isEmpty() ? tr("Tunnel is closed") : tr("Tunnel is closed: %1").arg(m_lastError);
     }
 
     // Long error descriptions would make the menu too wide
@@ -806,7 +807,7 @@ void Shprot::maybeUpdateStatus()
     // Proxy addresses are offered only while they can be used
     auto updateCopyAction = [tunnelIsOpened](QAction* action, const QString& label, const QString& url) {
         action->setVisible(tunnelIsOpened && !url.isEmpty());
-        action->setText(QString("Copy %1 Proxy Address (%2)").arg(label, url.mid(url.indexOf("://") + 3)));
+        action->setText(tr("Copy %1 Proxy Address (%2)").arg(label, url.mid(url.indexOf("://") + 3)));
     };
 
     updateCopyAction(m_copySocks5ProxyUrlAction, "SOCKS5", m_socks5ProxyUrl);
@@ -829,7 +830,7 @@ void Shprot::maybeUpdateStatus()
 
             if (showNotifications)
             {
-                m_systemTrayIcon->showMessage("Tunnel opened", "You can use your proxy", QSystemTrayIcon::NoIcon);
+                m_systemTrayIcon->showMessage(tr("Tunnel opened"), tr("You can use your proxy"), QSystemTrayIcon::NoIcon);
             }
         }
         else
@@ -839,8 +840,8 @@ void Shprot::maybeUpdateStatus()
 
             if (showNotifications)
             {
-                QString message = m_lastError.isEmpty() ? QString("Proxy is not available") : m_lastError;
-                m_systemTrayIcon->showMessage("Tunnel closed", message, QSystemTrayIcon::NoIcon);
+                QString message = m_lastError.isEmpty() ? tr("Proxy is not available") : m_lastError;
+                m_systemTrayIcon->showMessage(tr("Tunnel closed"), message, QSystemTrayIcon::NoIcon);
             }
         }
 
@@ -854,7 +855,7 @@ void Shprot::maybeUpdateStatus()
 
         if (showNotifications)
         {
-            m_systemTrayIcon->showMessage("Unable to open tunnel", m_lastError, QSystemTrayIcon::NoIcon);
+            m_systemTrayIcon->showMessage(tr("Unable to open tunnel"), m_lastError, QSystemTrayIcon::NoIcon);
         }
     }
 }
@@ -925,6 +926,7 @@ int main(int argc, char* argv[])
     }
 
     QApplication application(argc, argv);
+    Translations::install();
 
     // Check for other instances already running
 

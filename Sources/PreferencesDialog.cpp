@@ -85,16 +85,16 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     : QDialog(parent), m_preferences(preferences)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowFullscreenButtonHint);
-    setWindowTitle(QString("%1 Preferences").arg(PROJECT_TITLE));
+    setWindowTitle(tr("%1 Preferences").arg(PROJECT_TITLE));
 
     // SSH destination and port
 
-    m_sshProxyTunnelCheckBox = new QCheckBox("Enable SSH Proxy Tunnel");
+    m_sshProxyTunnelCheckBox = new QCheckBox(tr("Enable SSH Proxy Tunnel"));
 
-    QLabel* sshDestinationLabel = new QLabel("SSH Destination (e.g. tunnel@myserver.com):");
+    QLabel* sshDestinationLabel = new QLabel(tr("SSH Destination (e.g. tunnel@myserver.com):"));
     sshDestinationLabel->setTextFormat(Qt::PlainText);
 
-    QLabel* sshPortLabel = new QLabel("Port:");
+    QLabel* sshPortLabel = new QLabel(tr("Port:"));
     sshPortLabel->setTextFormat(Qt::PlainText);
 
     m_sshDestinationEdit = new QLineEdit();
@@ -113,9 +113,9 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     // Trust check
 
     m_trustCheckButton = new QToolButton();
-    m_trustCheckButton->setText("Run Trust Check");
+    m_trustCheckButton->setText(tr("Run Trust Check"));
 
-    QLabel* trustCheckLabel = new QLabel("To verify server integrity and credentials (MitM / reinstall risks).");
+    QLabel* trustCheckLabel = new QLabel(tr("To verify server integrity and credentials (MitM / reinstall risks)."));
     trustCheckLabel->setTextFormat(Qt::PlainText);
 
     QHBoxLayout* trustCheckLayout = new QHBoxLayout();
@@ -125,17 +125,17 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     // SSH private key
 
-    QLabel* sshPrivateKeyLabel = new QLabel("SSH Private Key:");
+    QLabel* sshPrivateKeyLabel = new QLabel(tr("SSH Private Key:"));
     sshPrivateKeyLabel->setTextFormat(Qt::PlainText);
 
     QToolButton* generateSshPrivateKeyButton = new QToolButton();
-    generateSshPrivateKeyButton->setText("Generate");
+    generateSshPrivateKeyButton->setText(tr("Generate"));
 
     QToolButton* importSshPrivateKeyButton = new QToolButton();
-    importSshPrivateKeyButton->setText("Import…");
+    importSshPrivateKeyButton->setText(tr("Import…"));
 
     m_copySshPublicKeyButton = new QToolButton();
-    m_copySshPublicKeyButton->setText("Copy Public Key");
+    m_copySshPublicKeyButton->setText(tr("Copy Public Key"));
 
     QHBoxLayout* sshPrivateKeyLabelLayout = new QHBoxLayout();
     sshPrivateKeyLabelLayout->setSpacing(Metrics::groupSpacing());
@@ -148,10 +148,10 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     // Local SOCKS5 proxy
 
-    QLabel* localSocks5ProxyAddressLabel = new QLabel("Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):");
+    QLabel* localSocks5ProxyAddressLabel = new QLabel(tr("Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):"));
     localSocks5ProxyAddressLabel->setTextFormat(Qt::PlainText);
 
-    QLabel* localSocks5ProxyPortLabel = new QLabel("Port:");
+    QLabel* localSocks5ProxyPortLabel = new QLabel(tr("Port:"));
     localSocks5ProxyPortLabel->setTextFormat(Qt::PlainText);
 
     m_localSocks5ProxyHostEdit = new QLineEdit();
@@ -170,12 +170,12 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     // Local HTTP proxy
 
-    m_localHttpProxyCheckBox = new QCheckBox("Enable Local HTTP Proxy");
+    m_localHttpProxyCheckBox = new QCheckBox(tr("Enable Local HTTP Proxy"));
 
-    QLabel* localHttpProxyAddressLabel = new QLabel("Local HTTP Proxy Address (e.g. localhost or 0.0.0.0):");
+    QLabel* localHttpProxyAddressLabel = new QLabel(tr("Local HTTP Proxy Address (e.g. localhost or 0.0.0.0):"));
     localHttpProxyAddressLabel->setTextFormat(Qt::PlainText);
 
-    QLabel* localHttpProxyPortLabel = new QLabel("Port:");
+    QLabel* localHttpProxyPortLabel = new QLabel(tr("Port:"));
     localHttpProxyPortLabel->setTextFormat(Qt::PlainText);
 
     m_localHttpProxyHostEdit = new QLineEdit();
@@ -341,9 +341,9 @@ void PreferencesDialog::accept()
         }
 
         QMessageBox messageBox(this);
-        messageBox.setWindowTitle("Preferences Error");
+        messageBox.setWindowTitle(tr("Preferences Error"));
         messageBox.setTextFormat(Qt::RichText);
-        messageBox.setText(QString("One or more fields are invalid:<br><br>%1")
+        messageBox.setText(tr("One or more fields are invalid:<br><br>%1")
                            .arg(errorLines.join("<br>")));
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.exec();
@@ -378,8 +378,8 @@ void PreferencesDialog::accept()
 
 void PreferencesDialog::reject()
 {
-    if (hasChanges() && (QMessageBox::question(this, "Unsaved Changes",
-                                               "You have unsaved changes. Do you want to exit without saving?",
+    if (hasChanges() && (QMessageBox::question(this, tr("Unsaved Changes"),
+                                               tr("You have unsaved changes. Do you want to exit without saving?"),
                                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::No))
     {
         return;
@@ -487,36 +487,46 @@ bool PreferencesDialog::confirmExposure()
         return enabled && Utilities::hostIsExposed(host) && !wasExposed;
     };
 
-    QStringList exposedProxies;
+    bool socks5ProxyBecomesExposed = becomesExposed(tunnelEnabled, m_localSocks5ProxyHostEdit->text(),
+                                                    savedTunnelEnabled,
+                                                    sshProxyTunnel.value("localSocks5ProxyHost").toString());
 
-    if (becomesExposed(tunnelEnabled, m_localSocks5ProxyHostEdit->text(),
-                       savedTunnelEnabled, sshProxyTunnel.value("localSocks5ProxyHost").toString()))
+    bool httpProxyBecomesExposed = becomesExposed(httpProxyEnabled, m_localHttpProxyHostEdit->text(),
+                                                  savedHttpProxyEnabled,
+                                                  sshProxyTunnel.value("localHttpProxyHost").toString());
+
+    QString socks5ProxyAddress = formatProxyAddress(m_localSocks5ProxyHostEdit, m_localSocks5ProxyPortEdit);
+    QString httpProxyAddress = formatProxyAddress(m_localHttpProxyHostEdit, m_localHttpProxyPortEdit);
+
+    // Whole sentences for each case, so they can be translated naturally
+    QString text;
+
+    if (socks5ProxyBecomesExposed && httpProxyBecomesExposed)
     {
-        exposedProxies.append(QString("SOCKS5 proxy at %1")
-                              .arg(formatProxyAddress(m_localSocks5ProxyHostEdit,
-                                                      m_localSocks5ProxyPortEdit)));
+        text = tr("Local SOCKS5 proxy at %1 and HTTP proxy at %2 will be accessible from other computers "
+                  "without authentication.").arg(socks5ProxyAddress, httpProxyAddress);
     }
-
-    if (becomesExposed(httpProxyEnabled, m_localHttpProxyHostEdit->text(),
-                       savedHttpProxyEnabled, sshProxyTunnel.value("localHttpProxyHost").toString()))
+    else if (socks5ProxyBecomesExposed)
     {
-        exposedProxies.append(QString("HTTP proxy at %1")
-                              .arg(formatProxyAddress(m_localHttpProxyHostEdit,
-                                                      m_localHttpProxyPortEdit)));
+        text = tr("Local SOCKS5 proxy at %1 will be accessible from other computers "
+                  "without authentication.").arg(socks5ProxyAddress);
     }
-
-    if (exposedProxies.isEmpty())
+    else if (httpProxyBecomesExposed)
+    {
+        text = tr("Local HTTP proxy at %1 will be accessible from other computers "
+                  "without authentication.").arg(httpProxyAddress);
+    }
+    else
     {
         return true;
     }
 
     QMessageBox messageBox(this);
-    messageBox.setWindowTitle("Proxy Accessible from Network");
+    messageBox.setWindowTitle(tr("Proxy Accessible from Network"));
     messageBox.setIcon(QMessageBox::Warning);
-    messageBox.setText(QString("Local %1 will be accessible from other computers without authentication.")
-                       .arg(exposedProxies.join(" and ")));
-    messageBox.setInformativeText("Anyone who can reach this address can use your SSH tunnel. "
-                                  "Do you want to save these settings anyway?");
+    messageBox.setText(text);
+    messageBox.setInformativeText(tr("Anyone who can reach this address can use your SSH tunnel. "
+                                     "Do you want to save these settings anyway?"));
     messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
     messageBox.setDefaultButton(QMessageBox::Cancel);
 
@@ -534,7 +544,7 @@ QStringList PreferencesDialog::validateSshDestinationAndPort()
 
     if (!m_sshDestinationEdit->hasAcceptableInput())
     {
-        errors.append("Invalid SSH Destination");
+        errors.append(tr("Invalid SSH Destination"));
         setWidgetHighlighted(m_sshDestinationEdit, true);
     }
 
@@ -542,7 +552,7 @@ QStringList PreferencesDialog::validateSshDestinationAndPort()
 
     if (!m_sshPortEdit->hasAcceptableInput() || !portStringIsAcceptable(m_sshPortEdit->text(), true))
     {
-        errors.append("Invalid SSH Port");
+        errors.append(tr("Invalid SSH Port"));
         setWidgetHighlighted(m_sshPortEdit, true);
     }
 
@@ -572,7 +582,7 @@ QStringList PreferencesDialog::validate()
 
     if (!Utilities::sshPrivateKeyLooksValid(m_sshPrivateKeyEdit->toPlainText()))
     {
-        errors.append("Invalid SSH Private Key");
+        errors.append(tr("Invalid SSH Private Key"));
         setWidgetHighlighted(m_sshPrivateKeyEdit, true);
     }
 
@@ -580,7 +590,7 @@ QStringList PreferencesDialog::validate()
 
     if (!m_localSocks5ProxyHostEdit->hasAcceptableInput())
     {
-        errors.append("Invalid Local SOCKS5 Proxy Host");
+        errors.append(tr("Invalid Local SOCKS5 Proxy Host"));
         setWidgetHighlighted(m_localSocks5ProxyHostEdit, true);
     }
 
@@ -589,7 +599,7 @@ QStringList PreferencesDialog::validate()
     if (!m_localSocks5ProxyPortEdit->hasAcceptableInput() ||
         !portStringIsAcceptable(m_localSocks5ProxyPortEdit->text()))
     {
-        errors.append("Invalid Local SOCKS5 Proxy Port");
+        errors.append(tr("Invalid Local SOCKS5 Proxy Port"));
         setWidgetHighlighted(m_localSocks5ProxyPortEdit, true);
     }
 
@@ -601,7 +611,7 @@ QStringList PreferencesDialog::validate()
 
         if (!m_localHttpProxyHostEdit->hasAcceptableInput())
         {
-            errors.append("Invalid Local HTTP Proxy Host");
+            errors.append(tr("Invalid Local HTTP Proxy Host"));
             setWidgetHighlighted(m_localHttpProxyHostEdit, true);
         }
 
@@ -610,7 +620,7 @@ QStringList PreferencesDialog::validate()
         if (!m_localHttpProxyPortEdit->hasAcceptableInput() ||
             !portStringIsAcceptable(m_localHttpProxyPortEdit->text()))
         {
-            errors.append("Invalid Local HTTP Proxy Port");
+            errors.append(tr("Invalid Local HTTP Proxy Port"));
             setWidgetHighlighted(m_localHttpProxyPortEdit, true);
         }
     }
@@ -624,7 +634,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
 
     if (!errors.isEmpty())
     {
-        QMessageBox::warning(this, "Trust Check Error", "Invalid SSH Destination or Port", QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Trust Check Error"), tr("Invalid SSH Destination or Port"), QMessageBox::Ok);
         return false;
     }
 
@@ -642,7 +652,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
 
     if (!missingSshMessage.isEmpty())
     {
-        QMessageBox::warning(this, "Trust Check Error", missingSshMessage, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Trust Check Error"), missingSshMessage, QMessageBox::Ok);
         return false;
     }
 
@@ -651,7 +661,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
 
     if (probeHostRecord.isEmpty())
     {
-        QMessageBox::warning(this, "Trust Check Error", "Host probe failed", QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Trust Check Error"), tr("Host probe failed"), QMessageBox::Ok);
         return false;
     }
 
@@ -661,15 +671,15 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
     {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
-        messageBox.setWindowTitle("Unknown Server Identity");
+        messageBox.setWindowTitle(tr("Unknown Server Identity"));
         messageBox.setTextFormat(Qt::RichText);
         messageBox.setText(
-                    QString("The authenticity of host <b>%1</b> can't be established.<br><br>"
-                            "%2 key fingerprint is:<br><nobr>SHA256:%3.</nobr>")
+                    tr("The authenticity of host <b>%1</b> can't be established.<br><br>"
+                       "%2 key fingerprint is:<br><nobr>SHA256:%3.</nobr>")
                     .arg(address)
                     .arg(Utilities::getKeyTypeLabel(probeKeyType))
                     .arg(probeKeyFingerprint));
-        messageBox.setInformativeText("Are you sure you want to continue connecting and trust this server?");
+        messageBox.setInformativeText(tr("Are you sure you want to continue connecting and trust this server?"));
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         messageBox.setDefaultButton(QMessageBox::No);
         messageBox.setEscapeButton(QMessageBox::No);
@@ -689,23 +699,23 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
     {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
-        messageBox.setWindowTitle("Remote Host Identification Has Changed");
+        messageBox.setWindowTitle(tr("Remote Host Identification Has Changed"));
         messageBox.setTextFormat(Qt::RichText);
         messageBox.setText(
-                    QString("The server key fingerprint for <b>%1</b> does not match the previously saved value. "
-                            "This could mean someone is intercepting your connection (Man-in-the-Middle attack) "
-                            "or the server administrator just reinstalled the OS.<br><br>"
-                            "Saved %2 key fingerprint is:<br><nobr>SHA256:%3.</nobr><br><br>"
-                            "Received %4 key fingerprint is:<br><nobr>SHA256:%5.</nobr>")
+                    tr("The server key fingerprint for <b>%1</b> does not match the previously saved value. "
+                       "This could mean someone is intercepting your connection (Man-in-the-Middle attack) "
+                       "or the server administrator just reinstalled the OS.<br><br>"
+                       "Saved %2 key fingerprint is:<br><nobr>SHA256:%3.</nobr><br><br>"
+                       "Received %4 key fingerprint is:<br><nobr>SHA256:%5.</nobr>")
                     .arg(address)
                     .arg(Utilities::getKeyTypeLabel(knownKeyType))
                     .arg(knowKeyFingerprint)
                     .arg(Utilities::getKeyTypeLabel(probeKeyType))
                     .arg(probeKeyFingerprint));
-        messageBox.setInformativeText("If you are certain this change is legitimate, you can update the trusted key.");
+        messageBox.setInformativeText(tr("If you are certain this change is legitimate, you can update the trusted key."));
         messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
         QAbstractButton* saveButton = messageBox.button(QMessageBox::Save);
-        saveButton->setText("Update Key and Trust");
+        saveButton->setText(tr("Update Key and Trust"));
         saveButton->setMinimumWidth(Metrics::scaled(140));
         messageBox.setDefaultButton(QMessageBox::Cancel);
         messageBox.setEscapeButton(QMessageBox::Cancel);
@@ -719,7 +729,8 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         return false;
     }
 
-    QMessageBox::information(this, "Trust Check Succeeded", "Server identity verified successfully.", QMessageBox::Ok);
+    QMessageBox::information(this, tr("Trust Check Succeeded"), tr("Server identity verified successfully."),
+                             QMessageBox::Ok);
     return true;
 }
 
@@ -728,7 +739,7 @@ void PreferencesDialog::handleTrustCheckButtonClick()
     QToolButton* button = m_trustCheckButton;
     QString buttonSavedText = button->text();
     button->setMinimumWidth(button->width());
-    button->setText("Checking Trust");
+    button->setText(tr("Checking Trust"));
     button->setEnabled(false);
 
     QTimer::singleShot(50, this, [this, button, buttonSavedText]() {
@@ -745,7 +756,7 @@ void PreferencesDialog::generateSshPrivateKey()
 
     if (!missingSshKeygenMessage.isEmpty())
     {
-        QMessageBox::warning(this, "SSH Private Key Generation Error", missingSshKeygenMessage, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("SSH Private Key Generation Error"), missingSshKeygenMessage, QMessageBox::Ok);
         return;
     }
 
@@ -757,7 +768,7 @@ void PreferencesDialog::importSshPrivateKey()
 {
     QFileDialog fileDialog(this);
 
-    fileDialog.setWindowTitle("Open SSH Private Key");
+    fileDialog.setWindowTitle(tr("Open SSH Private Key"));
     fileDialog.setFileMode(QFileDialog::ExistingFile);
 
     fileDialog.setDirectory(m_preferences->value("sshPrivateKeyImportDirectory", QDir::homePath()).toString());
@@ -784,8 +795,8 @@ void PreferencesDialog::importSshPrivateKey()
     }
 
     QMessageBox messageBox;
-    messageBox.setWindowTitle("SSH Private Key Import Error");
-    messageBox.setText("Invalid SSH Private Key file");
+    messageBox.setWindowTitle(tr("SSH Private Key Import Error"));
+    messageBox.setText(tr("Invalid SSH Private Key file"));
     messageBox.setIcon(QMessageBox::Critical);
     messageBox.exec();
 }
@@ -796,7 +807,7 @@ void PreferencesDialog::copySshPublicKey()
 
     if (!missingSshKeygenMessage.isEmpty())
     {
-        QMessageBox::warning(this, "SSH Public Key Error", missingSshKeygenMessage, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("SSH Public Key Error"), missingSshKeygenMessage, QMessageBox::Ok);
         return;
     }
 
@@ -807,7 +818,7 @@ void PreferencesDialog::copySshPublicKey()
     QToolButton* button = m_copySshPublicKeyButton;
     button->setMinimumWidth(button->width());
     QString buttonSavedText = button->text();
-    button->setText("Key Copied!");
+    button->setText(tr("Key Copied!"));
     button->setEnabled(false);
 
     QTimer::singleShot(1000, this, [button, buttonSavedText]() {

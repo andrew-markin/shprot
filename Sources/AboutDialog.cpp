@@ -24,6 +24,11 @@ static const int IconSize = 64;
 static const int LicenseTextColumns = 80; // License texts are formatted to fit 80 columns
 static const int LicenseTextRows = 18;
 
+// Project description comes from CMake, but lupdate doesn't expand macros, so the text is repeated here
+// to be translated. Translation lookup falls back to the original text if the two ever differ.
+[[maybe_unused]] static const char* const ProjectDescription =
+    QT_TRANSLATE_NOOP("AboutDialog", "A lightweight GUI wrapper to manage a resilient proxy over SSH tunnel.");
+
 QString readResource(const QString& path)
 {
     QFile file(path);
@@ -47,6 +52,7 @@ QString getQtNotice()
     QString qtVersion = QT_VERSION_STR;
     QString qtMinorVersion = qtVersion.section('.', 0, 1);
 
+    // Legal notice stays in English, as the license texts do
     return QString("%1 uses the Qt framework, version %2, licensed under the GNU Lesser General Public "
                    "License version 3 (LGPLv3). The text of the license is given below.\n\n"
                    "Qt is a trademark of The Qt Company Ltd. Copyright (C) The Qt Company Ltd. "
@@ -66,7 +72,7 @@ QString getQtNotice()
 AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowFullscreenButtonHint);
-    setWindowTitle(QString("About %1").arg(PROJECT_TITLE));
+    setWindowTitle(tr("About %1").arg(PROJECT_TITLE));
 
     QLabel* iconLabel = new QLabel();
     int iconSize = Metrics::scaled(IconSize);
@@ -79,14 +85,14 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     titleFont.setBold(true);
     titleLabel->setFont(titleFont);
 
-    QLabel* versionLabel = new QLabel(QString("Version %1, built on %2 with Qt %3")
+    QLabel* versionLabel = new QLabel(tr("Version %1, built on %2 with Qt %3")
                                       .arg(PROJECT_VERSION, formatBuildTimestamp(), QT_VERSION_STR));
     versionLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
-    QLabel* infoLabel = new QLabel(QString("%1<br><br><a href='%2'>GitHub repository</a>,&nbsp;"
-                                           "<a href='%3'>LinkedIn profile</a><br><br>%4<br>"
-                                           "Distributed under the GNU General Public License version 3.")
-                                   .arg(PROJECT_DESCRIPTION)
+    QLabel* infoLabel = new QLabel(tr("%1<br><br><a href='%2'>GitHub repository</a>,&nbsp;"
+                                      "<a href='%3'>LinkedIn profile</a><br><br>%4<br>"
+                                      "Distributed under the GNU General Public License version 3.")
+                                   .arg(tr(PROJECT_DESCRIPTION))
                                    .arg(PROJECT_GITHUB_REPOSITORY)
                                    .arg(PROJECT_LINKEDIN_PROFILE)
                                    .arg(PROJECT_COPYRIGHT));
@@ -115,9 +121,9 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     m_tabWidget = new QTabWidget();
     m_tabWidget->setDocumentMode(true);
 
-    QPlainTextEdit* licenseEdit = addLicenseTab("License", readResource(":/Licenses/GPL-3.txt"));
+    QPlainTextEdit* licenseEdit = addLicenseTab(tr("License"), readResource(":/Licenses/GPL-3.txt"));
     addLicenseTab("Qt", getQtNotice());
-    addLicenseTab("Third-Party Notices", readResource(":/Licenses/ThirdParty.txt"));
+    addLicenseTab(tr("Third-Party Notices"), readResource(":/Licenses/ThirdParty.txt"));
 
     QVBoxLayout* contentLayout = new QVBoxLayout();
     contentLayout->addLayout(headerLayout);
@@ -125,7 +131,7 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
 
     QDialogButtonBox* buttonBox = Metrics::setupDialogLayout(this, contentLayout);
     buttonBox->setStandardButtons(QDialogButtonBox::Close);
-    QPushButton* aboutQtButton = buttonBox->addButton("About Qt…", QDialogButtonBox::HelpRole);
+    QPushButton* aboutQtButton = buttonBox->addButton(tr("About Qt…"), QDialogButtonBox::HelpRole);
 
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(aboutQtButton, &QPushButton::clicked, this, [this]() { QMessageBox::aboutQt(this); });

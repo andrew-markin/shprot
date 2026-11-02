@@ -1,5 +1,6 @@
 #include "Utilities.h"
 
+#include <QCoreApplication>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QDir>
@@ -47,11 +48,11 @@ QString getMissingSshToolMessage(const QString& tool)
     }
 
 #ifdef Q_OS_WIN
-    return QString("OpenSSH client (%1) is not installed. Install \"OpenSSH Client\" "
-                   "in Windows Settings, Optional features.").arg(tool);
+    return QCoreApplication::translate("Utilities", "OpenSSH client (%1) is not installed. Install \"OpenSSH Client\" "
+                                       "in Windows Settings, Optional features.").arg(tool);
 #else
-    return QString("OpenSSH client (%1) is not installed. "
-                   "Install the OpenSSH client package (e.g. openssh-client).").arg(tool);
+    return QCoreApplication::translate("Utilities", "OpenSSH client (%1) is not installed. "
+                                       "Install the OpenSSH client package (e.g. openssh-client).").arg(tool);
 #endif
 }
 
@@ -437,18 +438,21 @@ QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
 
 QString describeSshError(const QByteArray& errorOutput)
 {
-    static const QList<QPair<QStringList, QString>> KnownErrors = {
+    static const QList<QPair<QStringList, const char*>> KnownErrors = {
         {{"Permission denied (", "Too many authentication failures"},
-         "Authentication failed: the server rejected the private key"},
+         QT_TRANSLATE_NOOP("Utilities", "Authentication failed: the server rejected the private key")},
         {{"Host key verification failed", "REMOTE HOST IDENTIFICATION HAS CHANGED"},
-         "Server identity verification failed, run Trust Check in Preferences"},
-        {{"Could not resolve hostname"}, "Unable to resolve the server address"},
-        {{"Connection refused"}, "Connection refused by the server"},
-        {{"Connection timed out", "Operation timed out"}, "Connection to the server timed out"},
-        {{"Network is unreachable", "No route to host"}, "Server is unreachable"},
-        {{"Address already in use", "cannot listen to port"}, "Local SOCKS5 proxy port is already in use"},
-        {{"Timeout, server"}, "Server stopped responding"},
-        {{"closed by remote host", "Connection reset", "Broken pipe"}, "Connection was closed by the server"}
+         QT_TRANSLATE_NOOP("Utilities", "Server identity verification failed, run Trust Check in Preferences")},
+        {{"Could not resolve hostname"}, QT_TRANSLATE_NOOP("Utilities", "Unable to resolve the server address")},
+        {{"Connection refused"}, QT_TRANSLATE_NOOP("Utilities", "Connection refused by the server")},
+        {{"Connection timed out", "Operation timed out"},
+         QT_TRANSLATE_NOOP("Utilities", "Connection to the server timed out")},
+        {{"Network is unreachable", "No route to host"}, QT_TRANSLATE_NOOP("Utilities", "Server is unreachable")},
+        {{"Address already in use", "cannot listen to port"},
+         QT_TRANSLATE_NOOP("Utilities", "Local SOCKS5 proxy port is already in use")},
+        {{"Timeout, server"}, QT_TRANSLATE_NOOP("Utilities", "Server stopped responding")},
+        {{"closed by remote host", "Connection reset", "Broken pipe"},
+         QT_TRANSLATE_NOOP("Utilities", "Connection was closed by the server")}
     };
 
     QString output = QString::fromUtf8(errorOutput);
@@ -459,7 +463,7 @@ QString describeSshError(const QByteArray& errorOutput)
         {
             if (output.contains(pattern, Qt::CaseInsensitive))
             {
-                return description;
+                return QCoreApplication::translate("Utilities", description);
             }
         }
     }

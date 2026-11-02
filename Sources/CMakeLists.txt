@@ -55,7 +55,7 @@ target_compile_definitions(
 
 # Find required Qt libraries
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Network)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Network LinguistTools)
 
 if(LINUX)
     find_package(Qt6 REQUIRED COMPONENTS DBus)
@@ -95,6 +95,8 @@ add_executable(
     Resources.qrc
     Shprot.cpp
     Shprot.h
+    Translations.cpp
+    Translations.h
     TweakStyle.cpp
     TweakStyle.h
     Utilities.cpp
@@ -183,6 +185,42 @@ elseif(LINUX)
         -static-libstdc++
     )
 endif()
+
+# Translations are compiled into resources, the language is chosen by the system UI language.
+# Run "cmake --build . --target update_translations" to update .ts files after texts are changed.
+
+set(
+    TRANSLATION_LANGUAGES
+    ar az be bg bn ca cs da de el es et fa fi fr he hi hr hu hy id it ja ka kk
+    ko lt lv ms nb nl pl pt_BR pt_PT ro ru sk sl sq sr sv th tr uk ur uz vi zh_CN zh_TW
+)
+
+set(TRANSLATION_TS_FILES)
+
+foreach(TRANSLATION_LANGUAGE ${TRANSLATION_LANGUAGES})
+    list(APPEND TRANSLATION_TS_FILES "Translations/${PROJECT_NAME}_${TRANSLATION_LANGUAGE}.ts")
+endforeach()
+
+# Texts are written in English, so the English file has no translations. It makes English
+# preferred over other languages that the user also has in the list of UI languages.
+qt_add_translations(
+    Shprot
+    TS_FILES ${TRANSLATION_TS_FILES}
+    PLURALS_TS_FILE "Translations/${PROJECT_NAME}_en.ts"
+    QM_FILES_OUTPUT_VARIABLE TRANSLATION_QM_FILES
+    LUPDATE_OPTIONS -no-obsolete -locations none
+    LRELEASE_OPTIONS -nounfinished -removeidentical
+)
+
+# Compiled translations shrink about three times, but rcc compresses only files that shrink
+# more than that by default, so the threshold is lowered
+qt_add_resources(
+    Shprot "Translations"
+    PREFIX "/Translations"
+    BASE "${CMAKE_CURRENT_BINARY_DIR}"
+    FILES ${TRANSLATION_QM_FILES}
+    OPTIONS -threshold 50
+)
 
 # Unit tests are optional and not a part of release packages
 

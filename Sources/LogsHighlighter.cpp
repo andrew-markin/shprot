@@ -1,18 +1,19 @@
 #include "LogsHighlighter.h"
 
 #include <QDate>
+#include <QLocale>
 
 LogsHighlighter::LogsHighlighter(QTextDocument* parent) : QSyntaxHighlighter(parent)
 {
     m_dateFormat.setFontWeight(QFont::Bold);
     m_timeFormat.setFontWeight(QFont::Bold);
-    m_dateRegEx.setPattern(R"(^\d\d\d\d-\d\d-\d\d, \w+$)");
+    m_dateRegEx.setPattern(R"(^\d\d\d\d-\d\d-\d\d, .+$)");
     m_timeRegEx.setPattern(R"(^\[\d\d:\d\d:\d\d\.\d\d\d\])");
 }
 
 QString LogsHighlighter::dateSeparator(const QDate& date)
 {
-    return date.toString("yyyy-MM-dd, dddd");
+    return QString("%1, %2").arg(date.toString("yyyy-MM-dd"), QLocale().dayName(date.dayOfWeek()));
 }
 
 void LogsHighlighter::highlightBlock(const QString& text)
