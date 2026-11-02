@@ -16,6 +16,8 @@
 #include <QTabWidget>
 #include <QVBoxLayout>
 
+#include "Metrics.h"
+
 namespace {
 
 static const int IconSize = 64;
@@ -67,7 +69,8 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     setWindowTitle(QString("About %1").arg(PROJECT_TITLE));
 
     QLabel* iconLabel = new QLabel();
-    iconLabel->setPixmap(QIcon(":/Shprot.svg").pixmap(IconSize, IconSize));
+    int iconSize = Metrics::scaled(IconSize);
+    iconLabel->setPixmap(QIcon(":/Shprot.svg").pixmap(iconSize, iconSize));
     iconLabel->setAlignment(Qt::AlignTop);
 
     QLabel* titleLabel = new QLabel(PROJECT_TITLE);
@@ -92,20 +95,20 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     infoLabel->setOpenExternalLinks(true);
     infoLabel->setWordWrap(true);
 
-    // Title and version go together, other spacings and margins follow Preferences dialog
+    // Title and version go together
 
     QVBoxLayout* headerTitleLayout = new QVBoxLayout();
-    headerTitleLayout->setSpacing(2);
+    headerTitleLayout->setSpacing(Metrics::titleSpacing());
     headerTitleLayout->addWidget(titleLabel);
     headerTitleLayout->addWidget(versionLabel);
 
     QVBoxLayout* headerTextLayout = new QVBoxLayout();
-    headerTextLayout->setSpacing(10);
+    headerTextLayout->setSpacing(Metrics::groupSpacing());
     headerTextLayout->addLayout(headerTitleLayout);
     headerTextLayout->addWidget(infoLabel);
 
     QHBoxLayout* headerLayout = new QHBoxLayout();
-    headerLayout->setSpacing(12);
+    headerLayout->setSpacing(Metrics::dialogSpacing());
     headerLayout->addWidget(iconLabel, 0, Qt::AlignTop);
     headerLayout->addLayout(headerTextLayout, 1);
 
@@ -116,30 +119,16 @@ AboutDialog::AboutDialog(QWidget* parent) : QDialog(parent)
     addLicenseTab("Qt", getQtNotice());
     addLicenseTab("Third-Party Notices", readResource(":/Licenses/ThirdParty.txt"));
 
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Close);
+    QVBoxLayout* contentLayout = new QVBoxLayout();
+    contentLayout->addLayout(headerLayout);
+    contentLayout->addWidget(m_tabWidget, 1);
+
+    QDialogButtonBox* buttonBox = Metrics::setupDialogLayout(this, contentLayout);
+    buttonBox->setStandardButtons(QDialogButtonBox::Close);
     QPushButton* aboutQtButton = buttonBox->addButton("About Qt…", QDialogButtonBox::HelpRole);
 
     connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(aboutQtButton, &QPushButton::clicked, this, [this]() { QMessageBox::aboutQt(this); });
-
-    QWidget* topWidget = new QWidget();
-    QVBoxLayout* topWidgetLayout = new QVBoxLayout(topWidget);
-    topWidgetLayout->setSpacing(12);
-    topWidgetLayout->setContentsMargins(12, 12, 12, 24);
-    topWidgetLayout->addLayout(headerLayout);
-    topWidgetLayout->addWidget(m_tabWidget, 1);
-
-    QWidget* bottomWidget = new QWidget();
-    QHBoxLayout* bottomWidgetLayout = new QHBoxLayout(bottomWidget);
-    bottomWidgetLayout->setSpacing(12);
-    bottomWidgetLayout->setContentsMargins(12, 0, 12, 12);
-    bottomWidgetLayout->addWidget(buttonBox);
-
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->setSpacing(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(topWidget, 1);
-    layout->addWidget(bottomWidget);
 
     // Width is chosen to fit license texts without wrapping, height follows the content above them
 

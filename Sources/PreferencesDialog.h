@@ -3,22 +3,19 @@
 
 #include <QDialog>
 
-namespace Ui
-{
-    class PreferencesDialog;
-}
-
 class Preferences;
+class PrivateKeyTextEdit;
+class QCheckBox;
 class QLineEdit;
 class QPlainTextEdit;
+class QToolButton;
 
 class PreferencesDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PreferencesDialog(Preferences* preferences, QWidget* parent = 0);
-    ~PreferencesDialog();
+    explicit PreferencesDialog(Preferences* preferences, QWidget* parent = nullptr);
 
 public slots:
     void open();
@@ -53,9 +50,20 @@ private slots:
     void copySshPublicKey();
 
 private:
-    Ui::PreferencesDialog* m_ui;
     Preferences* m_preferences;
     QPalette m_highlightPalette;
+
+    QCheckBox* m_sshProxyTunnelCheckBox;
+    QLineEdit* m_sshDestinationEdit;
+    QLineEdit* m_sshPortEdit;
+    QToolButton* m_trustCheckButton;
+    QToolButton* m_copySshPublicKeyButton;
+    PrivateKeyTextEdit* m_sshPrivateKeyEdit;
+    QLineEdit* m_localSocks5ProxyHostEdit;
+    QLineEdit* m_localSocks5ProxyPortEdit;
+    QCheckBox* m_localHttpProxyCheckBox;
+    QLineEdit* m_localHttpProxyHostEdit;
+    QLineEdit* m_localHttpProxyPortEdit;
 };
 
 #endif // PREFERENCESDIALOG_H

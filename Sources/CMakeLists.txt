@@ -26,7 +26,6 @@ set(PROJECT_HOME_URL "${PROJECT_GITHUB_REPOSITORY}")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake")
 
-set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
@@ -79,11 +78,12 @@ add_executable(
     HttpProxyServer.h
     HttpProxyStream.cpp
     HttpProxyStream.h
+    Metrics.cpp
+    Metrics.h
     Preferences.cpp
     Preferences.h
     PreferencesDialog.cpp
     PreferencesDialog.h
-    PreferencesDialog.ui
     PrivateKeyHighlighter.cpp
     PrivateKeyHighlighter.h
     PrivateKeyTextEdit.cpp

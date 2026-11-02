@@ -1,19 +1,28 @@
 #include "PreferencesDialog.h"
-#include "ui_PreferencesDialog.h"
 
+#include <QCheckBox>
 #include <QClipboard>
 #include <QDebug>
+#include <QDialogButtonBox>
 #include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
 #include <QStringList>
 #include <QTimer>
+#include <QToolButton>
+#include <QVBoxLayout>
 
+#include "Metrics.h"
 #include "Preferences.h"
+#include "PrivateKeyTextEdit.h"
 #include "Utilities.h"
 #include "Websites.h"
 
@@ -73,11 +82,160 @@ QString formatProxyAddress(const QLineEdit* hostEdit, const QLineEdit* portEdit)
 } // namespace
 
 PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
-    : QDialog(parent), m_ui(new Ui::PreferencesDialog), m_preferences(preferences)
+    : QDialog(parent), m_preferences(preferences)
 {
-    m_ui->setupUi(this);
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint & ~Qt::WindowFullscreenButtonHint);
     setWindowTitle(QString("%1 Preferences").arg(PROJECT_TITLE));
+
+    // SSH destination and port
+
+    m_sshProxyTunnelCheckBox = new QCheckBox("Enable SSH Proxy Tunnel");
+
+    QLabel* sshDestinationLabel = new QLabel("SSH Destination (e.g. tunnel@myserver.com):");
+    sshDestinationLabel->setTextFormat(Qt::PlainText);
+
+    QLabel* sshPortLabel = new QLabel("Port:");
+    sshPortLabel->setTextFormat(Qt::PlainText);
+
+    m_sshDestinationEdit = new QLineEdit();
+
+    m_sshPortEdit = new QLineEdit();
+    m_sshPortEdit->setPlaceholderText("22");
+
+    QGridLayout* sshDestinationAndPortLayout = new QGridLayout();
+    sshDestinationAndPortLayout->setSpacing(Metrics::groupSpacing());
+    sshDestinationAndPortLayout->setColumnStretch(0, 1);
+    sshDestinationAndPortLayout->addWidget(sshDestinationLabel, 0, 0);
+    sshDestinationAndPortLayout->addWidget(sshPortLabel, 0, 1);
+    sshDestinationAndPortLayout->addWidget(m_sshDestinationEdit, 1, 0);
+    sshDestinationAndPortLayout->addWidget(m_sshPortEdit, 1, 1);
+
+    // Trust check
+
+    m_trustCheckButton = new QToolButton();
+    m_trustCheckButton->setText("Run Trust Check");
+
+    QLabel* trustCheckLabel = new QLabel("To verify server integrity and credentials (MitM / reinstall risks).");
+    trustCheckLabel->setTextFormat(Qt::PlainText);
+
+    QHBoxLayout* trustCheckLayout = new QHBoxLayout();
+    trustCheckLayout->setSpacing(Metrics::groupSpacing());
+    trustCheckLayout->addWidget(m_trustCheckButton);
+    trustCheckLayout->addWidget(trustCheckLabel);
+
+    // SSH private key
+
+    QLabel* sshPrivateKeyLabel = new QLabel("SSH Private Key:");
+    sshPrivateKeyLabel->setTextFormat(Qt::PlainText);
+
+    QToolButton* generateSshPrivateKeyButton = new QToolButton();
+    generateSshPrivateKeyButton->setText("Generate");
+
+    QToolButton* importSshPrivateKeyButton = new QToolButton();
+    importSshPrivateKeyButton->setText("Import…");
+
+    m_copySshPublicKeyButton = new QToolButton();
+    m_copySshPublicKeyButton->setText("Copy Public Key");
+
+    QHBoxLayout* sshPrivateKeyLabelLayout = new QHBoxLayout();
+    sshPrivateKeyLabelLayout->setSpacing(Metrics::groupSpacing());
+    sshPrivateKeyLabelLayout->addWidget(sshPrivateKeyLabel);
+    sshPrivateKeyLabelLayout->addWidget(generateSshPrivateKeyButton);
+    sshPrivateKeyLabelLayout->addWidget(importSshPrivateKeyButton);
+    sshPrivateKeyLabelLayout->addWidget(m_copySshPublicKeyButton);
+
+    m_sshPrivateKeyEdit = new PrivateKeyTextEdit();
+
+    // Local SOCKS5 proxy
+
+    QLabel* localSocks5ProxyAddressLabel = new QLabel("Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):");
+    localSocks5ProxyAddressLabel->setTextFormat(Qt::PlainText);
+
+    QLabel* localSocks5ProxyPortLabel = new QLabel("Port:");
+    localSocks5ProxyPortLabel->setTextFormat(Qt::PlainText);
+
+    m_localSocks5ProxyHostEdit = new QLineEdit();
+    m_localSocks5ProxyHostEdit->setPlaceholderText("localhost");
+
+    m_localSocks5ProxyPortEdit = new QLineEdit();
+    m_localSocks5ProxyPortEdit->setPlaceholderText("1080");
+
+    QGridLayout* localSocks5ProxyAddressLayout = new QGridLayout();
+    localSocks5ProxyAddressLayout->setSpacing(Metrics::groupSpacing());
+    localSocks5ProxyAddressLayout->setColumnStretch(0, 1);
+    localSocks5ProxyAddressLayout->addWidget(localSocks5ProxyAddressLabel, 0, 0);
+    localSocks5ProxyAddressLayout->addWidget(localSocks5ProxyPortLabel, 0, 1);
+    localSocks5ProxyAddressLayout->addWidget(m_localSocks5ProxyHostEdit, 1, 0);
+    localSocks5ProxyAddressLayout->addWidget(m_localSocks5ProxyPortEdit, 1, 1);
+
+    // Local HTTP proxy
+
+    m_localHttpProxyCheckBox = new QCheckBox("Enable Local HTTP Proxy");
+
+    QLabel* localHttpProxyAddressLabel = new QLabel("Local HTTP Proxy Address (e.g. localhost or 0.0.0.0):");
+    localHttpProxyAddressLabel->setTextFormat(Qt::PlainText);
+
+    QLabel* localHttpProxyPortLabel = new QLabel("Port:");
+    localHttpProxyPortLabel->setTextFormat(Qt::PlainText);
+
+    m_localHttpProxyHostEdit = new QLineEdit();
+    m_localHttpProxyHostEdit->setPlaceholderText("localhost");
+
+    m_localHttpProxyPortEdit = new QLineEdit();
+    m_localHttpProxyPortEdit->setPlaceholderText("8080");
+
+    QWidget* localHttpProxyAddressWidget = new QWidget();
+    localHttpProxyAddressWidget->setEnabled(false);
+
+    QGridLayout* localHttpProxyAddressLayout = new QGridLayout(localHttpProxyAddressWidget);
+    localHttpProxyAddressLayout->setSpacing(Metrics::groupSpacing());
+    localHttpProxyAddressLayout->setContentsMargins(0, 0, 0, 0);
+    localHttpProxyAddressLayout->setColumnStretch(0, 1);
+    localHttpProxyAddressLayout->addWidget(localHttpProxyAddressLabel, 0, 0);
+    localHttpProxyAddressLayout->addWidget(localHttpProxyPortLabel, 0, 1);
+    localHttpProxyAddressLayout->addWidget(m_localHttpProxyHostEdit, 1, 0);
+    localHttpProxyAddressLayout->addWidget(m_localHttpProxyPortEdit, 1, 1);
+
+    // Everything below the tunnel check box is enabled with it, groups are separated by extra spacing
+
+    QWidget* sshProxyTunnelWidget = new QWidget();
+    sshProxyTunnelWidget->setEnabled(false);
+
+    QVBoxLayout* sshProxyTunnelWidgetLayout = new QVBoxLayout(sshProxyTunnelWidget);
+    sshProxyTunnelWidgetLayout->setSpacing(Metrics::groupSpacing());
+    sshProxyTunnelWidgetLayout->setContentsMargins(0, 0, 0, 0);
+    sshProxyTunnelWidgetLayout->addLayout(sshDestinationAndPortLayout);
+    sshProxyTunnelWidgetLayout->addLayout(trustCheckLayout);
+    sshProxyTunnelWidgetLayout->addSpacing(Metrics::groupSpacing());
+    sshProxyTunnelWidgetLayout->addLayout(sshPrivateKeyLabelLayout);
+    sshProxyTunnelWidgetLayout->addWidget(m_sshPrivateKeyEdit);
+    sshProxyTunnelWidgetLayout->addSpacing(Metrics::groupSpacing());
+    sshProxyTunnelWidgetLayout->addLayout(localSocks5ProxyAddressLayout);
+    sshProxyTunnelWidgetLayout->addSpacing(Metrics::groupSpacing());
+    sshProxyTunnelWidgetLayout->addWidget(m_localHttpProxyCheckBox);
+    sshProxyTunnelWidgetLayout->addWidget(localHttpProxyAddressWidget);
+
+    QVBoxLayout* contentLayout = new QVBoxLayout();
+    contentLayout->addWidget(m_sshProxyTunnelCheckBox);
+    contentLayout->addWidget(sshProxyTunnelWidget);
+
+    QDialogButtonBox* buttonBox = Metrics::setupDialogLayout(this, contentLayout);
+    buttonBox->setStandardButtons(QDialogButtonBox::Cancel | QDialogButtonBox::Reset | QDialogButtonBox::Save);
+
+    // Tab order follows visual order, not the order in which widgets were created and placed
+
+    QList<QWidget*> tabOrder = {m_sshProxyTunnelCheckBox, m_sshDestinationEdit, m_sshPortEdit,
+                                m_trustCheckButton, generateSshPrivateKeyButton, importSshPrivateKeyButton,
+                                m_copySshPublicKeyButton, m_sshPrivateKeyEdit, m_localSocks5ProxyHostEdit,
+                                m_localSocks5ProxyPortEdit, m_localHttpProxyCheckBox, m_localHttpProxyHostEdit,
+                                m_localHttpProxyPortEdit};
+
+    for (int i = 1; i < tabOrder.size(); i++)
+    {
+        setTabOrder(tabOrder[i - 1], tabOrder[i]);
+    }
+
+    resize(sizeHint());
 
     if (m_preferences->hasValue("preferencesDialogGeometry"))
     {
@@ -110,57 +268,48 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     // Setup controls
 
-    connect(m_ui->sshProxyTunnelCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
-        m_ui->sshProxyTunnelWidget->setEnabled(checked);
-    });
+    connect(m_sshProxyTunnelCheckBox, &QCheckBox::toggled, sshProxyTunnelWidget, &QWidget::setEnabled);
 
     static const QRegularExpression SshDestinationRegEx(R"(^[a-zA-Z0-9._-]+\@[a-zA-Z0-9.-]+$)");
     QRegularExpressionValidator* sshDestinationValidator = new QRegularExpressionValidator(SshDestinationRegEx, this);
-    m_ui->sshDestinationEdit->setValidator(sshDestinationValidator);
-    connectHighlightReset(m_ui->sshDestinationEdit);
+    m_sshDestinationEdit->setValidator(sshDestinationValidator);
+    connectHighlightReset(m_sshDestinationEdit);
 
     static const QRegularExpression PortRegEx(R"(^([0-9]{0,5})$)");
     QRegularExpressionValidator* portValidator = new QRegularExpressionValidator(PortRegEx, this);
 
-    m_ui->sshPortEdit->setValidator(portValidator);
-    connectHighlightReset(m_ui->sshPortEdit);
+    m_sshPortEdit->setValidator(portValidator);
+    connectHighlightReset(m_sshPortEdit);
 
-    connectHighlightReset(m_ui->sshPrivateKeyEdit);
+    connectHighlightReset(m_sshPrivateKeyEdit);
 
     static const QRegularExpression HostRegEx(R"(^(\[[0-9a-fA-F:]+\]|[a-zA-Z0-9.-]*)$)");
     QRegularExpressionValidator* hostValidator = new QRegularExpressionValidator(HostRegEx, this);
 
-    m_ui->localSocks5ProxyHostEdit->setValidator(hostValidator);
-    connectHighlightReset(m_ui->localSocks5ProxyHostEdit);
+    m_localSocks5ProxyHostEdit->setValidator(hostValidator);
+    connectHighlightReset(m_localSocks5ProxyHostEdit);
 
-    m_ui->localSocks5ProxyPortEdit->setValidator(portValidator);
-    connectHighlightReset(m_ui->localSocks5ProxyPortEdit);
+    m_localSocks5ProxyPortEdit->setValidator(portValidator);
+    connectHighlightReset(m_localSocks5ProxyPortEdit);
 
-    connect(m_ui->trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::handleTrustCheckButtonClick);
-    connect(m_ui->generateSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::generateSshPrivateKey);
-    connect(m_ui->importSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::importSshPrivateKey);
-    connect(m_ui->copySshPublicKeyButton, &QToolButton::clicked, this, &PreferencesDialog::copySshPublicKey);
+    connect(m_trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::handleTrustCheckButtonClick);
+    connect(generateSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::generateSshPrivateKey);
+    connect(importSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::importSshPrivateKey);
+    connect(m_copySshPublicKeyButton, &QToolButton::clicked, this, &PreferencesDialog::copySshPublicKey);
 
-    connect(m_ui->localHttpProxyCheckBox, &QCheckBox::toggled, this, [this](bool checked) {
-        m_ui->localHttpProxyAddresWidget->setEnabled(checked);
-    });
+    connect(m_localHttpProxyCheckBox, &QCheckBox::toggled, localHttpProxyAddressWidget, &QWidget::setEnabled);
 
-    m_ui->localHttpProxyHostEdit->setValidator(hostValidator);
-    connectHighlightReset(m_ui->localHttpProxyHostEdit);
+    m_localHttpProxyHostEdit->setValidator(hostValidator);
+    connectHighlightReset(m_localHttpProxyHostEdit);
 
-    m_ui->localHttpProxyPortEdit->setValidator(portValidator);
-    connectHighlightReset(m_ui->localHttpProxyPortEdit);
+    m_localHttpProxyPortEdit->setValidator(portValidator);
+    connectHighlightReset(m_localHttpProxyPortEdit);
 
-    QPushButton* resetButton = m_ui->buttonBox->button(QDialogButtonBox::Reset);
+    QPushButton* resetButton = buttonBox->button(QDialogButtonBox::Reset);
     connect(resetButton, &QPushButton::clicked, this, &PreferencesDialog::reset);
 
-    connect(m_ui->buttonBox, &QDialogButtonBox::accepted, this, &PreferencesDialog::accept);
-    connect(m_ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::reject);
-}
-
-PreferencesDialog::~PreferencesDialog()
-{
-    delete m_ui;
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &PreferencesDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::reject);
 }
 
 void PreferencesDialog::open()
@@ -207,20 +356,20 @@ void PreferencesDialog::accept()
         return;
     }
 
-    if (m_ui->sshProxyTunnelCheckBox->isChecked() && !runTrustCheck(false))
+    if (m_sshProxyTunnelCheckBox->isChecked() && !runTrustCheck(false))
     {
         return;
     }
 
-    QVariantMap sshProxyTunnel({{"enabled", m_ui->sshProxyTunnelCheckBox->isChecked()},
-                                {"sshDestination", m_ui->sshDestinationEdit->text()},
-                                {"sshPort", m_ui->sshPortEdit->text()},
-                                {"sshPrivateKey", m_ui->sshPrivateKeyEdit->toPlainText()},
-                                {"localSocks5ProxyHost", m_ui->localSocks5ProxyHostEdit->text()},
-                                {"localSocks5ProxyPort", m_ui->localSocks5ProxyPortEdit->text()},
-                                {"localHttpProxyEnabled", m_ui->localHttpProxyCheckBox->isChecked()},
-                                {"localHttpProxyHost", m_ui->localHttpProxyHostEdit->text()},
-                                {"localHttpProxyPort", m_ui->localHttpProxyPortEdit->text()}});
+    QVariantMap sshProxyTunnel({{"enabled", m_sshProxyTunnelCheckBox->isChecked()},
+                                {"sshDestination", m_sshDestinationEdit->text()},
+                                {"sshPort", m_sshPortEdit->text()},
+                                {"sshPrivateKey", m_sshPrivateKeyEdit->toPlainText()},
+                                {"localSocks5ProxyHost", m_localSocks5ProxyHostEdit->text()},
+                                {"localSocks5ProxyPort", m_localSocks5ProxyPortEdit->text()},
+                                {"localHttpProxyEnabled", m_localHttpProxyCheckBox->isChecked()},
+                                {"localHttpProxyHost", m_localHttpProxyHostEdit->text()},
+                                {"localHttpProxyPort", m_localHttpProxyPortEdit->text()}});
 
     m_preferences->setValue("sshProxyTunnel", sshProxyTunnel);
 
@@ -243,15 +392,15 @@ void PreferencesDialog::reset()
 {
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
 
-    m_ui->sshProxyTunnelCheckBox->setChecked(sshProxyTunnel.value("enabled", false).toBool());
-    m_ui->sshDestinationEdit->setText(sshProxyTunnel.value("sshDestination").toString());
-    m_ui->sshPortEdit->setText(sshProxyTunnel.value("sshPort").toString());
-    m_ui->sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
-    m_ui->localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
-    m_ui->localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
-    m_ui->localHttpProxyCheckBox->setChecked(sshProxyTunnel.value("localHttpProxyEnabled", false).toBool());
-    m_ui->localHttpProxyHostEdit->setText(sshProxyTunnel.value("localHttpProxyHost").toString());
-    m_ui->localHttpProxyPortEdit->setText(sshProxyTunnel.value("localHttpProxyPort").toString());
+    m_sshProxyTunnelCheckBox->setChecked(sshProxyTunnel.value("enabled", false).toBool());
+    m_sshDestinationEdit->setText(sshProxyTunnel.value("sshDestination").toString());
+    m_sshPortEdit->setText(sshProxyTunnel.value("sshPort").toString());
+    m_sshPrivateKeyEdit->setPlainText(sshProxyTunnel.value("sshPrivateKey").toString());
+    m_localSocks5ProxyHostEdit->setText(sshProxyTunnel.value("localSocks5ProxyHost").toString());
+    m_localSocks5ProxyPortEdit->setText(sshProxyTunnel.value("localSocks5ProxyPort").toString());
+    m_localHttpProxyCheckBox->setChecked(sshProxyTunnel.value("localHttpProxyEnabled", false).toBool());
+    m_localHttpProxyHostEdit->setText(sshProxyTunnel.value("localHttpProxyHost").toString());
+    m_localHttpProxyPortEdit->setText(sshProxyTunnel.value("localHttpProxyPort").toString());
 
     validate();
 }
@@ -311,23 +460,23 @@ void PreferencesDialog::connectHighlightReset(QPlainTextEdit* edit)
 bool PreferencesDialog::hasChanges() const
 {
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
-    return (m_ui->sshProxyTunnelCheckBox->isChecked() != sshProxyTunnel.value("enabled", false).toBool()) ||
-            (m_ui->sshDestinationEdit->text() != sshProxyTunnel.value("sshDestination").toString()) ||
-            (m_ui->sshPortEdit->text() != sshProxyTunnel.value("sshPort").toString()) ||
-            (m_ui->sshPrivateKeyEdit->toPlainText() != sshProxyTunnel.value("sshPrivateKey").toString()) ||
-            (m_ui->localSocks5ProxyHostEdit->text() != sshProxyTunnel.value("localSocks5ProxyHost").toString()) ||
-            (m_ui->localSocks5ProxyPortEdit->text() != sshProxyTunnel.value("localSocks5ProxyPort").toString()) ||
-            (m_ui->localHttpProxyCheckBox->isChecked() != sshProxyTunnel.value("localHttpProxyEnabled", false).toBool()) ||
-            (m_ui->localHttpProxyHostEdit->text() != sshProxyTunnel.value("localHttpProxyHost").toString()) ||
-            (m_ui->localHttpProxyPortEdit->text() != sshProxyTunnel.value("localHttpProxyPort").toString());
+    return (m_sshProxyTunnelCheckBox->isChecked() != sshProxyTunnel.value("enabled", false).toBool()) ||
+            (m_sshDestinationEdit->text() != sshProxyTunnel.value("sshDestination").toString()) ||
+            (m_sshPortEdit->text() != sshProxyTunnel.value("sshPort").toString()) ||
+            (m_sshPrivateKeyEdit->toPlainText() != sshProxyTunnel.value("sshPrivateKey").toString()) ||
+            (m_localSocks5ProxyHostEdit->text() != sshProxyTunnel.value("localSocks5ProxyHost").toString()) ||
+            (m_localSocks5ProxyPortEdit->text() != sshProxyTunnel.value("localSocks5ProxyPort").toString()) ||
+            (m_localHttpProxyCheckBox->isChecked() != sshProxyTunnel.value("localHttpProxyEnabled", false).toBool()) ||
+            (m_localHttpProxyHostEdit->text() != sshProxyTunnel.value("localHttpProxyHost").toString()) ||
+            (m_localHttpProxyPortEdit->text() != sshProxyTunnel.value("localHttpProxyPort").toString());
 }
 
 bool PreferencesDialog::confirmExposure()
 {
     QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
 
-    bool tunnelEnabled = m_ui->sshProxyTunnelCheckBox->isChecked();
-    bool httpProxyEnabled = tunnelEnabled && m_ui->localHttpProxyCheckBox->isChecked();
+    bool tunnelEnabled = m_sshProxyTunnelCheckBox->isChecked();
+    bool httpProxyEnabled = tunnelEnabled && m_localHttpProxyCheckBox->isChecked();
 
     bool savedTunnelEnabled = sshProxyTunnel.value("enabled", false).toBool();
     bool savedHttpProxyEnabled = savedTunnelEnabled && sshProxyTunnel.value("localHttpProxyEnabled", false).toBool();
@@ -340,20 +489,20 @@ bool PreferencesDialog::confirmExposure()
 
     QStringList exposedProxies;
 
-    if (becomesExposed(tunnelEnabled, m_ui->localSocks5ProxyHostEdit->text(),
+    if (becomesExposed(tunnelEnabled, m_localSocks5ProxyHostEdit->text(),
                        savedTunnelEnabled, sshProxyTunnel.value("localSocks5ProxyHost").toString()))
     {
         exposedProxies.append(QString("SOCKS5 proxy at %1")
-                              .arg(formatProxyAddress(m_ui->localSocks5ProxyHostEdit,
-                                                      m_ui->localSocks5ProxyPortEdit)));
+                              .arg(formatProxyAddress(m_localSocks5ProxyHostEdit,
+                                                      m_localSocks5ProxyPortEdit)));
     }
 
-    if (becomesExposed(httpProxyEnabled, m_ui->localHttpProxyHostEdit->text(),
+    if (becomesExposed(httpProxyEnabled, m_localHttpProxyHostEdit->text(),
                        savedHttpProxyEnabled, sshProxyTunnel.value("localHttpProxyHost").toString()))
     {
         exposedProxies.append(QString("HTTP proxy at %1")
-                              .arg(formatProxyAddress(m_ui->localHttpProxyHostEdit,
-                                                      m_ui->localHttpProxyPortEdit)));
+                              .arg(formatProxyAddress(m_localHttpProxyHostEdit,
+                                                      m_localHttpProxyPortEdit)));
     }
 
     if (exposedProxies.isEmpty())
@@ -378,23 +527,23 @@ QStringList PreferencesDialog::validateSshDestinationAndPort()
 {
     QStringList errors;
 
-    setWidgetHighlighted(m_ui->sshDestinationEdit, false);
-    setWidgetHighlighted(m_ui->sshPortEdit, false);
+    setWidgetHighlighted(m_sshDestinationEdit, false);
+    setWidgetHighlighted(m_sshPortEdit, false);
 
     // SSH Destination
 
-    if (!m_ui->sshDestinationEdit->hasAcceptableInput())
+    if (!m_sshDestinationEdit->hasAcceptableInput())
     {
         errors.append("Invalid SSH Destination");
-        setWidgetHighlighted(m_ui->sshDestinationEdit, true);
+        setWidgetHighlighted(m_sshDestinationEdit, true);
     }
 
     // SSH Port
 
-    if (!m_ui->sshPortEdit->hasAcceptableInput() || !portStringIsAcceptable(m_ui->sshPortEdit->text(), true))
+    if (!m_sshPortEdit->hasAcceptableInput() || !portStringIsAcceptable(m_sshPortEdit->text(), true))
     {
         errors.append("Invalid SSH Port");
-        setWidgetHighlighted(m_ui->sshPortEdit, true);
+        setWidgetHighlighted(m_sshPortEdit, true);
     }
 
     return errors;
@@ -404,15 +553,15 @@ QStringList PreferencesDialog::validate()
 {
     QStringList errors;
 
-    setWidgetHighlighted(m_ui->sshDestinationEdit, false);
-    setWidgetHighlighted(m_ui->sshPortEdit, false);
-    setWidgetHighlighted(m_ui->sshPrivateKeyEdit, false);
-    setWidgetHighlighted(m_ui->localSocks5ProxyHostEdit, false);
-    setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, false);
-    setWidgetHighlighted(m_ui->localHttpProxyHostEdit, false);
-    setWidgetHighlighted(m_ui->localHttpProxyPortEdit, false);
+    setWidgetHighlighted(m_sshDestinationEdit, false);
+    setWidgetHighlighted(m_sshPortEdit, false);
+    setWidgetHighlighted(m_sshPrivateKeyEdit, false);
+    setWidgetHighlighted(m_localSocks5ProxyHostEdit, false);
+    setWidgetHighlighted(m_localSocks5ProxyPortEdit, false);
+    setWidgetHighlighted(m_localHttpProxyHostEdit, false);
+    setWidgetHighlighted(m_localHttpProxyPortEdit, false);
 
-    if (!m_ui->sshProxyTunnelCheckBox->isChecked())
+    if (!m_sshProxyTunnelCheckBox->isChecked())
     {
         return errors;
     }
@@ -421,48 +570,48 @@ QStringList PreferencesDialog::validate()
 
     // SSH Private Key
 
-    if (!Utilities::sshPrivateKeyLooksValid(m_ui->sshPrivateKeyEdit->toPlainText()))
+    if (!Utilities::sshPrivateKeyLooksValid(m_sshPrivateKeyEdit->toPlainText()))
     {
         errors.append("Invalid SSH Private Key");
-        setWidgetHighlighted(m_ui->sshPrivateKeyEdit, true);
+        setWidgetHighlighted(m_sshPrivateKeyEdit, true);
     }
 
     // Local SOCKS5 Proxy Host
 
-    if (!m_ui->localSocks5ProxyHostEdit->hasAcceptableInput())
+    if (!m_localSocks5ProxyHostEdit->hasAcceptableInput())
     {
         errors.append("Invalid Local SOCKS5 Proxy Host");
-        setWidgetHighlighted(m_ui->localSocks5ProxyHostEdit, true);
+        setWidgetHighlighted(m_localSocks5ProxyHostEdit, true);
     }
 
     // Local SOCKS5 Proxy Port
 
-    if (!m_ui->localSocks5ProxyPortEdit->hasAcceptableInput() ||
-        !portStringIsAcceptable(m_ui->localSocks5ProxyPortEdit->text()))
+    if (!m_localSocks5ProxyPortEdit->hasAcceptableInput() ||
+        !portStringIsAcceptable(m_localSocks5ProxyPortEdit->text()))
     {
         errors.append("Invalid Local SOCKS5 Proxy Port");
-        setWidgetHighlighted(m_ui->localSocks5ProxyPortEdit, true);
+        setWidgetHighlighted(m_localSocks5ProxyPortEdit, true);
     }
 
     // Local HTTP Proxy
 
-    if (m_ui->localHttpProxyCheckBox->isChecked())
+    if (m_localHttpProxyCheckBox->isChecked())
     {
         // Local HTTP Proxy Host
 
-        if (!m_ui->localHttpProxyHostEdit->hasAcceptableInput())
+        if (!m_localHttpProxyHostEdit->hasAcceptableInput())
         {
             errors.append("Invalid Local HTTP Proxy Host");
-            setWidgetHighlighted(m_ui->localHttpProxyHostEdit, true);
+            setWidgetHighlighted(m_localHttpProxyHostEdit, true);
         }
 
         // Local HTTP Proxy Port
 
-        if (!m_ui->localHttpProxyPortEdit->hasAcceptableInput() ||
-            !portStringIsAcceptable(m_ui->localHttpProxyPortEdit->text()))
+        if (!m_localHttpProxyPortEdit->hasAcceptableInput() ||
+            !portStringIsAcceptable(m_localHttpProxyPortEdit->text()))
         {
             errors.append("Invalid Local HTTP Proxy Port");
-            setWidgetHighlighted(m_ui->localHttpProxyPortEdit, true);
+            setWidgetHighlighted(m_localHttpProxyPortEdit, true);
         }
     }
 
@@ -479,7 +628,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         return false;
     }
 
-    QString address = Utilities::getAddressFromSshDestination(m_ui->sshDestinationEdit->text());
+    QString address = Utilities::getAddressFromSshDestination(m_sshDestinationEdit->text());
 
     QString knownHostRecord = Utilities::getKnownHostRecord(address);
     bool hostIsKnown = !knownHostRecord.isEmpty();
@@ -497,7 +646,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         return false;
     }
 
-    quint16 port = Utilities::parsePort(m_ui->sshPortEdit->text(), 22);
+    quint16 port = Utilities::parsePort(m_sshPortEdit->text(), 22);
     QString probeHostRecord = Utilities::probeActualHostRecord(address, port);
 
     if (probeHostRecord.isEmpty())
@@ -557,7 +706,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
         messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
         QAbstractButton* saveButton = messageBox.button(QMessageBox::Save);
         saveButton->setText("Update Key and Trust");
-        saveButton->setMinimumWidth(140);
+        saveButton->setMinimumWidth(Metrics::scaled(140));
         messageBox.setDefaultButton(QMessageBox::Cancel);
         messageBox.setEscapeButton(QMessageBox::Cancel);
 
@@ -576,7 +725,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
 
 void PreferencesDialog::handleTrustCheckButtonClick()
 {
-    QToolButton* button = m_ui->trustCheckButton;
+    QToolButton* button = m_trustCheckButton;
     QString buttonSavedText = button->text();
     button->setMinimumWidth(button->width());
     button->setText("Checking Trust");
@@ -600,8 +749,8 @@ void PreferencesDialog::generateSshPrivateKey()
         return;
     }
 
-    m_ui->sshPrivateKeyEdit->setPlainText(Utilities::generateSshPrivateKey());
-    m_ui->sshPrivateKeyEdit->reveal();
+    m_sshPrivateKeyEdit->setPlainText(Utilities::generateSshPrivateKey());
+    m_sshPrivateKeyEdit->reveal();
 }
 
 void PreferencesDialog::importSshPrivateKey()
@@ -628,8 +777,8 @@ void PreferencesDialog::importSshPrivateKey()
 
         if (Utilities::sshPrivateKeyLooksValid(privateKey))
         {
-            m_ui->sshPrivateKeyEdit->setPlainText(privateKey);
-            m_ui->sshPrivateKeyEdit->reveal();
+            m_sshPrivateKeyEdit->setPlainText(privateKey);
+            m_sshPrivateKeyEdit->reveal();
             return;
         }
     }
@@ -651,11 +800,11 @@ void PreferencesDialog::copySshPublicKey()
         return;
     }
 
-    QString privateKey = m_ui->sshPrivateKeyEdit->toPlainText();
+    QString privateKey = m_sshPrivateKeyEdit->toPlainText();
     QString publicKey = Utilities::getSshPublicKey(privateKey);
     QGuiApplication::clipboard()->setText(publicKey);
 
-    QToolButton* button = m_ui->copySshPublicKeyButton;
+    QToolButton* button = m_copySshPublicKeyButton;
     button->setMinimumWidth(button->width());
     QString buttonSavedText = button->text();
     button->setText("Key Copied!");
