@@ -63,9 +63,13 @@ set(CPACK_MONOLITHIC_INSTALL ON)
 set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
 
+# Uninstall key and name in the list of installed apps are the same for all versions,
+# so a new version replaces the previous one instead of being registered next to it
+set(CPACK_PACKAGE_INSTALL_REGISTRY_KEY "${PROJECT_TITLE}")
+
 set(CPACK_NSIS_MUI_LANGUAGE "English")
 set(CPACK_NSIS_IGNORE_LICENSE_PAGE ON)
-set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_TITLE} ${PROJECT_VERSION}")
+set(CPACK_NSIS_DISPLAY_NAME "${PROJECT_TITLE}")
 set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_TITLE}")
 set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/${PROJECT_ICON}")
 set(CPACK_NSIS_MUI_UNIICON "${PROJECT_SOURCE_DIR}/${PROJECT_ICON}")
@@ -74,10 +78,24 @@ set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MANIFEST_DPI_AWARE TRUE)
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
+# Versions up to 1.5 used versioned uninstall keys, such installations are removed before installing files
+
+configure_file(
+    ${CMAKE_CURRENT_LIST_DIR}/Windows/RemoveLegacyInstalls.nsh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh
+    @ONLY
+)
+
 set(
     CPACK_NSIS_DEFINES "
     !define MUI_FINISHPAGE_RUN \\\"explorer.exe\\\"
-    !define MUI_FINISHPAGE_RUN_PARAMETERS \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\""
+    !define MUI_FINISHPAGE_RUN_PARAMETERS \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\"
+    !include \\\"${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh\\\""
+)
+
+set(
+    CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "
+    Call RemoveLegacyInstalls"
 )
 
 set(

@@ -1,0 +1,72 @@
+; Removes installations made by @PROJECT_TITLE@ 1.5 and older. They registered themselves under versioned
+; uninstall keys (e.g. "@PROJECT_TITLE@ 1.5"), so installers of newer versions couldn't detect them and
+; left stale entries in the list of installed apps. Every found installation is removed by its own
+; uninstaller before new files are copied, so the running application is closed and nothing is orphaned.
+
+!include "FileFunc.nsh"
+
+!define LEGACY_UNINSTALL_ROOT "Software\Microsoft\Windows\CurrentVersion\Uninstall"
+!define LEGACY_KEY_PREFIX "@PROJECT_TITLE@ "
+!define LEGACY_PUBLISHER "@PROJECT_DEVELOPER_TITLE@"
+
+Function RemoveLegacyInstalls
+    Push $0 ; Subkey index
+    Push $1 ; Subkey name
+    Push $2 ; Temporary value
+    Push $3 ; Uninstaller path
+    Push $4 ; Installation directory
+
+    StrCpy $0 0
+
+    loop:
+        EnumRegKey $1 HKLM "${LEGACY_UNINSTALL_ROOT}" $0
+        StrCmp $1 "" done
+
+        ; Only versioned keys of this publisher, the current unversioned key is handled by CPack itself
+        StrLen $2 "${LEGACY_KEY_PREFIX}"
+        StrCpy $2 $1 $2
+        StrCmp $2 "${LEGACY_KEY_PREFIX}" 0 next
+
+        ReadRegStr $2 HKLM "${LEGACY_UNINSTALL_ROOT}\$1" "Publisher"
+        StrCmp $2 "${LEGACY_PUBLISHER}" 0 next
+
+        ; Uninstall string is the quoted path to the uninstaller
+        ReadRegStr $3 HKLM "${LEGACY_UNINSTALL_ROOT}\$1" "UninstallString"
+        StrCpy $2 $3 1
+        StrCmp $2 '"' 0 +2
+            StrCpy $3 $3 -1 1
+
+        IfFileExists "$3" 0 cleanup
+            ${GetParent} "$3" $4
+            DetailPrint "Removing previous installation: $1"
+
+            ; "_?=" makes the uninstaller run in place, so ExecWait waits until it finishes
+            ExecWait '"$3" /S _?=$4'
+
+            ; Running in place, the uninstaller can't delete itself
+            Delete "$3"
+            RMDir "$4"
+
+    cleanup:
+        DeleteRegKey HKLM "${LEGACY_UNINSTALL_ROOT}\$1"
+        DeleteRegKey HKLM "Software\${LEGACY_PUBLISHER}\$1"
+        DeleteRegKey /ifempty HKLM "Software\${LEGACY_PUBLISHER}"
+
+        ; The next subkey takes the index of the removed one, but skip the key if it couldn't be removed
+        ReadRegStr $2 HKLM "${LEGACY_UNINSTALL_ROOT}\$1" "UninstallString"
+        StrCmp $2 "" loop next
+
+    next:
+        IntOp $0 $0 + 1
+        Goto loop
+
+    done:
+        ; Uninstallers may have removed the installation directory
+        SetOutPath "$INSTDIR"
+
+    Pop $4
+    Pop $3
+    Pop $2
+    Pop $1
+    Pop $0
+FunctionEnd
