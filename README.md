@@ -377,6 +377,12 @@ To publish a release:
 
 Docker builder images are cached in GitHub Container Registry (`ghcr.io`) and rebuilt only when a Dockerfile changes, so only the first run and runs after Dockerfile changes take long.
 
+### Website
+
+The site [shprot.mayfleet.com](https://shprot.mayfleet.com/) is built with [Hugo](https://gohugo.io/) from the `Site` folder and published to GitHub Pages by the `.github/workflows/site.yml` workflow on changes in `Site` or `Assets` and on every published release, so download links always point to the latest release. The text of the page in every language is kept in `Site/content/_index.<language>.md`; the build fails if a translation misses texts of the English page. To preview the site locally:
+
+    hugo server --source Site
+
 ## Contributing
 
 We welcome contributions to Shprot! To get started:

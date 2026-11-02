@@ -4,3 +4,6 @@
 /Environment.txt
 CMakeLists.txt.user
 .env
+/Site/public
+/Site/resources
+/Site/.hugo_build.lock

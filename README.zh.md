@@ -377,6 +377,12 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
 Docker 构建镜像缓存在 GitHub Container Registry（`ghcr.io`）中，仅在 Dockerfile 发生变化时才会重新构建，因此只有首次运行以及修改 Dockerfile 后的运行耗时较长。
 
+### 网站
+
+网站 [shprot.mayfleet.com](https://shprot.mayfleet.com/) 使用 [Hugo](https://gohugo.io/) 从 `Site` 文件夹构建，并在 `Site` 或 `Assets` 发生变化以及每次发布新版本时由 `.github/workflows/site.yml` 工作流发布到 GitHub Pages，因此下载链接始终指向最新版本。每种语言的页面文本保存在 `Site/content/_index.<语言>.md` 中；如果某个翻译缺少英文页面中的文本，构建会失败。在本地预览网站：
+
+    hugo server --source Site
+
 ## 参与贡献
 
 我们欢迎对 Shprot 的贡献！开始步骤：
