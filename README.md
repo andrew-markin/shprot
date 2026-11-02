@@ -2,6 +2,8 @@
 
 🌐 **Languages:** [**English**](README.md) | [Русский](README.ru.md) | [简体中文](README.zh.md)
 
+🏠 **Website:** [shprot.mayfleet.com](https://shprot.mayfleet.com/)
+
 **Shprot** is a desktop application that gives you a reliable, auto-recovering SOCKS5 proxy over SSH — without touching the command line.
 
 Unlike standard SSH tunneling tools, it watches your network, automatically restarts broken connections, and even adapts when you switch Wi-Fi or wake your PC from sleep. Built-in SSH key generation and flexible proxy settings make it easy to set up and secure.
