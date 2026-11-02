@@ -79,6 +79,14 @@ QString formatProxyAddress(const QLineEdit* hostEdit, const QLineEdit* portEdit)
     return QString("%1:%2").arg(host, port);
 }
 
+QString unbreakableFingerprint(const QString& fingerprint)
+{
+    // <nobr> only prevents breaks at spaces, while line breaking rules also allow a break after "/" of base64,
+    // so an invisible word joiner keeps the fingerprint on one line
+    QString result = fingerprint;
+    return result.replace('/', QString("/") + QChar(0x2060));
+}
+
 } // namespace
 
 PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
@@ -678,7 +686,7 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
                        "%2 key fingerprint is:<br><nobr>SHA256:%3.</nobr>")
                     .arg(address)
                     .arg(Utilities::getKeyTypeLabel(probeKeyType))
-                    .arg(probeKeyFingerprint));
+                    .arg(unbreakableFingerprint(probeKeyFingerprint)));
         messageBox.setInformativeText(tr("Are you sure you want to continue connecting and trust this server?"));
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         messageBox.setDefaultButton(QMessageBox::No);
@@ -709,9 +717,9 @@ bool PreferencesDialog::runTrustCheck(bool forceProbe)
                        "Received %4 key fingerprint is:<br><nobr>SHA256:%5.</nobr>")
                     .arg(address)
                     .arg(Utilities::getKeyTypeLabel(knownKeyType))
-                    .arg(knowKeyFingerprint)
+                    .arg(unbreakableFingerprint(knowKeyFingerprint))
                     .arg(Utilities::getKeyTypeLabel(probeKeyType))
-                    .arg(probeKeyFingerprint));
+                    .arg(unbreakableFingerprint(probeKeyFingerprint)));
         messageBox.setInformativeText(tr("If you are certain this change is legitimate, you can update the trusted key."));
         messageBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
         QAbstractButton* saveButton = messageBox.button(QMessageBox::Save);
