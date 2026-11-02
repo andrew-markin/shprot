@@ -138,9 +138,9 @@ Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅�
 
 <div align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
-        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
-        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="754" height="747">
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.zh.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.zh.png">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.zh.png" width="754" height="779">
     </picture>
 </div>
 
@@ -346,7 +346,7 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
     ./TakeScreenshots.sh
 
-该脚本会在虚拟机中直接运行 `Release` 文件夹中最新的 `.deb` 软件包（或通过参数指定的软件包），无需安装，分别在浅色和深色主题下截取设置窗口，并更新所有 README 文件中的图片尺寸。虚拟机的一次性准备步骤见脚本开头的说明。
+该脚本会在虚拟机中直接运行 `Release` 文件夹中最新的 `.deb` 软件包（或通过参数指定的软件包），无需安装，按每个 README 的语言分别在浅色和深色主题下截取设置窗口，并更新所有 README 文件中的图片尺寸。虚拟机的一次性准备步骤见脚本开头的说明。
 
 ### 自动构建与发布
 

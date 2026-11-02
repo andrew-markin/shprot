@@ -346,7 +346,7 @@ Screenshots in `Assets` are taken automatically in a VirtualBox VM with Ubuntu G
 
     ./TakeScreenshots.sh
 
-The script runs the latest `.deb` package from the `Release` folder in the VM (or the package passed as an argument) without installing it, captures the Preferences dialog in light and dark themes and updates the image size in all README files. One-time VM preparation is described at the top of the script.
+The script runs the latest `.deb` package from the `Release` folder in the VM (or the package passed as an argument) without installing it, captures the Preferences dialog in light and dark themes for each README language and updates the image size in all README files. One-time VM preparation is described at the top of the script.
 
 ### Automated Builds and Releases
 

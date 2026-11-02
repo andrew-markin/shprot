@@ -138,9 +138,9 @@ Shprot работает полностью независимо от глоба�
 
 <div align="center">
     <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.png">
-        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.png">
-        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.png" width="754" height="747">
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.ru.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.ru.png">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.ru.png" width="844" height="747">
     </picture>
 </div>
 
@@ -346,7 +346,7 @@ HTTP-прокси работает **через** тот же SSH-туннель
 
     ./TakeScreenshots.sh
 
-Скрипт запускает в виртуальной машине самый свежий `.deb`-пакет из папки `Release` (или пакет, переданный аргументом) без его установки, снимает окно настроек в светлой и темной теме и обновляет размер изображения во всех файлах README. Однократная подготовка виртуальной машины описана в начале скрипта.
+Скрипт запускает в виртуальной машине самый свежий `.deb`-пакет из папки `Release` (или пакет, переданный аргументом) без его установки, снимает окно настроек в светлой и темной теме на языке каждого README и обновляет размер изображения во всех файлах README. Однократная подготовка виртуальной машины описана в начале скрипта.
 
 ### Автоматическая сборка и релизы
 

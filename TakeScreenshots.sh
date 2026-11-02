@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
-# Takes README screenshots (Assets/Screenshot-Light.png, Assets/Screenshot-Dark.png)
-# in a VirtualBox VM with Ubuntu GNOME desktop, and updates image size in README*.md.
+# Takes README screenshots in a VirtualBox VM with Ubuntu GNOME desktop: one per
+# README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
+# Assets/Screenshot-Dark.ru.png for README.ru.md. Image size in READMEs is updated too.
 #
 # Usage: ./TakeScreenshots.sh [path/to/shprot.deb]
 #
@@ -12,7 +13,7 @@
 # One-time VM preparation (Ubuntu 26.04 GNOME, Wayland session):
 #
 # 1. In the guest, install tools and keep the desktop quiet and static:
-#      sudo apt install -y openssh-server xdotool python3
+#      sudo apt install -y openssh-server xdotool python3 fonts-noto-cjk
 #      gsettings set org.gnome.desktop.screensaver lock-enabled false
 #      gsettings set org.gnome.desktop.session idle-delay 0
 #      gsettings set org.gnome.desktop.notifications show-banners false
@@ -74,7 +75,8 @@ guest() {
         $1"
 }
 
-# Prepare the application and demo preferences in the guest
+# Prepare the application and demo preferences in the guest. Preferences are copied
+# before each run, so dialog geometry saved by one run does not affect another.
 
 guest "rm -rf ~/ShprotScreenshots && mkdir -p ~/ShprotScreenshots/Config/Shprot ~/ShprotScreenshots/Package"
 scp "${SCP_OPTIONS[@]}" "$PACKAGE" "$SSH_TARGET:ShprotScreenshots/shprot.deb"
@@ -98,7 +100,7 @@ json.dump({
         "localHttpProxyHost": "",
         "localHttpProxyPort": ""
     }
-}, open("Config/Shprot/Preferences.json", "w"))
+}, open("Preferences.json", "w"))
 EOF
 rm DemoKey DemoKey.pub'
 
@@ -116,7 +118,10 @@ cleanup() {
 
 trap cleanup EXIT
 
-# Capture Preferences dialog in each theme
+# README file suffix and UI language of its screenshots
+LANGUAGES=(":en_US" ".ru:ru_RU" ".zh:zh_CN")
+
+# Capture Preferences dialog in each theme and language
 
 for THEME in Light Dark; do
     if [ "$THEME" = "Light" ]; then
@@ -129,46 +134,60 @@ for THEME in Light Dark; do
 
     sleep 1
 
-    guest "setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot --preferences </dev/null >/dev/null 2>&1 &"
-    guest 'w=$(xdotool search --sync --name "Shprot Preferences" | head -1)
-           xdotool windowactivate --sync $w 2>/dev/null || true
-           xdotool mousemove 0 0' # Keep the pointer away from the dialog
+    for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
+        SUFFIX=${LANGUAGE_ENTRY%%:*}
+        LOCALE=${LANGUAGE_ENTRY#*:}
+        OUTPUT="Assets/Screenshot-$THEME$SUFFIX.png"
 
-    sleep 2
+        guest "cp ~/ShprotScreenshots/Preferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
+               export LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8
+               setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot --preferences </dev/null >/dev/null 2>&1 &"
 
-    PREVIOUS=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+        # Window title is translated, so the dialog is found by its class
+        guest 'w=$(xdotool search --sync --onlyvisible --class Shprot | head -1)
+               xdotool windowactivate --sync $w 2>/dev/null || true
+               xdotool mousemove 0 0' # Keep the pointer away from the dialog
 
-    # Alt+Print: GNOME saves the focused window with its frame and transparent shadow
-    VBoxManage controlvm "$VM_NAME" keyboardputscancode 38 54 d4 b8
+        sleep 2
 
-    for i in $(seq 10); do
+        PREVIOUS=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+
+        # Alt+Print: GNOME saves the focused window with its frame and transparent shadow
+        VBoxManage controlvm "$VM_NAME" keyboardputscancode 38 54 d4 b8
+
+        for i in $(seq 10); do
+            sleep 1
+            SCREENSHOT=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+            [ "$SCREENSHOT" != "$PREVIOUS" ] && break
+        done
+
+        if [ "$SCREENSHOT" = "$PREVIOUS" ]; then
+            echo "ERROR: Screenshot was not taken for $THEME theme and $LOCALE language."
+            exit 1
+        fi
+
+        sleep 1 # Let GNOME finish writing the file
+
+        scp "${SCP_OPTIONS[@]}" "$SSH_TARGET:Pictures/Screenshots/$SCREENSHOT" "$OUTPUT"
+        guest "rm -f ~/Pictures/Screenshots/'$SCREENSHOT'
+               ~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
+
         sleep 1
-        SCREENSHOT=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
-        [ "$SCREENSHOT" != "$PREVIOUS" ] && break
+
+        echo "$OUTPUT updated."
     done
-
-    if [ "$SCREENSHOT" = "$PREVIOUS" ]; then
-        echo "ERROR: Screenshot was not taken for $THEME theme."
-        exit 1
-    fi
-
-    sleep 1 # Let GNOME finish writing the file
-
-    scp "${SCP_OPTIONS[@]}" "$SSH_TARGET:Pictures/Screenshots/$SCREENSHOT" "Assets/Screenshot-$THEME.png"
-    guest "rm -f ~/Pictures/Screenshots/'$SCREENSHOT'
-           ~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
-
-    sleep 1
-
-    echo "Assets/Screenshot-$THEME.png updated."
 done
 
 # Keep image size in READMEs in sync, so pages do not jump while screenshots load
 
-SIZE=$(file -b Assets/Screenshot-Light.png | grep -oE '[0-9]+ x [0-9]+')
-WIDTH=${SIZE% x *}
-HEIGHT=${SIZE#* x }
+for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
+    SUFFIX=${LANGUAGE_ENTRY%%:*}
 
-sed -i -E "s|(src=\"Assets/Screenshot-Light.png\" width=\")[0-9]+(\" height=\")[0-9]+|\1$WIDTH\2$HEIGHT|" README*.md
+    SIZE=$(file -b "Assets/Screenshot-Light$SUFFIX.png" | grep -oE '[0-9]+ x [0-9]+')
+    WIDTH=${SIZE% x *}
+    HEIGHT=${SIZE#* x }
 
-echo "README image size set to ${WIDTH}x${HEIGHT}."
+    sed -i -E "s|(src=\"Assets/Screenshot-Light$SUFFIX.png\" width=\")[0-9]+(\" height=\")[0-9]+|\1$WIDTH\2$HEIGHT|" "README$SUFFIX.md"
+
+    echo "README$SUFFIX.md image size set to ${WIDTH}x${HEIGHT}."
+done
