@@ -194,9 +194,11 @@ You can easily track the tunnel status without opening the main window:
 * **Toast Notifications:** The app will send native system tray notifications whenever the tunnel successfully connects or drops. If the tunnel cannot be opened, the notification explains why; each new reason is reported once rather than on every reconnection attempt.
 
 ### Tray Menu
-Right-click the tray icon to open the menu:
-* **Shprot Preferences…** opens the settings window (double-clicking the icon does the same).
+Right-click the tray icon to open the menu. It is grouped as follows:
+* **Tunnel status** at the top, e.g. *Tunnel is open* or *Tunnel is closed* with the reason. Useful where the tray doesn't show tooltips (for example, GNOME).
 * **Enable SSH Proxy Tunnel** turns the tunnel on or off without opening the settings (same as the checkbox in the settings window).
+* **Copy SOCKS5 Proxy Address** and **Copy HTTP Proxy Address** copy a ready-to-use proxy URL, such as `socks5h://localhost:1080` or `http://localhost:8080`, for browsers, `curl` or the `ALL_PROXY`/`HTTP_PROXY` environment variables. They are shown only while the corresponding proxy is available.
+* **Preferences…** opens the settings window (double-clicking the icon does the same).
 * **Show Notifications** turns toast notifications on or off.
 * **Start at Login** turns automatic start on login on or off for the current user.
 * **Show Logs…** shows recent log records, updated live.

@@ -194,9 +194,11 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 * **通知消息：** 每当隧道成功连接或断开时，应用程序将发送本机系统托盘通知。如果无法打开隧道，通知会说明原因；每个新的原因只提示一次，而不是在每次重连尝试时都提示。
 
 ### 托盘菜单
-右键单击托盘图标即可打开菜单：
-* **Shprot Preferences…** 打开设置窗口（双击图标也可以）。
+右键单击托盘图标即可打开菜单，各项分组如下：
+* **隧道状态** 位于顶部，例如 *Tunnel is open* 或带有原因的 *Tunnel is closed*。在不显示托盘提示的环境（例如 GNOME）中很有用。
 * **Enable SSH Proxy Tunnel** 无需打开设置即可开启或关闭隧道（与设置窗口中的复选框相同）。
+* **Copy SOCKS5 Proxy Address** 和 **Copy HTTP Proxy Address** 复制可直接使用的代理 URL，例如 `socks5h://localhost:1080` 或 `http://localhost:8080`，可用于浏览器、`curl` 或 `ALL_PROXY`/`HTTP_PROXY` 环境变量。仅当相应代理可用时才会显示。
+* **Preferences…** 打开设置窗口（双击图标也可以）。
 * **Show Notifications** 开启或关闭通知消息。
 * **Start at Login** 为当前用户开启或关闭登录时自动启动。
 * **Show Logs…** 显示最近的日志记录，并实时更新。
