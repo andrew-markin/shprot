@@ -75,7 +75,12 @@ private:
     HttpProxyServer* m_httpProxyServer;
 
     QMenu* m_contextMenu;
+    QAction* m_statusAction;
     QAction* m_tunnelEnabledAction;
+    QAction* m_copySocks5ProxyUrlAction;
+    QAction* m_copyHttpProxyUrlAction;
+    QString m_socks5ProxyUrl; // Empty when the proxy is not started
+    QString m_httpProxyUrl;
     QIcon m_tunnelOpenIcon;
     QIcon m_tunnelClosedIcon;
     QSystemTrayIcon* m_systemTrayIcon;

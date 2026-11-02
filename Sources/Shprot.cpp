@@ -1,6 +1,7 @@
 #include "Shprot.h"
 
 #include <QApplication>
+#include <QClipboard>
 #include <QDebug>
 #include <QDir>
 #include <QLocalServer>
@@ -207,16 +208,31 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_httpProxyServer = new HttpProxyServer(this);
 
     m_contextMenu = new QMenu();
-    m_contextMenu->setDefaultAction(m_contextMenu->addAction(QString("%1 Preferences…").arg(PROJECT_TITLE),
-                                                             this, &Shprot::openPreferencesDialog));
 
-    m_contextMenu->addSeparator();
+    // Tunnel: status (some trays don't show tool tips), switch and proxy addresses available when it's open
+
+    m_statusAction = m_contextMenu->addAction(QString());
+    m_statusAction->setEnabled(false);
 
     m_tunnelEnabledAction = m_contextMenu->addAction("Enable SSH Proxy Tunnel");
     m_tunnelEnabledAction->setCheckable(true);
     m_tunnelEnabledAction->setChecked(m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool());
 
     connect(m_tunnelEnabledAction, &QAction::toggled, this, &Shprot::setTunnelEnabled);
+
+    m_copySocks5ProxyUrlAction = m_contextMenu->addAction(QString(), this, [this]() {
+        QGuiApplication::clipboard()->setText(m_socks5ProxyUrl);
+    });
+
+    m_copyHttpProxyUrlAction = m_contextMenu->addAction(QString(), this, [this]() {
+        QGuiApplication::clipboard()->setText(m_httpProxyUrl);
+    });
+
+    // Application settings
+
+    m_contextMenu->addSeparator();
+
+    m_contextMenu->setDefaultAction(m_contextMenu->addAction("Preferences…", this, &Shprot::openPreferencesDialog));
 
     QAction* showNotificationsAction = m_contextMenu->addAction("Show Notifications");
     showNotificationsAction->setCheckable(true);
@@ -239,6 +255,9 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
 
     m_contextMenu->addAction("Show Logs…", this, &Shprot::openLogsDialog);
     m_contextMenu->addAction(QString("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
+
+    m_contextMenu->addSeparator();
+
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
     m_tunnelOpenIcon = QIcon(":/Shprot.svg");
@@ -379,6 +398,9 @@ void Shprot::maybeRestartTunnelProcess()
     m_tunnelSocksProxy.setHostName(localSocks5ProxyHost);
     m_tunnelSocksProxy.setPort(localSocks5ProxyPort);
     m_tunnelSocksProxy.setCapabilities(m_tunnelSocksProxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
+
+    // Host names are resolved on the server side ("socks5h"), as Shprot itself does
+    m_socks5ProxyUrl = Utilities::formatProxyUrl("socks5h", localSocks5ProxyHost, localSocks5ProxyPort);
 
     QStringList arguments;
     arguments << "-D" << localSocks5ProxyAddress;
@@ -660,6 +682,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
 void Shprot::maybeStartHttpProxyServer()
 {
     m_httpProxyServer->stop();
+    m_httpProxyUrl.clear();
 
     if ((m_tunnelProcess->state() != QProcess::Running))
     {
@@ -685,7 +708,11 @@ void Shprot::maybeStartHttpProxyServer()
     quint16 localHttpProxyPort = Utilities::parsePort(sshProxyTunnel.value("localHttpProxyPort").toString(), 8080);
     QString httpProxyError;
 
-    if (!m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort, m_tunnelSocksProxy))
+    if (m_httpProxyServer->start(localHttpProxyHost, localHttpProxyPort, m_tunnelSocksProxy))
+    {
+        m_httpProxyUrl = Utilities::formatProxyUrl("http", localHttpProxyHost, localHttpProxyPort);
+    }
+    else
     {
         httpProxyError = QString("Local HTTP proxy is not available: %1").arg(m_httpProxyServer->errorString());
     }
@@ -765,12 +792,25 @@ void Shprot::maybeUpdateStatus()
     }
     else if (tunnelIsOpened)
     {
-        status = "Tunnel is opened";
+        status = "Tunnel is open";
     }
     else
     {
         status = m_lastError.isEmpty() ? QString("Tunnel is closed") : QString("Tunnel is closed: %1").arg(m_lastError);
     }
+
+    // Long error descriptions would make the menu too wide
+    static const int MenuStatusLengthMax = 80;
+    m_statusAction->setText((status.size() > MenuStatusLengthMax) ? status.left(MenuStatusLengthMax - 1) + "…" : status);
+
+    // Proxy addresses are offered only while they can be used
+    auto updateCopyAction = [tunnelIsOpened](QAction* action, const QString& label, const QString& url) {
+        action->setVisible(tunnelIsOpened && !url.isEmpty());
+        action->setText(QString("Copy %1 Proxy Address (%2)").arg(label, url.mid(url.indexOf("://") + 3)));
+    };
+
+    updateCopyAction(m_copySocks5ProxyUrlAction, "SOCKS5", m_socks5ProxyUrl);
+    updateCopyAction(m_copyHttpProxyUrlAction, "HTTP", m_httpProxyUrl);
 
     if (!m_httpProxyError.isEmpty())
     {

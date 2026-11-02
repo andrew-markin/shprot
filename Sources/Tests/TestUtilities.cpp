@@ -22,6 +22,9 @@ private slots:
     void hostIsExposed_data();
     void hostIsExposed();
 
+    void formatProxyUrl_data();
+    void formatProxyUrl();
+
     void describeSshError_data();
     void describeSshError();
 
@@ -151,6 +154,30 @@ void TestUtilities::hostIsExposed()
     QFETCH(bool, expected);
 
     QCOMPARE(Utilities::hostIsExposed(host), expected);
+}
+
+void TestUtilities::formatProxyUrl_data()
+{
+    QTest::addColumn<QString>("host");
+    QTest::addColumn<QString>("expected");
+
+    QTest::newRow("localhost") << "localhost" << "socks5h://localhost:1080";
+    QTest::newRow("empty") << "" << "socks5h://localhost:1080";
+    QTest::newRow("any ipv4") << "0.0.0.0" << "socks5h://localhost:1080";
+    QTest::newRow("any ipv6") << "::" << "socks5h://localhost:1080";
+    QTest::newRow("any ipv6 in brackets") << "[::]" << "socks5h://localhost:1080";
+    QTest::newRow("ipv4") << "192.168.1.5" << "socks5h://192.168.1.5:1080";
+    QTest::newRow("ipv6") << "::1" << "socks5h://[::1]:1080";
+    QTest::newRow("ipv6 in brackets") << "[::1]" << "socks5h://[::1]:1080";
+    QTest::newRow("host name") << "proxy.local" << "socks5h://proxy.local:1080";
+}
+
+void TestUtilities::formatProxyUrl()
+{
+    QFETCH(QString, host);
+    QFETCH(QString, expected);
+
+    QCOMPARE(Utilities::formatProxyUrl("socks5h", host, 1080), expected);
 }
 
 void TestUtilities::describeSshError_data()

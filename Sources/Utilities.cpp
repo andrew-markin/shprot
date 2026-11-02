@@ -410,6 +410,31 @@ bool hostIsExposed(const QString& host)
 }
 
 // Turns ssh error output into a short explanation for the user
+// URL to connect to a local proxy, e.g. "socks5h://localhost:1080". Clients can't connect to "any address",
+// so a proxy listening on all interfaces is reached through localhost.
+QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
+{
+    QString normalizedHost = host.trimmed();
+
+    if (normalizedHost.startsWith('[') && normalizedHost.endsWith(']'))
+    {
+        normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
+    }
+
+    QHostAddress address(normalizedHost);
+
+    if (normalizedHost.isEmpty() || (address == QHostAddress::AnyIPv4) || (address == QHostAddress::AnyIPv6))
+    {
+        normalizedHost = "localhost";
+    }
+    else if (address.protocol() == QAbstractSocket::IPv6Protocol)
+    {
+        normalizedHost = QString("[%1]").arg(normalizedHost);
+    }
+
+    return QString("%1://%2:%3").arg(scheme, normalizedHost).arg(port);
+}
+
 QString describeSshError(const QByteArray& errorOutput)
 {
     static const QList<QPair<QStringList, QString>> KnownErrors = {
