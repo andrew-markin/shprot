@@ -331,6 +331,14 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
 在 Windows 上使用 Visual Studio 生成器时，请在构建命令中添加 `--config Release`，并在 `ctest` 命令中添加 `-C Release`。
 
+### README 截图
+
+`Assets` 中的截图在装有 Ubuntu GNOME 桌面的 VirtualBox 虚拟机中自动生成：
+
+    ./TakeScreenshots.sh
+
+该脚本会在虚拟机中直接运行 `Release` 文件夹中最新的 `.deb` 软件包（或通过参数指定的软件包），无需安装，分别在浅色和深色主题下截取设置窗口，并更新所有 README 文件中的图片尺寸。虚拟机的一次性准备步骤见脚本开头的说明。
+
 ### 自动构建与发布
 
 仓库包含一个 GitHub Actions 工作流（`.github/workflows/build.yml`），会在每次推送到 `main` 以及每个 pull request 时构建 Windows 安装程序以及 DEB 和 RPM 软件包。同一工作流还会在所有三个平台上运行单元测试，生成的软件包可在工作流的 artifacts 中获取。

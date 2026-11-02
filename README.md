@@ -331,6 +331,14 @@ Unit tests (Qt Test) cover utility functions and the HTTP proxy. They are not bu
 
 On Windows with the Visual Studio generator, add `--config Release` to the build command and `-C Release` to the `ctest` command.
 
+### README Screenshots
+
+Screenshots in `Assets` are taken automatically in a VirtualBox VM with Ubuntu GNOME desktop:
+
+    ./TakeScreenshots.sh
+
+The script runs the latest `.deb` package from the `Release` folder in the VM (or the package passed as an argument) without installing it, captures the Preferences dialog in light and dark themes and updates the image size in all README files. One-time VM preparation is described at the top of the script.
+
 ### Automated Builds and Releases
 
 The repository includes a GitHub Actions workflow (`.github/workflows/build.yml`) that builds the Windows installer and the DEB and RPM packages on every push to `main` and for every pull request. Unit tests are run on all three platforms as a part of the same workflow, and the resulting packages are available as workflow artifacts.
