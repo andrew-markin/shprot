@@ -1,15 +1,17 @@
 #!/bin/bash -e
 
 # Takes README screenshots in a VirtualBox VM with Ubuntu GNOME desktop: Preferences
-# dialog (Assets/Screenshot-*) and server key verification (Assets/HostVerification-*),
-# one per README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
+# dialog (Assets/Screenshot-*), server key verification (Assets/HostVerification-*) and
+# tray menu with the tunnel open (Assets/TrayMenu-*), one per README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
 # Assets/Screenshot-Dark.ru.png for README.ru.md. Image size in READMEs is updated too.
 #
 # Usage: ./TakeScreenshots.sh [path/to/shprot.deb]
 #
 # Guest passwords are never needed: the package is unpacked into the guest home
 # directory and runs with isolated preferences, so the guest's own Shprot setup
-# is not touched. The guest theme is restored on exit.
+# is not touched. The guest theme is restored on exit. For the tray menu the tunnel is
+# really opened: a temporary SSH server runs as the guest user on 127.0.0.1:2022 with
+# its own throwaway keys, it only allows port forwarding and is stopped on exit.
 #
 # One-time VM preparation (Ubuntu 26.04 GNOME, Wayland session):
 #
@@ -23,6 +25,9 @@
 #      sudo systemctl disable --now unattended-upgrades
 #    and turn on Settings > Users > Automatic Login. The guest's own SSH server plays
 #    the demo server myserver.com for the key verification screenshot.
+#
+#    The host needs ImageMagick and the VirtualBox Python API (vboxapi, installed from
+#    the VirtualBox SDK) to click the tray icon: GNOME Shell does not accept synthetic input.
 #
 # 2. On the host, create a key for the VM and forward SSH to the guest
 #    (controlvm works on a running VM, use modifyvm --natpf1 on a stopped one):
@@ -89,22 +94,45 @@ dpkg-deb -x shprot.deb Package
 ssh-keygen -q -t ed25519 -N "" -C "" -f DemoKey
 python3 - <<EOF
 import json
-json.dump({
-    "startAtLogin": False,
-    "showNotifications": False,
-    "sshProxyTunnel": {
-        "enabled": True,
-        "sshDestination": "tunnel@myserver.com",
-        "sshPort": "",
-        "sshPrivateKey": open("DemoKey").read(),
-        "localSocks5ProxyHost": "",
-        "localSocks5ProxyPort": "",
-        "localHttpProxyEnabled": False,
-        "localHttpProxyHost": "",
-        "localHttpProxyPort": ""
+
+def preferences(destination, port, tray):
+    return {
+        "startAtLogin": tray,
+        "showNotifications": tray,
+        "sshProxyTunnel": {
+            "enabled": True,
+            "sshDestination": destination,
+            "sshPort": port,
+            "sshPrivateKey": open("DemoKey").read(),
+            "localSocks5ProxyHost": "",
+            "localSocks5ProxyPort": "",
+            "localHttpProxyEnabled": tray,
+            "localHttpProxyHost": "",
+            "localHttpProxyPort": ""
+        }
     }
-}, open("Preferences.json", "w"))
+
+json.dump(preferences("tunnel@myserver.com", "", False), open("Preferences.json", "w"))
+json.dump(preferences("$USER@myserver.com", "2022", True), open("TrayPreferences.json", "w"))
 EOF
+
+# Temporary SSH server for the tray menu, its host key is trusted in advance
+mkdir -m 700 Server
+ssh-keygen -q -t ed25519 -N "" -C "" -f Server/HostKey
+echo "restrict,port-forwarding $(cat DemoKey.pub)" > Server/AuthorizedKeys
+echo "[myserver.com]:2022 $(cut -d" " -f1,2 Server/HostKey.pub)" > Server/KnownHost
+cat > Server/sshd_config <<EOF
+Port 2022
+ListenAddress 127.0.0.1
+HostKey $HOME/ShprotScreenshots/Server/HostKey
+PidFile $HOME/ShprotScreenshots/Server/sshd.pid
+AuthorizedKeysFile $HOME/ShprotScreenshots/Server/AuthorizedKeys
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+UsePAM no
+StrictModes no
+EOF
+setsid /usr/sbin/sshd -D -e -f $HOME/ShprotScreenshots/Server/sshd_config </dev/null >Server/sshd.log 2>&1 &
 rm DemoKey DemoKey.pub'
 
 # Remember the guest theme and restore it on exit
@@ -114,6 +142,7 @@ ORIGINAL_GTK_THEME=$(guest "gsettings get org.gnome.desktop.interface gtk-theme"
 
 cleanup() {
     guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown
+           [ -f ~/ShprotScreenshots/Server/sshd.pid ] && kill \$(cat ~/ShprotScreenshots/Server/sshd.pid)
            gsettings set org.gnome.desktop.interface color-scheme $ORIGINAL_COLOR_SCHEME
            gsettings set org.gnome.desktop.interface gtk-theme $ORIGINAL_GTK_THEME
            rm -rf ~/ShprotScreenshots"
@@ -155,6 +184,112 @@ capture_window() {
     scp "${SCP_OPTIONS[@]}" "$SSH_TARGET:Pictures/Screenshots/$SCREENSHOT" "$output"
     guest "rm -f ~/Pictures/Screenshots/'$SCREENSHOT'"
 
+    echo "$output updated."
+}
+
+# Clicks the guest screen at the given point through VirtualBox
+click_guest() {
+    python3 - "$VM_NAME" "$1" "$2" <<EOF
+import sys, time
+from vboxapi import VirtualBoxManager
+
+manager = VirtualBoxManager(None, None)
+machine = manager.getVirtualBox().findMachine(sys.argv[1])
+session = manager.getSessionObject()
+machine.lockMachine(session, manager.constants.LockType_Shared)
+
+try:
+    mouse = session.console.mouse
+    x, y = int(sys.argv[2]) + 1, int(sys.argv[3]) + 1 # Absolute coordinates are 1-based
+    mouse.putMouseEventAbsolute(x, y, 0, 0, 0)
+    time.sleep(0.2)
+    mouse.putMouseEventAbsolute(x, y, 0, 0, 1)
+    time.sleep(0.1)
+    mouse.putMouseEventAbsolute(x, y, 0, 0, 0)
+finally:
+    session.unlockMachine()
+EOF
+}
+
+# Opens the tray menu and saves it with the top bar part above it to the given file
+capture_tray_menu() {
+    local output="$1"
+    local temporary=$(mktemp -d)
+
+    # The icon is found in the GNOME Shell top bar by the application name
+    local icon=$(guest 'python3 - <<EOF
+import gi
+gi.require_version("Atspi", "2.0")
+from gi.repository import Atspi
+
+def find_icon(node):
+    if node.get_role_name() == "menu" and node.get_name() == "Shprot":
+        return node
+    for i in range(node.get_child_count()):
+        icon = find_icon(node.get_child_at_index(i))
+        if icon:
+            return icon
+    return None
+
+desktop = Atspi.get_desktop(0)
+
+for i in range(desktop.get_child_count()):
+    application = desktop.get_child_at_index(i)
+    if application.get_name() == "gnome-shell":
+        icon = find_icon(application)
+        if icon:
+            extents = icon.get_extents(Atspi.CoordType.SCREEN)
+            print(extents.x, extents.y, extents.width, extents.height)
+EOF')
+
+    if [ -z "$icon" ]; then
+        echo "ERROR: Tray icon was not found for $output."
+        exit 1
+    fi
+
+    read -r iconX iconY iconWidth iconHeight <<< "$icon"
+
+    # GNOME Shell shows the colored icon of the open tunnel a few seconds after the menu says so
+    for i in $(seq 30); do
+        VBoxManage controlvm "$VM_NAME" screenshotpng "$temporary/Before.png"
+        local saturation=$(convert "$temporary/Before.png" -crop "${iconWidth}x$iconHeight+$iconX+$iconY" +repage \
+                           -colorspace HSL -channel G -separate -format "%[fx:maxima>0.5]" info:)
+        [ "$saturation" = "1" ] && break
+        sleep 1
+    done
+
+    if [ "$saturation" != "1" ]; then
+        echo "ERROR: Tunnel was not opened for $output."
+        exit 1
+    fi
+
+    click_guest $((iconX + iconWidth / 2)) $((iconY + iconHeight / 2))
+    sleep 2
+    VBoxManage controlvm "$VM_NAME" screenshotpng "$temporary/After.png"
+    VBoxManage controlvm "$VM_NAME" keyboardputscancode 01 81 # Escape closes the menu
+
+    # The menu is the changed area below the top bar
+    local width=$(identify -format "%w" "$temporary/After.png")
+    local height=$(identify -format "%h" "$temporary/After.png")
+    local bar=32
+    local menu=$(convert "$temporary/After.png" "$temporary/Before.png" -compose difference -composite \
+                 -crop "${width}x$((height - bar))+0+$bar" +repage -colorspace gray -threshold 5% -format "%@" info:)
+
+    local menuWidth=$(echo "$menu" | sed -E 's/^([0-9]+)x.*/\1/')
+    local menuHeight=$(echo "$menu" | sed -E 's/^[0-9]+x([0-9]+).*/\1/')
+    local menuX=$(echo "$menu" | sed -E 's/^[0-9]+x[0-9]+\+([0-9]+).*/\1/')
+    local menuY=$(echo "$menu" | sed -E 's/.*\+([0-9]+)$/\1/')
+
+    if [ "$menuWidth" -lt 100 ] || [ "$menuHeight" -lt 100 ]; then
+        echo "ERROR: Tray menu was not opened for $output."
+        exit 1
+    fi
+
+    local margin=24
+    local left=$((menuX - margin))
+    convert "$temporary/After.png" -crop "$((width - left))x$((bar + menuY + menuHeight + margin))+$left+0" +repage "$output"
+
+    rm -rf "$temporary"
     echo "$output updated."
 }
 
@@ -229,6 +364,23 @@ EOF
         guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
 
         sleep 1
+
+        # Tray menu with the tunnel open through the temporary SSH server
+        guest "rm -rf ~/ShprotScreenshots/Config/Shprot && mkdir -p ~/ShprotScreenshots/Config/Shprot/KnownHosts
+               cp ~/ShprotScreenshots/TrayPreferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
+               cp ~/ShprotScreenshots/Server/KnownHost ~/ShprotScreenshots/Config/Shprot/KnownHosts/\$(printf %s myserver.com | sha256sum | cut -d' ' -f1)
+               export LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8
+               setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot </dev/null >/dev/null 2>&1 &
+               for i in \$(seq 60); do
+                   ss -ltn | grep -q '127.0.0.1:1080 ' && ss -ltn | grep -q '127.0.0.1:8080 ' && break
+                   sleep 0.5
+               done"
+
+        capture_tray_menu "Assets/TrayMenu-$THEME$SUFFIX.png"
+
+        guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
+
+        sleep 1
     done
 done
 
@@ -237,7 +389,7 @@ done
 for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
     SUFFIX=${LANGUAGE_ENTRY%%:*}
 
-    for IMAGE in Screenshot HostVerification; do
+    for IMAGE in Screenshot HostVerification TrayMenu; do
         SIZE=$(file -b "Assets/$IMAGE-Light$SUFFIX.png" | grep -oE '[0-9]+ x [0-9]+')
         WIDTH=${SIZE% x *}
         HEIGHT=${SIZE#* x }

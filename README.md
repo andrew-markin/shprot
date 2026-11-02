@@ -215,6 +215,14 @@ Right-click the tray icon to open the menu. It is grouped as follows:
 * **About Shprot…** shows version and build information, as well as licenses of Qt and its third-party components.
 * **Quit Shprot** closes the tunnel and exits.
 
+<div align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/TrayMenu-Dark.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/TrayMenu-Light.png">
+        <img alt="Tray menu" src="Assets/TrayMenu-Light.png" width="387" height="493">
+    </picture>
+</div>
+
 ### Troubleshooting
 If the tunnel doesn't open:
 1. Hover over the tray icon or look at the last notification: they show the reason, for example an authentication failure or an unreachable server.
@@ -355,7 +363,7 @@ Screenshots in `Assets` are taken automatically in a VirtualBox VM with Ubuntu G
 
     ./TakeScreenshots.sh
 
-The script runs the latest `.deb` package from the `Release` folder in the VM (or the package passed as an argument) without installing it, captures the Preferences dialog in light and dark themes for each README language and updates the image size in all README files. One-time VM preparation is described at the top of the script.
+The script runs the latest `.deb` package from the `Release` folder in the VM (or the package passed as an argument) without installing it, captures the Preferences dialog, the server key verification dialog and the tray menu in light and dark themes for each README language and updates the image size in all README files. One-time VM preparation is described at the top of the script.
 
 ### Automated Builds and Releases
 

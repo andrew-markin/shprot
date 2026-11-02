@@ -215,6 +215,14 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 * **关于 Shprot…** 显示版本和构建信息，以及 Qt 及其第三方组件的许可证。
 * **退出 Shprot** 关闭隧道并退出应用程序。
 
+<div align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="Assets/TrayMenu-Dark.zh.png">
+        <source media="(prefers-color-scheme: light)" srcset="Assets/TrayMenu-Light.zh.png">
+        <img alt="托盘菜单" src="Assets/TrayMenu-Light.zh.png" width="366" height="543">
+    </picture>
+</div>
+
 ### 故障排除
 如果隧道无法打开：
 1. 将鼠标悬停在托盘图标上，或查看最近的通知：其中会显示原因，例如认证失败或服务器不可达。
@@ -355,7 +363,7 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
     ./TakeScreenshots.sh
 
-该脚本会在虚拟机中直接运行 `Release` 文件夹中最新的 `.deb` 软件包（或通过参数指定的软件包），无需安装，按每个 README 的语言分别在浅色和深色主题下截取设置窗口，并更新所有 README 文件中的图片尺寸。虚拟机的一次性准备步骤见脚本开头的说明。
+该脚本会在虚拟机中直接运行 `Release` 文件夹中最新的 `.deb` 软件包（或通过参数指定的软件包），无需安装，按每个 README 的语言分别在浅色和深色主题下截取设置窗口、服务器密钥验证对话框和托盘菜单，并更新所有 README 文件中的图片尺寸。虚拟机的一次性准备步骤见脚本开头的说明。
 
 ### 自动构建与发布
 
