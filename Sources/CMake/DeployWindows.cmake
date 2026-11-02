@@ -102,9 +102,21 @@ set(
     Call RemoveLegacyInstalls"
 )
 
+# Start menu shortcut is created and removed by CPack hooks, where the start menu folder is known
+# (in the uninstaller it's $MUI_TEMP, $STARTMENU_FOLDER is set by the installer page only)
+
+set(
+    CPACK_NSIS_CREATE_ICONS_EXTRA "
+    CreateShortCut \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\" \\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\" \\\"--preferences\\\""
+)
+
+set(
+    CPACK_NSIS_DELETE_ICONS_EXTRA "
+    Delete \\\"$SMPROGRAMS\\\\$MUI_TEMP\\\\${PROJECT_TITLE}.lnk\\\""
+)
+
 set(
     CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    CreateShortCut \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\" \\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\" \\\"--preferences\\\"
     WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" \\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\""
 )
 
@@ -112,7 +124,6 @@ set(
     CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
     ExecWait '\\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\" --shutdown'
     Sleep 2000
-    Delete \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\"
     DeleteRegValue HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\""
 )
 
