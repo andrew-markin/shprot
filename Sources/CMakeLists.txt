@@ -72,8 +72,12 @@ add_executable(
     Shprot WIN32
     AboutDialog.cpp
     AboutDialog.h
+    LogsHighlighter.cpp
+    LogsHighlighter.h
     Logs.cpp
     Logs.h
+    LogsDialog.cpp
+    LogsDialog.h
     HttpProxyServer.cpp
     HttpProxyServer.h
     HttpProxyStream.cpp

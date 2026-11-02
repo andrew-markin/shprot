@@ -12,6 +12,7 @@
 
 class AboutDialog;
 class HttpProxyServer;
+class LogsDialog;
 class Preferences;
 class PreferencesDialog;
 
@@ -28,6 +29,7 @@ public slots:
     void stop();
 
     void openPreferencesDialog();
+    void openLogsDialog();
     void openAboutDialog();
 
 private slots:
@@ -85,6 +87,7 @@ private:
     QString m_httpProxyError;
 
     PreferencesDialog* m_preferencesDialog;
+    LogsDialog* m_logsDialog = nullptr;
     AboutDialog* m_aboutDialog = nullptr;
 };
 

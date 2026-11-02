@@ -24,6 +24,7 @@
 #include "AboutDialog.h"
 #include "HttpProxyServer.h"
 #include "Logs.h"
+#include "LogsDialog.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
 #include "TweakStyle.h"
@@ -225,6 +226,7 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
 
     m_contextMenu->addSeparator();
 
+    m_contextMenu->addAction("Show Logs…", this, &Shprot::openLogsDialog);
     m_contextMenu->addAction(QString("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
 
@@ -262,6 +264,7 @@ Shprot::~Shprot()
     stop();
     delete m_contextMenu;
     delete m_preferencesDialog;
+    delete m_logsDialog;
     delete m_aboutDialog;
 }
 
@@ -278,6 +281,16 @@ void Shprot::stop()
 void Shprot::openPreferencesDialog()
 {
     m_preferencesDialog->open();
+}
+
+void Shprot::openLogsDialog()
+{
+    if (!m_logsDialog)
+    {
+        m_logsDialog = new LogsDialog();
+    }
+
+    m_logsDialog->open();
 }
 
 void Shprot::openAboutDialog()
