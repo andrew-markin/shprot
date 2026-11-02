@@ -66,8 +66,8 @@
         <translation>ตรวจสอบความน่าเชื่อถือ</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>เพื่อยืนยันความถูกต้องของเซิร์ฟเวอร์และข้อมูลรับรอง (ความเสี่ยงจาก MitM / การติดตั้งใหม่)</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>ตรวจสอบตัวตนของเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

@@ -66,8 +66,8 @@
         <translation>اعتماد کی جانچ کریں</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>سرور کی سالمیت اور اسناد کی تصدیق کے لیے (MitM / دوبارہ انسٹالیشن کے خطرات)۔</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>سرور کی شناخت کی تصدیق کرتا ہے۔</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

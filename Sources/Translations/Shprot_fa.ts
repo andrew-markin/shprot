@@ -66,8 +66,8 @@
         <translation>بررسی اعتماد</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>برای تأیید یکپارچگی سرور و اعتبارنامه‌ها (خطرهای حمله مرد میانی / نصب مجدد).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>هویت سرور را تأیید می‌کند.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

@@ -66,8 +66,8 @@
         <translation>신뢰 확인 실행</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>서버 무결성과 자격 증명을 확인합니다(중간자 공격 / 재설치 위험).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>서버 ID를 확인합니다.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

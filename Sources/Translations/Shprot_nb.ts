@@ -66,8 +66,8 @@
         <translation>Kjør tillitssjekk</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>For å bekrefte serverens integritet og påloggingsdetaljer (risiko for MitM / reinstallasjon).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Bekrefter serverens identitet.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

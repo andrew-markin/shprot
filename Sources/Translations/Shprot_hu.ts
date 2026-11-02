@@ -66,8 +66,8 @@
         <translation>Megbízhatóság ellenőrzése</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>A kiszolgáló sértetlenségének és a hitelesítő adatoknak az ellenőrzésére (MitM / újratelepítés kockázata).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Ellenőrzi a kiszolgáló identitását.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

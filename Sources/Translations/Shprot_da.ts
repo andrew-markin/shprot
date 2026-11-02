@@ -66,8 +66,8 @@
         <translation>Kør tillidstjek</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>For at bekræfte serverens integritet og loginoplysninger (risici ved MitM / geninstallation).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Bekræfter serverens identitet.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

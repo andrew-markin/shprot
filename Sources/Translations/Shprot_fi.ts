@@ -66,8 +66,8 @@
         <translation>Suorita luotettavuustarkistus</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Palvelimen eheyden ja tunnistetietojen tarkistamiseen (MitM- / uudelleenasennusriskit).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Varmistaa palvelimen identiteetin.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

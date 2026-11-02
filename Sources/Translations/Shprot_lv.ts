@@ -66,8 +66,8 @@
         <translation>Pārbaudīt uzticamību</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Servera integritātes un akreditācijas datu pārbaudei (MitM / pārinstalēšanas riski).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Pārbauda servera identitāti.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

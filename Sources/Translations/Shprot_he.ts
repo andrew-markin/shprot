@@ -66,8 +66,8 @@
         <translation>בדיקת אמון</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>לאימות שלמות השרת ופרטי ההתחברות (סיכוני MitM / התקנה מחדש).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>מאמת את זהות השרת.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

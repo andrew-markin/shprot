@@ -115,7 +115,7 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     m_trustCheckButton = new QToolButton();
     m_trustCheckButton->setText(tr("Run Trust Check"));
 
-    QLabel* trustCheckLabel = new QLabel(tr("To verify server integrity and credentials (MitM / reinstall risks)."));
+    QLabel* trustCheckLabel = new QLabel(tr("Verifies the server's identity."));
     trustCheckLabel->setTextFormat(Qt::PlainText);
 
     QHBoxLayout* trustCheckLayout = new QHBoxLayout();

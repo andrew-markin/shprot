@@ -66,8 +66,8 @@
         <translation>Jalankan Semakan Kepercayaan</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Untuk mengesahkan integriti pelayan dan kelayakan (risiko MitM / pemasangan semula).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Mengesahkan identiti pelayan.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

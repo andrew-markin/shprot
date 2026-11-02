@@ -66,8 +66,8 @@
         <translation>विश्वास जाँच चलाएँ</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>सर्वर की अखंडता और क्रेडेंशियल सत्यापित करने के लिए (MitM / पुनः इंस्टॉलेशन के जोखिम)।</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>सर्वर की पहचान सत्यापित करता है।</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

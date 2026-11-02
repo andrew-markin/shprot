@@ -66,8 +66,8 @@
         <translation>Ստուգել վստահությունը</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Սերվերի ամբողջականությունն ու մուտքի տվյալները ստուգելու համար (MitM / վերատեղադրման ռիսկեր)։</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Ստուգում է սերվերի ինքնությունը։</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

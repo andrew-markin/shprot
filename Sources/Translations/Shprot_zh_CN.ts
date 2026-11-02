@@ -66,8 +66,8 @@
         <translation>运行信任检查</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>用于验证服务器完整性和凭据（中间人攻击 / 重装系统风险）。</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>验证服务器身份。</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

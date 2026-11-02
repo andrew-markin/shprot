@@ -66,8 +66,8 @@
         <translation>信頼性チェックを実行</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>サーバーの完全性と認証情報を確認します（MitM / 再インストールのリスク）。</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>サーバーの ID を確認します。</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

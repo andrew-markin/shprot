@@ -66,8 +66,8 @@
         <translation>Провери поверење</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>За проверу интегритета сервера и акредитива (ризици MitM / поновне инсталације).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Проверава идентитет сервера.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

@@ -66,8 +66,8 @@
         <translation>Etibarı yoxla</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Serverin bütövlüyünü və giriş məlumatlarını yoxlamaq üçün (MitM / yenidən quraşdırma riskləri).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Serverin kimliyini yoxlayır.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

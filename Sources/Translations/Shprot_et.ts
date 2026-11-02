@@ -66,8 +66,8 @@
         <translation>Kontrolli usaldust</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Serveri tervikluse ja volituste kontrollimiseks (MitM / uuesti paigaldamise riskid).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Kontrollib serveri identiteeti.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

@@ -66,8 +66,8 @@
         <translation>Έλεγχος εμπιστοσύνης</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Για την επαλήθευση της ακεραιότητας του διακομιστή και των διαπιστευτηρίων (κίνδυνοι MitM / επανεγκατάστασης).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Επαληθεύει την ταυτότητα του διακομιστή.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

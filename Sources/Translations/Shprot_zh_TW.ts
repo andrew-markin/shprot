@@ -66,8 +66,8 @@
         <translation>執行信任檢查</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>用於驗證伺服器完整性與憑證（中間人攻擊 / 重新安裝風險）。</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>驗證伺服器身分。</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

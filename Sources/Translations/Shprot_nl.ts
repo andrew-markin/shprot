@@ -66,8 +66,8 @@
         <translation>Vertrouwenscontrole uitvoeren</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Om de integriteit van de server en de inloggegevens te controleren (risico&apos;s van MitM / herinstallatie).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Controleert de identiteit van de server.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

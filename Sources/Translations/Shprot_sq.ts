@@ -66,8 +66,8 @@
         <translation>Kontrollo besueshmërinë</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Për të verifikuar integritetin e serverit dhe kredencialet (rreziqe MitM / riinstalimi).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Verifikon identitetin e serverit.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

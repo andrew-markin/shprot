@@ -66,8 +66,8 @@
         <translation>Ověřit důvěryhodnost</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>K ověření integrity serveru a přihlašovacích údajů (rizika MitM / přeinstalace).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Ověří identitu serveru.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

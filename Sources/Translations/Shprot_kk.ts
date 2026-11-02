@@ -66,8 +66,8 @@
         <translation>Сенімділікті тексеру</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Сервердің тұтастығы мен тіркелгі деректерін тексеру үшін (MitM / қайта орнату қаупі).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Сервердің сәйкестендіргішін тексереді.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

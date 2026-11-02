@@ -66,8 +66,8 @@
         <translation>Güven Denetimi Yap</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Sunucu bütünlüğünü ve kimlik bilgilerini doğrulamak için (MitM / yeniden kurulum riskleri).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Sunucunun kimliğini doğrular.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

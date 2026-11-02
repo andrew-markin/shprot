@@ -66,8 +66,8 @@
         <translation>فحص الثقة</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>للتحقق من سلامة الخادم وبيانات الاعتماد (مخاطر هجوم الوسيط / إعادة التثبيت).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>يتحقق من هوية الخادم.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

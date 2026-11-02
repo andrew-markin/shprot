@@ -66,8 +66,8 @@
         <translation>Overiť dôveryhodnosť</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Na overenie integrity servera a prihlasovacích údajov (riziká MitM / preinštalovania).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Overí identitu servera.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

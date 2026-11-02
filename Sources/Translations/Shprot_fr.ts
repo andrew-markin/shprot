@@ -66,8 +66,8 @@
         <translation>Vérifier la confiance</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Pour vérifier l&apos;intégrité du serveur et les identifiants (risques de MitM / réinstallation).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Vérifie l&apos;identité du serveur.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

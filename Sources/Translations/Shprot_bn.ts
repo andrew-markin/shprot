@@ -66,8 +66,8 @@
         <translation>বিশ্বস্ততা যাচাই করুন</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>সার্ভারের অখণ্ডতা ও শংসাপত্র যাচাইয়ের জন্য (MitM / পুনরায় ইনস্টলের ঝুঁকি)।</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>সার্ভারের পরিচয় যাচাই করে।</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

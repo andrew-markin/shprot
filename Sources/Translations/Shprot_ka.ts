@@ -66,8 +66,8 @@
         <translation>ნდობის შემოწმება</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>სერვერის მთლიანობისა და ავტორიზაციის მონაცემების შესამოწმებლად (MitM / ხელახალი ინსტალაციის რისკები).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>ამოწმებს სერვერის იდენტობას.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

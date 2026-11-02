@@ -66,8 +66,8 @@
         <translation>Tikrinti patikimumą</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Serverio vientisumui ir prisijungimo duomenims patikrinti (MitM / pakartotinio diegimo rizika).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Patikrina serverio tapatybę.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

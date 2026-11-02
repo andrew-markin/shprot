@@ -66,8 +66,8 @@
         <translation>Ishonchni tekshirish</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Server yaxlitligi va hisob ma’lumotlarini tekshirish uchun (MitM / qayta o‘rnatish xavflari).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Server identifikatorini tekshiradi.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>

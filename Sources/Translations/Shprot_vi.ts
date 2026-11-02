@@ -66,8 +66,8 @@
         <translation>Kiểm tra độ tin cậy</translation>
     </message>
     <message>
-        <source>To verify server integrity and credentials (MitM / reinstall risks).</source>
-        <translation>Để xác minh tính toàn vẹn của máy chủ và thông tin đăng nhập (rủi ro MitM / cài đặt lại).</translation>
+        <source>Verifies the server&apos;s identity.</source>
+        <translation>Xác minh danh tính máy chủ.</translation>
     </message>
     <message>
         <source>SSH Private Key:</source>
