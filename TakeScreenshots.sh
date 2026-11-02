@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
-# Takes README screenshots in a VirtualBox VM with Ubuntu GNOME desktop: one per
-# README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
+# Takes README screenshots in a VirtualBox VM with Ubuntu GNOME desktop: Preferences
+# dialog (Assets/Screenshot-*) and server key verification (Assets/HostVerification-*),
+# one per README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
 # Assets/Screenshot-Dark.ru.png for README.ru.md. Image size in READMEs is updated too.
 #
 # Usage: ./TakeScreenshots.sh [path/to/shprot.deb]
@@ -13,13 +14,15 @@
 # One-time VM preparation (Ubuntu 26.04 GNOME, Wayland session):
 #
 # 1. In the guest, install tools and keep the desktop quiet and static:
-#      sudo apt install -y openssh-server xdotool python3 fonts-noto-cjk
+#      sudo apt install -y openssh-server xdotool python3-gi gir1.2-atspi-2.0 fonts-noto-cjk
+#      echo "127.0.0.1 myserver.com" | sudo tee -a /etc/hosts
 #      gsettings set org.gnome.desktop.screensaver lock-enabled false
 #      gsettings set org.gnome.desktop.session idle-delay 0
 #      gsettings set org.gnome.desktop.notifications show-banners false
 #      gsettings set org.gnome.desktop.interface enable-animations false
 #      sudo systemctl disable --now unattended-upgrades
-#    and turn on Settings > Users > Automatic Login.
+#    and turn on Settings > Users > Automatic Login. The guest's own SSH server plays
+#    the demo server myserver.com for the key verification screenshot.
 #
 # 2. On the host, create a key for the VM and forward SSH to the guest
 #    (controlvm works on a running VM, use modifyvm --natpf1 on a stopped one):
@@ -121,7 +124,41 @@ trap cleanup EXIT
 # README file suffix and UI language of its screenshots
 LANGUAGES=(":en_US" ".ru:ru_RU" ".zh:zh_CN")
 
-# Capture Preferences dialog in each theme and language
+# Without it the key verification shows another host name or fails
+if ! guest "getent hosts myserver.com | grep -qE '^(127\.|::1)'"; then
+    echo "ERROR: myserver.com does not resolve to the guest itself, see VM preparation at the top of this script."
+    exit 1
+fi
+
+# Saves the focused guest window to the given file
+capture_window() {
+    local output="$1"
+
+    PREVIOUS=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+
+    # Alt+Print: GNOME saves the focused window with its frame and transparent shadow
+    VBoxManage controlvm "$VM_NAME" keyboardputscancode 38 54 d4 b8
+
+    for i in $(seq 10); do
+        sleep 1
+        SCREENSHOT=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+        [ "$SCREENSHOT" != "$PREVIOUS" ] && break
+    done
+
+    if [ "$SCREENSHOT" = "$PREVIOUS" ]; then
+        echo "ERROR: $output was not taken."
+        exit 1
+    fi
+
+    sleep 1 # Let GNOME finish writing the file
+
+    scp "${SCP_OPTIONS[@]}" "$SSH_TARGET:Pictures/Screenshots/$SCREENSHOT" "$output"
+    guest "rm -f ~/Pictures/Screenshots/'$SCREENSHOT'"
+
+    echo "$output updated."
+}
+
+# Capture dialogs in each theme and language
 
 for THEME in Light Dark; do
     if [ "$THEME" = "Light" ]; then
@@ -137,9 +174,10 @@ for THEME in Light Dark; do
     for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
         SUFFIX=${LANGUAGE_ENTRY%%:*}
         LOCALE=${LANGUAGE_ENTRY#*:}
-        OUTPUT="Assets/Screenshot-$THEME$SUFFIX.png"
 
-        guest "cp ~/ShprotScreenshots/Preferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
+        # Fresh preferences without known hosts, so the server key is always unknown
+        guest "rm -rf ~/ShprotScreenshots/Config/Shprot && mkdir -p ~/ShprotScreenshots/Config/Shprot
+               cp ~/ShprotScreenshots/Preferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
                export LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8
                setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot --preferences </dev/null >/dev/null 2>&1 &"
 
@@ -150,31 +188,47 @@ for THEME in Light Dark; do
 
         sleep 2
 
-        PREVIOUS=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
+        capture_window "Assets/Screenshot-$THEME$SUFFIX.png"
 
-        # Alt+Print: GNOME saves the focused window with its frame and transparent shadow
-        VBoxManage controlvm "$VM_NAME" keyboardputscancode 38 54 d4 b8
+        # Button texts are translated too, so Run Trust Check is pressed through accessibility
+        # as the first button of the Preferences dialog
+        guest 'python3 - <<EOF
+import gi
+gi.require_version("Atspi", "2.0")
+from gi.repository import Atspi
 
-        for i in $(seq 10); do
-            sleep 1
-            SCREENSHOT=$(guest "ls -t ~/Pictures/Screenshots/ 2>/dev/null | head -1")
-            [ "$SCREENSHOT" != "$PREVIOUS" ] && break
-        done
+def find_button(node):
+    if node.get_role_name() == "button":
+        return node
+    for i in range(node.get_child_count()):
+        button = find_button(node.get_child_at_index(i))
+        if button:
+            return button
+    return None
 
-        if [ "$SCREENSHOT" = "$PREVIOUS" ]; then
-            echo "ERROR: Screenshot was not taken for $THEME theme and $LOCALE language."
-            exit 1
-        fi
+desktop = Atspi.get_desktop(0)
 
-        sleep 1 # Let GNOME finish writing the file
+for i in range(desktop.get_child_count()):
+    application = desktop.get_child_at_index(i)
+    if application.get_name() == "Shprot":
+        button = find_button(application)
+        if button:
+            button.get_action_iface().do_action(0)
+            break
+EOF
+               for i in $(seq 20); do
+                   [ $(xdotool search --onlyvisible --class Shprot | wc -l) -ge 2 ] && break
+                   sleep 0.5
+               done
+               xdotool mousemove 0 0'
 
-        scp "${SCP_OPTIONS[@]}" "$SSH_TARGET:Pictures/Screenshots/$SCREENSHOT" "$OUTPUT"
-        guest "rm -f ~/Pictures/Screenshots/'$SCREENSHOT'
-               ~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
+        sleep 2
+
+        capture_window "Assets/HostVerification-$THEME$SUFFIX.png"
+
+        guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
 
         sleep 1
-
-        echo "$OUTPUT updated."
     done
 done
 
@@ -183,11 +237,13 @@ done
 for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
     SUFFIX=${LANGUAGE_ENTRY%%:*}
 
-    SIZE=$(file -b "Assets/Screenshot-Light$SUFFIX.png" | grep -oE '[0-9]+ x [0-9]+')
-    WIDTH=${SIZE% x *}
-    HEIGHT=${SIZE#* x }
+    for IMAGE in Screenshot HostVerification; do
+        SIZE=$(file -b "Assets/$IMAGE-Light$SUFFIX.png" | grep -oE '[0-9]+ x [0-9]+')
+        WIDTH=${SIZE% x *}
+        HEIGHT=${SIZE#* x }
 
-    sed -i -E "s|(src=\"Assets/Screenshot-Light$SUFFIX.png\" width=\")[0-9]+(\" height=\")[0-9]+|\1$WIDTH\2$HEIGHT|" "README$SUFFIX.md"
+        sed -i -E "s|(src=\"Assets/$IMAGE-Light$SUFFIX.png\" width=\")[0-9]+(\" height=\")[0-9]+|\1$WIDTH\2$HEIGHT|" "README$SUFFIX.md"
 
-    echo "README$SUFFIX.md image size set to ${WIDTH}x${HEIGHT}."
+        echo "README$SUFFIX.md: $IMAGE size set to ${WIDTH}x${HEIGHT}."
+    done
 done

@@ -186,6 +186,15 @@ The HTTP proxy works **through** the same SSH tunnel as the SOCKS5 proxy, so it 
 2. **Host Verification (First-time Connection):**
    If you are connecting to this server for the first time, a dialog box will appear displaying the remote server's **host key fingerprint**. 
    * **Tech Tip (How to verify):** To prevent Man-in-the-Middle attacks, you can verify this fingerprint by running `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` (or your specific host key file) directly on your server console and matching the output hash.
+
+   <div align="center">
+       <picture>
+           <source media="(prefers-color-scheme: dark)" srcset="Assets/HostVerification-Dark.png">
+           <source media="(prefers-color-scheme: light)" srcset="Assets/HostVerification-Light.png">
+           <img alt="Unknown Server Identity dialog" src="Assets/HostVerification-Light.png" width="567" height="272">
+       </picture>
+   </div>
+
 3. Confirm trust in the dialog box. Shprot will save your parameters and immediately spin up the background engine to open and maintain the tunnel.
 
 ### Connection Status Indicators

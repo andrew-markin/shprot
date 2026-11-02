@@ -186,6 +186,15 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 2. **主机验证（首次连接）：**
    如果您是首次连接到此服务器，将出现一个对话框，显示远程服务器的 **主机密钥指纹**。
    * **技术提示（如何验证）：** 为防止中间人攻击，您可以直接在服务器控制台上运行 `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub`（或指定具体的主机密钥文件）来验证此指纹，并匹配输出哈希值。
+
+   <div align="center">
+       <picture>
+           <source media="(prefers-color-scheme: dark)" srcset="Assets/HostVerification-Dark.zh.png">
+           <source media="(prefers-color-scheme: light)" srcset="Assets/HostVerification-Light.zh.png">
+           <img alt="“未知的服务器身份”对话框" src="Assets/HostVerification-Light.zh.png" width="578" height="271">
+       </picture>
+   </div>
+
 3. 在对话框中确认信任。Shprot 将保存您的参数并立即启动后台引擎以打开和维护隧道。
 
 ### 连接状态指示器
