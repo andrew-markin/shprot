@@ -89,6 +89,27 @@ set(DESKTOP_ICON "/${PROJECT_BINARIES_DEST_DIR}/${DESKTOP_ICON_FILENAME}")
 set(DESKTOP_APPLICATION_EXEC "/${PROJECT_EXECUTABLE} --preferences")
 set(DESKTOP_AUTOSTART_EXEC "/${PROJECT_EXECUTABLE} --delay --autostart")
 set(DESKTOP_COMMENT "${PROJECT_DESCRIPTION}")
+
+# Translated comments are taken from application translations, where the description is translated too
+
+set(DESKTOP_COMMENT_TRANSLATIONS "")
+
+foreach(TRANSLATION_LANGUAGE ${TRANSLATION_LANGUAGES})
+    set(TRANSLATION_TS_FILE "${PROJECT_SOURCE_DIR}/Translations/${PROJECT_NAME}_${TRANSLATION_LANGUAGE}.ts")
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${TRANSLATION_TS_FILE}")
+    file(READ "${TRANSLATION_TS_FILE}" TRANSLATION_TS)
+
+    if(TRANSLATION_TS MATCHES "<source>${PROJECT_DESCRIPTION}</source>[ \t\r\n]*<translation>([^<]+)</translation>")
+        set(TRANSLATED_COMMENT "${CMAKE_MATCH_1}")
+
+        foreach(XML_ENTITY "&apos;='" "&quot;=\"" "&lt;=<" "&gt;=>" "&amp;=&")
+            string(REGEX MATCH "^([^=]+)=(.*)$" XML_ENTITY "${XML_ENTITY}")
+            string(REPLACE "${CMAKE_MATCH_1}" "${CMAKE_MATCH_2}" TRANSLATED_COMMENT "${TRANSLATED_COMMENT}")
+        endforeach()
+
+        string(APPEND DESKTOP_COMMENT_TRANSLATIONS "Comment[${TRANSLATION_LANGUAGE}]=${TRANSLATED_COMMENT}\n")
+    endif()
+endforeach()
 set(DESKTOP_CATEGORIES "Utility")
 
 set(DESKTOP_FILENAME "${PROJECT_NAME}.desktop")
