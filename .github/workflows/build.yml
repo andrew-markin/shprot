@@ -63,6 +63,11 @@ jobs:
           QT_PREFIX: ${{ env.QT_ROOT_DIR }}
         run: call ReleaseWindows.cmd
 
+      - name: Show NSIS output
+        if: failure()
+        shell: cmd
+        run: type Release\Build\_CPack_Packages\win64\NSIS\NSISOutput.log
+
       # cmd and not Git Bash, so tests use Windows OpenSSH (as users do) instead of the one bundled with Git
       - name: Run tests
         shell: cmd
