@@ -86,11 +86,15 @@ configure_file(
     @ONLY
 )
 
+# NSIS doesn't treat "D:/..." as an absolute path, so a native one with escaped backslashes is used
+file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh" REMOVE_LEGACY_INSTALLS_NSH)
+string(REPLACE "\\" "\\\\" REMOVE_LEGACY_INSTALLS_NSH "${REMOVE_LEGACY_INSTALLS_NSH}")
+
 set(
     CPACK_NSIS_DEFINES "
     !define MUI_FINISHPAGE_RUN \\\"explorer.exe\\\"
     !define MUI_FINISHPAGE_RUN_PARAMETERS \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\"
-    !include \\\"${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh\\\""
+    !include \\\"${REMOVE_LEGACY_INSTALLS_NSH}\\\""
 )
 
 set(
