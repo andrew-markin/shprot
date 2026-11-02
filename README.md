@@ -57,6 +57,8 @@ Shprot is available for both Windows and Linux platforms. Choose the appropriate
 ### Windows
 Download the pre-compiled NSIS installer for Windows (`.exe` file). Simply run the downloaded file and follow the setup wizard instructions.
 
+To update, just install a newer version over the installed one: the running app is closed, the previous version is replaced, and only one Shprot entry remains in *Apps & features* (entries left by version 1.5 and older are cleaned up too). Uninstalling from *Apps & features* also removes the autostart entry and the Start menu shortcut. For unattended installation, run the installer with the `/S` switch.
+
 ### Linux (DEB-based distributions)
 For Ubuntu, Debian, and other DEB-based systems, download the `.deb` package and install it using:
 
@@ -191,6 +193,21 @@ You can easily track the tunnel status without opening the main window:
 * **Tray Icon Tooltip:** Hover over the tray icon to see the current tunnel state and, if the tunnel is closed, the reason (for example, an authentication failure or an unreachable server).
 * **Toast Notifications:** The app will send native system tray notifications whenever the tunnel successfully connects or drops. If the tunnel cannot be opened, the notification explains why; each new reason is reported once rather than on every reconnection attempt.
 
+### Tray Menu
+Right-click the tray icon to open the menu:
+* **Shprot Preferences…** opens the settings window (double-clicking the icon does the same).
+* **Show Notifications** turns toast notifications on or off.
+* **Show Logs…** shows recent log records, updated live.
+* **About Shprot…** shows version and build information, as well as licenses of Qt and its third-party components.
+* **Quit Shprot** closes the tunnel and exits.
+
+### Troubleshooting
+If the tunnel doesn't open:
+1. Hover over the tray icon or look at the last notification: they show the reason, for example an authentication failure or an unreachable server.
+2. Open **Show Logs…** in the tray menu for details, including the output of the `ssh` client.
+
+Log files are stored in `%APPDATA%\Shprot\Logs` on Windows and in `~/.local/share/Shprot/Logs` on Linux, one file per day, and are kept for 30 days.
+
 ## Building and Development
 
 ### 1. Pre-requisites & Setup
@@ -236,7 +253,7 @@ Run the automated release script from the project root directory:
 
     ReleaseWindows.cmd
 
-Once the script finishes execution, you can find the production-ready NSIS installer (`.exe`) inside the **`Release`** folder.
+Once the script finishes execution, you can find the production-ready NSIS installer (`.exe`) inside the **`Release`** folder. If the build fails, the script stops and keeps the `Release\Build` folder for investigation (installer errors are in `_CPack_Packages\win64\NSIS\NSISOutput.log`).
 
 #### Linux Build (Recommended: Docker-based)
 
