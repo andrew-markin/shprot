@@ -21,7 +21,7 @@ class Shprot : public QObject
     Q_OBJECT
 
 public:
-    Shprot(QObject* parent = nullptr);
+    Shprot(Preferences* preferences, QObject* parent = nullptr);
     ~Shprot();
 
 public slots:
@@ -49,6 +49,7 @@ private slots:
     void maybeStartHttpProxyServer();
 
     void handlePreferencesChange(const QStringList& changes);
+    void setTunnelEnabled(bool enabled);
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
     void maybeUpdateStatus();
@@ -74,6 +75,7 @@ private:
     HttpProxyServer* m_httpProxyServer;
 
     QMenu* m_contextMenu;
+    QAction* m_tunnelEnabledAction;
     QIcon m_tunnelOpenIcon;
     QIcon m_tunnelClosedIcon;
     QSystemTrayIcon* m_systemTrayIcon;

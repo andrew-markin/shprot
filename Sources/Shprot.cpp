@@ -8,6 +8,7 @@
 #include <QNetworkProxy>
 #include <QRandomGenerator>
 #include <QRegularExpression>
+#include <QSignalBlocker>
 #include <QStandardPaths>
 #include <QThread>
 #include <QUrl>
@@ -175,15 +176,10 @@ QString getSingleInstanceServerName(const QString& userName)
 
 } // namespace
 
-Shprot::Shprot(QObject* parent) : QObject(parent)
+Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_preferences(preferences)
 {
-    QString appConfigPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
-
-    QDir appConfigDir(appConfigPath);
+    QDir appConfigDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     appConfigDir.mkpath(".");
-
-    QString preferencesPath = appConfigDir.filePath("Preferences.json");
-    m_preferences = new Preferences(preferencesPath, this);
 
     connect(m_preferences, &Preferences::changed, this, &Shprot::handlePreferencesChange);
 
@@ -216,12 +212,27 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
 
     m_contextMenu->addSeparator();
 
+    m_tunnelEnabledAction = m_contextMenu->addAction("Enable SSH Proxy Tunnel");
+    m_tunnelEnabledAction->setCheckable(true);
+    m_tunnelEnabledAction->setChecked(m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool());
+
+    connect(m_tunnelEnabledAction, &QAction::toggled, this, &Shprot::setTunnelEnabled);
+
     QAction* showNotificationsAction = m_contextMenu->addAction("Show Notifications");
     showNotificationsAction->setCheckable(true);
     showNotificationsAction->setChecked(m_preferences->value("showNotifications", true).toBool());
 
     connect(showNotificationsAction, &QAction::toggled, this, [this](bool checked) {
         m_preferences->setValue("showNotifications", checked);
+    });
+
+    // Autostart entry is always installed, the application started by it exits if this is turned off
+    QAction* startAtLoginAction = m_contextMenu->addAction("Start at Login");
+    startAtLoginAction->setCheckable(true);
+    startAtLoginAction->setChecked(m_preferences->value("startAtLogin", true).toBool());
+
+    connect(startAtLoginAction, &QAction::toggled, this, [this](bool checked) {
+        m_preferences->setValue("startAtLogin", checked);
     });
 
     m_contextMenu->addSeparator();
@@ -247,6 +258,11 @@ Shprot::Shprot(QObject* parent) : QObject(parent)
     connect(m_statusTimer, &QTimer::timeout, this, &Shprot::maybeUpdateStatus);
 
     m_preferencesDialog = new PreferencesDialog(m_preferences);
+
+    // The dialog would overwrite the state toggled in the menu when saved, so it's toggled in one place at a time
+    connect(m_contextMenu, &QMenu::aboutToShow, this, [this]() {
+        m_tunnelEnabledAction->setEnabled(!m_preferencesDialog->isVisible());
+    });
 
     QNetworkInformation* networkInformation = QNetworkInformation::instance();
 
@@ -694,7 +710,28 @@ void Shprot::handlePreferencesChange(const QStringList& changes)
         m_notifiedError.clear();
         m_httpProxyError.clear();
         m_tunnelTimer->start(0);
+
+        QSignalBlocker blocker(m_tunnelEnabledAction);
+        m_tunnelEnabledAction->setChecked(m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool());
     }
+}
+
+void Shprot::setTunnelEnabled(bool enabled)
+{
+    QVariantMap sshProxyTunnel = m_preferences->value("sshProxyTunnel").toMap();
+
+    // Tunnel that was never configured can't be enabled from the menu, preferences are opened instead
+    if (enabled && (sshProxyTunnel.value("sshDestination").toString().isEmpty() ||
+                    sshProxyTunnel.value("sshPrivateKey").toString().isEmpty()))
+    {
+        QSignalBlocker blocker(m_tunnelEnabledAction);
+        m_tunnelEnabledAction->setChecked(false);
+        openPreferencesDialog();
+        return;
+    }
+
+    sshProxyTunnel.insert("enabled", enabled);
+    m_preferences->setValue("sshProxyTunnel", sshProxyTunnel);
 }
 
 void Shprot::handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason)
@@ -831,6 +868,17 @@ int main(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
 
+    // Preferences are loaded before anything else, so a disabled autostart exits right away
+    QDir appConfigDir(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+    appConfigDir.mkpath(".");
+
+    Preferences preferences(appConfigDir.filePath("Preferences.json"));
+
+    if (arguments.contains("--autostart") && !preferences.value("startAtLogin", true).toBool())
+    {
+        return EXIT_SUCCESS; // Started by the autostart entry, but the user turned it off
+    }
+
     if (arguments.contains("--delay"))
     {
         QThread::msleep(StartDelayTimeout);
@@ -879,7 +927,7 @@ int main(int argc, char* argv[])
     QApplication::setStyle(new TweakStyle(application.style()));
     QApplication::setQuitOnLastWindowClosed(false);
 
-    Shprot shprot;
+    Shprot shprot(&preferences);
     shprot.start();
 
     QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, [&singleInstanceServer, &shprot]() {

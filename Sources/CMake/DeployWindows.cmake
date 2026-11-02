@@ -117,7 +117,7 @@ set(
 
 set(
     CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" \\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\""
+    WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\\\" \\\"${PROJECT_NAME}\\\" '\\\"$INSTDIR\\\\${PROJECT_EXECUTABLE}\\\" --autostart'"
 )
 
 set(
