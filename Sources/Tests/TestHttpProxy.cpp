@@ -154,18 +154,30 @@ void TestHttpProxy::connectTunnelIpv6()
 void TestHttpProxy::invalidRequest_data()
 {
     QTest::addColumn<QByteArray>("request");
+    QTest::addColumn<QByteArray>("loggedRequestLine");
 
-    QTest::newRow("garbage") << QByteArray("GARBAGE\r\n\r\n");
-    QTest::newRow("origin form") << QByteArray("GET /path HTTP/1.1\r\nHost: example.com\r\n\r\n");
-    QTest::newRow("https in absolute form") << QByteArray("GET https://example.com/ HTTP/1.1\r\n\r\n");
-    QTest::newRow("not http version") << QByteArray("GET http://example.com/ FTP/1.0\r\n\r\n");
-    QTest::newRow("ipv6 without brackets") << QByteArray("CONNECT ::1:443 HTTP/1.1\r\n\r\n");
-    QTest::newRow("header without colon") << QByteArray("GET http://example.com/ HTTP/1.1\r\nBroken\r\n\r\n");
+    QTest::newRow("garbage") << QByteArray("GARBAGE\r\n\r\n") << QByteArray("GARBAGE");
+    QTest::newRow("origin form") << QByteArray("GET /path HTTP/1.1\r\nHost: example.com\r\n\r\n")
+                                 << QByteArray("GET /path HTTP/1.1");
+    QTest::newRow("https in absolute form") << QByteArray("GET https://example.com/ HTTP/1.1\r\n\r\n")
+                                            << QByteArray("GET https://example.com/ HTTP/1.1");
+    QTest::newRow("not http version") << QByteArray("GET http://example.com/ FTP/1.0\r\n\r\n")
+                                      << QByteArray("GET http://example.com/ FTP/1.0");
+    QTest::newRow("ipv6 without brackets") << QByteArray("CONNECT ::1:443 HTTP/1.1\r\n\r\n")
+                                           << QByteArray("CONNECT ::1:443 HTTP/1.1");
+    QTest::newRow("header without colon") << QByteArray("GET http://example.com/ HTTP/1.1\r\nBroken\r\n\r\n")
+                                          << QByteArray("GET http://example.com/ HTTP/1.1");
+    QTest::newRow("long request line") << QByteArray("GET /" + QByteArray(500, 'a') + " HTTP/1.1\r\n\r\n")
+                                       << QByteArray("GET /" + QByteArray(195, 'a'));
 }
 
 void TestHttpProxy::invalidRequest()
 {
     QFETCH(QByteArray, request);
+    QFETCH(QByteArray, loggedRequestLine);
+
+    // The request line is logged as is (single line requests used to be logged as empty strings)
+    QTest::ignoreMessage(QtWarningMsg, qPrintable(QString("Invalid HTTP request: \"%1\"").arg(loggedRequestLine)));
 
     QByteArray response = exchange(request);
 

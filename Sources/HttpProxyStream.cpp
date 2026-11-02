@@ -11,6 +11,7 @@ static const int MaxRequestHeadersSize = 65536; // 64KB
 static const int MaxPendingBytes = 262144; // 256KB per direction
 static const int ChunkSize = 65536; // 64KB
 static const int RequestTimeout = 30000; // 30s
+static const int MaxLoggedRequestLineSize = 200;
 
 void forwardData(QTcpSocket* source, QTcpSocket* destination)
 {
@@ -87,7 +88,10 @@ void HttpProxyStream::readRequest()
 
     if (!parseRequest(headers, remainder))
     {
-        qWarning() << "Invalid HTTP request:" << headers.left(headers.indexOf("\r\n"));
+        // A request may consist of the request line only, and its content comes from the client
+        qsizetype requestLineEnd = headers.indexOf("\r\n");
+        QByteArray requestLine = (requestLineEnd < 0) ? headers : headers.left(requestLineEnd);
+        qWarning() << "Invalid HTTP request:" << requestLine.left(MaxLoggedRequestLineSize);
         respondAndClose("400 Bad Request");
         return;
     }
