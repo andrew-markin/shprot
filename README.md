@@ -196,7 +196,9 @@ You can easily track the tunnel status without opening the main window:
 ### Tray Menu
 Right-click the tray icon to open the menu:
 * **Shprot Preferences…** opens the settings window (double-clicking the icon does the same).
+* **Enable SSH Proxy Tunnel** turns the tunnel on or off without opening the settings (same as the checkbox in the settings window).
 * **Show Notifications** turns toast notifications on or off.
+* **Start at Login** turns automatic start on login on or off for the current user.
 * **Show Logs…** shows recent log records, updated live.
 * **About Shprot…** shows version and build information, as well as licenses of Qt and its third-party components.
 * **Quit Shprot** closes the tunnel and exits.

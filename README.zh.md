@@ -196,7 +196,9 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 ### 托盘菜单
 右键单击托盘图标即可打开菜单：
 * **Shprot Preferences…** 打开设置窗口（双击图标也可以）。
+* **Enable SSH Proxy Tunnel** 无需打开设置即可开启或关闭隧道（与设置窗口中的复选框相同）。
 * **Show Notifications** 开启或关闭通知消息。
+* **Start at Login** 为当前用户开启或关闭登录时自动启动。
 * **Show Logs…** 显示最近的日志记录，并实时更新。
 * **About Shprot…** 显示版本和构建信息，以及 Qt 及其第三方组件的许可证。
 * **Quit Shprot** 关闭隧道并退出应用程序。
