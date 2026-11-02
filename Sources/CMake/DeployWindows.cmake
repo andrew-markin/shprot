@@ -74,32 +74,32 @@ set(CPACK_NSIS_PACKAGE_NAME "${PROJECT_TITLE}")
 set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/${PROJECT_ICON}")
 set(CPACK_NSIS_MUI_UNIICON "${PROJECT_SOURCE_DIR}/${PROJECT_ICON}")
 set(CPACK_NSIS_INSTALLED_ICON_NAME "${PROJECT_EXECUTABLE}")
-set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MANIFEST_DPI_AWARE TRUE)
 set(CPACK_NSIS_COMPRESSOR "/SOLID lzma")
 
-# Versions up to 1.5 used versioned uninstall keys, such installations are removed before installing files
+# Installed version (and installations of 1.5 and older with versioned uninstall keys) is removed silently
+# before installing files, so the uninstall-before-install question of CPack is not needed
 
 configure_file(
-    ${CMAKE_CURRENT_LIST_DIR}/Windows/RemoveLegacyInstalls.nsh.in
-    ${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh
+    ${CMAKE_CURRENT_LIST_DIR}/Windows/RemovePreviousInstalls.nsh.in
+    ${CMAKE_CURRENT_BINARY_DIR}/RemovePreviousInstalls.nsh
     @ONLY
 )
 
 # NSIS doesn't treat "D:/..." as an absolute path, so a native one with escaped backslashes is used
-file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/RemoveLegacyInstalls.nsh" REMOVE_LEGACY_INSTALLS_NSH)
-string(REPLACE "\\" "\\\\" REMOVE_LEGACY_INSTALLS_NSH "${REMOVE_LEGACY_INSTALLS_NSH}")
+file(TO_NATIVE_PATH "${CMAKE_CURRENT_BINARY_DIR}/RemovePreviousInstalls.nsh" REMOVE_PREVIOUS_INSTALLS_NSH)
+string(REPLACE "\\" "\\\\" REMOVE_PREVIOUS_INSTALLS_NSH "${REMOVE_PREVIOUS_INSTALLS_NSH}")
 
 set(
     CPACK_NSIS_DEFINES "
     !define MUI_FINISHPAGE_RUN \\\"explorer.exe\\\"
     !define MUI_FINISHPAGE_RUN_PARAMETERS \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\${PROJECT_TITLE}.lnk\\\"
-    !include \\\"${REMOVE_LEGACY_INSTALLS_NSH}\\\""
+    !include \\\"${REMOVE_PREVIOUS_INSTALLS_NSH}\\\""
 )
 
 set(
     CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS "
-    Call RemoveLegacyInstalls"
+    Call RemovePreviousInstalls"
 )
 
 # Start menu shortcut is created and removed by CPack hooks, where the start menu folder is known
