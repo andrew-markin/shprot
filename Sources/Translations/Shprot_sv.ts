@@ -388,12 +388,24 @@
         <translation>Avsluta %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH är inte installerat</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Det gick inte att starta ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Det gick inte att starta ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Ansluten till servern, men webbplatser kan inte nås via tunneln</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Inget internet genom tunneln</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunneln är öppen</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Ansluter…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunneln är stängd</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopiera adressen till %1-proxyn (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Återanslut nu</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Det gick inte att öppna tunneln</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>ansluter…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nytt försök om %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Ny version tillgänglig (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH-klienten (%1) är inte installerad. Installera OpenSSH-klientpaketet (t.ex. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentiseringen misslyckades</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentiseringen misslyckades: servern avvisade den privata nyckeln</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serverns identitet är inte verifierad</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Verifieringen av serverns identitet misslyckades, kör förtroendekontrollen i inställningarna</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serveradressen hittades inte</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Det gick inte att slå upp serverns adress</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Servern kan inte nås</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Servern kan inte nås</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxyporten är upptagen</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Porten för den lokala SOCKS5-proxyn används redan</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Anslutningen bröts</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Servern stängde anslutningen</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Anslutningen misslyckades</translation>
     </message>
 </context>
 </TS>

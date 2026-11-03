@@ -388,12 +388,24 @@
         <translation>結束 %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>未安裝 OpenSSH</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>無法啟動 ssh：%1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>無法啟動 ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>已連線到伺服器，但無法透過通道存取網站</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>通道無法連上網際網路</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>通道已開啟</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>正在連線…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>通道已關閉</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>複製 %1 代理位址（%2）</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>立即重新連線</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>無法開啟通道</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>正在連線…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 後重試</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>有新版本可用 (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>未安裝 OpenSSH 用戶端（%1）。請安裝 OpenSSH 用戶端套件（例如 openssh-client）。</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>驗證失敗</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>驗證失敗：伺服器拒絕了私密金鑰</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>伺服器身分未驗證</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>伺服器身分驗證失敗，請在偏好設定中執行信任檢查</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>找不到伺服器位址</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>無法解析伺服器位址</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>無法連上伺服器</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>無法連到伺服器</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxy 連接埠已被占用</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>本機 SOCKS5 代理連接埠已被使用</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>連線已中斷</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>連線已被伺服器關閉</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>連線失敗</translation>
     </message>
 </context>
 </TS>

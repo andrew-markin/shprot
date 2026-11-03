@@ -388,12 +388,24 @@
         <translation>יציאה מ־%1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH אינו מותקן</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>לא ניתן להפעיל את ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>לא ניתן להפעיל את ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>מחובר לשרת, אך אתרים אינם נגישים דרך המנהרה</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>אין אינטרנט דרך המנהרה</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>המנהרה פתוחה</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>מתחבר…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>המנהרה סגורה</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>העתקת כתובת פרוקסי %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>התחברות מחדש כעת</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>לא ניתן לפתוח את המנהרה</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>מתחבר…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>ניסיון חוזר בעוד %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>גרסה חדשה זמינה (%1 ← %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>לקוח OpenSSH (%1) אינו מותקן. יש להתקין את חבילת לקוח OpenSSH (לדוגמה openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>האימות נכשל</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>האימות נכשל: השרת דחה את המפתח הפרטי</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>זהות השרת לא אומתה</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>אימות זהות השרת נכשל, יש להריץ בדיקת אמון בהעדפות</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>כתובת השרת לא נמצאה</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>לא ניתן לפענח את כתובת השרת</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>השרת אינו זמין</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>השרת אינו נגיש</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>פורט הפרוקסי תפוס</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>פתחת פרוקסי SOCKS5 המקומי כבר בשימוש</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>החיבור אבד</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>השרת סגר את החיבור</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>החיבור נכשל</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>Sair do %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH não instalado</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Não foi possível iniciar o ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Não foi possível iniciar o ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Conectado ao servidor, mas os sites não estão acessíveis pelo túnel</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Sem internet pelo túnel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>O túnel está aberto</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Conectando…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>O túnel está fechado</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Copiar endereço do proxy %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Reconectar agora</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Não foi possível abrir o túnel</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>conectando…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nova tentativa em %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Nova versão disponível (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>O cliente OpenSSH (%1) não está instalado. Instale o pacote do cliente OpenSSH (ex.: openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Falha na autenticação</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Falha na autenticação: o servidor rejeitou a chave privada</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Servidor não verificado</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Falha ao verificar a identidade do servidor, execute a verificação de confiança nas Preferências</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Endereço do servidor não encontrado</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Não foi possível resolver o endereço do servidor</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Servidor inacessível</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>O servidor está inacessível</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>A porta do proxy está ocupada</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>A porta do proxy SOCKS5 local já está em uso</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Conexão perdida</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>A conexão foi encerrada pelo servidor</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Falha na conexão</translation>
     </message>
 </context>
 </TS>

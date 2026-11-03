@@ -388,12 +388,24 @@
         <translation>Kilépés: %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>Az OpenSSH nincs telepítve</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Az ssh nem indítható: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Az ssh nem indítható</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Csatlakozva a kiszolgálóhoz, de a webhelyek nem érhetők el az alagúton keresztül</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Nincs internet az alagúton át</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Az alagút nyitva van</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Csatlakozás…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Az alagút zárva van</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>A(z) %1-proxy címének másolása (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Újracsatlakozás most</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Az alagút nem nyitható meg</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>csatlakozás…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>újrapróbálkozás %1 múlva</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Új verzió érhető el (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Az OpenSSH-ügyfél (%1) nincs telepítve. Telepítse az OpenSSH-ügyfél csomagot (pl. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Sikertelen hitelesítés</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Sikertelen hitelesítés: a kiszolgáló elutasította a privát kulcsot</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>A kiszolgáló nincs ellenőrizve</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>A kiszolgáló identitásának ellenőrzése sikertelen, futtassa a megbízhatósági ellenőrzést a beállításokban</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>A kiszolgáló címe nem található</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>A kiszolgáló címe nem oldható fel</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>A kiszolgáló nem érhető el</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>A kiszolgáló nem érhető el</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>A proxyport foglalt</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>A helyi SOCKS5-proxy portja már használatban van</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>A kapcsolat megszakadt</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>A kiszolgáló bontotta a kapcsolatot</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Sikertelen csatlakozás</translation>
     </message>
 </context>
 </TS>

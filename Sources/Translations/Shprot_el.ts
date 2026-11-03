@@ -388,12 +388,24 @@
         <translation>Έξοδος από το %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>Το OpenSSH δεν είναι εγκατεστημένο</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Αδυναμία εκκίνησης του ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Αδυναμία εκκίνησης του ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Υπάρχει σύνδεση με τον διακομιστή, αλλά οι ιστότοποι δεν είναι προσβάσιμοι μέσω της σήραγγας</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Χωρίς Internet μέσω της σήραγγας</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Η σήραγγα είναι ανοιχτή</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Σύνδεση…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Η σήραγγα είναι κλειστή</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Αντιγραφή διεύθυνσης διακομιστή μεσολάβησης %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Επανασύνδεση τώρα</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Αδυναμία ανοίγματος της σήραγγας</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>σύνδεση…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>νέα προσπάθεια σε %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Διαθέσιμη νέα έκδοση (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Ο πελάτης OpenSSH (%1) δεν είναι εγκατεστημένος. Εγκαταστήστε το πακέτο του πελάτη OpenSSH (π.χ. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Αποτυχία πιστοποίησης</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Αποτυχία ελέγχου ταυτότητας: ο διακομιστής απέρριψε το ιδιωτικό κλειδί</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Ο διακομιστής δεν επαληθεύτηκε</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Αποτυχία επαλήθευσης της ταυτότητας του διακομιστή, εκτελέστε έλεγχο εμπιστοσύνης στις Προτιμήσεις</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Η διεύθυνση δεν βρέθηκε</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Αδυναμία επίλυσης της διεύθυνσης του διακομιστή</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Ο διακομιστής δεν απαντά</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Ο διακομιστής δεν είναι προσβάσιμος</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Η θύρα proxy είναι κατειλημμένη</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Η θύρα του τοπικού διακομιστή μεσολάβησης SOCKS5 χρησιμοποιείται ήδη</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Η σύνδεση χάθηκε</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Ο διακομιστής έκλεισε τη σύνδεση</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Η σύνδεση απέτυχε</translation>
     </message>
 </context>
 </TS>

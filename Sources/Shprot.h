@@ -54,8 +54,9 @@ private slots:
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
     void maybeUpdateStatus();
+    void updateStatusText();
     void updateNewVersionAction();
-    void setLastError(const QString& error);
+    void setLastError(const QString& error, const QString& errorSummary);
 
 private:
     Preferences* m_preferences;
@@ -78,6 +79,7 @@ private:
 
     QMenu* m_contextMenu;
     QAction* m_statusAction;
+    QAction* m_reconnectAction;
     QAction* m_tunnelEnabledAction;
     QAction* m_copySocks5ProxyUrlAction;
     QAction* m_copyHttpProxyUrlAction;
@@ -90,9 +92,11 @@ private:
     QElapsedTimer m_systemTrayIconTriggerTimer;
 
     QTimer* m_statusTimer;
+    QTimer* m_statusCountdownTimer;
     bool m_internetReachable = false;
     bool m_tunnelIndicatedAsOpened = false;
     QString m_lastError; // Why the tunnel is not opened, shown in notifications and tray icon tool tip
+    QString m_lastErrorSummary; // The same reason in a few words, so it doesn't stretch the menu
     QString m_notifiedError;
     QString m_httpProxyError;
 

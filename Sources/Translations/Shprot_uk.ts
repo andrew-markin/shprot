@@ -388,12 +388,24 @@
         <translation>Вийти з %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH не встановлено</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Не вдалося запустити ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Не вдалося запустити ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>З&apos;єднання з сервером є, але сайти через тунель недоступні</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Немає інтернету через тунель</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Тунель відкрито</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Підключення…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Тунель закрито</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Копіювати адресу %1-проксі (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Перепідключитися зараз</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Не вдалося відкрити тунель</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>підключення…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>повтор через %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Доступна нова версія (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Клієнт OpenSSH (%1) не встановлено. Установіть пакет клієнта OpenSSH (наприклад, openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Помилка автентифікації</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Помилка автентифікації: сервер відхилив закритий ключ</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Автентичність сервера не підтверджено</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Не вдалося перевірити справжність сервера, виконайте перевірку довіри в налаштуваннях</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Адресу сервера не знайдено</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Не вдалося визначити адресу сервера</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Сервер недоступний</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Сервер недоступний</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Порт проксі зайнятий</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Порт локального SOCKS5-проксі вже зайнятий</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>З&apos;єднання втрачено</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Сервер закрив з&apos;єднання</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Не вдалося підключитися</translation>
     </message>
 </context>
 </TS>

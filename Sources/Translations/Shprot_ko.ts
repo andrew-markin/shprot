@@ -388,12 +388,24 @@
         <translation>%1 종료</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH가 설치되지 않음</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh를 시작할 수 없음: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh를 시작할 수 없음</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>서버에 연결되었지만 터널을 통해 웹사이트에 접근할 수 없습니다</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>터널을 통한 인터넷 연결 없음</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>터널이 열려 있음</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>연결 중…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>터널이 닫혀 있음</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 프록시 주소 복사(%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>지금 다시 연결</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>터널을 열 수 없음</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>연결 중…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 후 재시도</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>새 버전 사용 가능 (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH 클라이언트(%1)가 설치되어 있지 않습니다. OpenSSH 클라이언트 패키지(예: openssh-client)를 설치하세요.</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>인증 실패</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>인증 실패: 서버가 개인 키를 거부했습니다</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>서버 신원이 확인되지 않음</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>서버 ID 확인 실패, 환경설정에서 신뢰 확인을 실행하세요</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>서버 주소를 찾을 수 없음</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>서버 주소를 확인할 수 없습니다</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>서버에 연결할 수 없음</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>서버에 연결할 수 없습니다</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>프록시 포트가 사용 중임</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>로컬 SOCKS5 프록시 포트가 이미 사용 중입니다</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>연결 끊김</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>서버가 연결을 닫았습니다</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>연결 실패</translation>
     </message>
 </context>
 </TS>

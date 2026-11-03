@@ -388,12 +388,24 @@
         <translation>Ukončit %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH není nainstalován</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Nelze spustit ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Nelze spustit ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Připojeno k serveru, ale webové stránky nejsou přes tunel dostupné</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tunelem není dostupný internet</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunel je otevřený</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Připojování…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunel je zavřený</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopírovat adresu proxy %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Znovu připojit nyní</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunel nelze otevřít</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>připojování…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>další pokus za %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Je k dispozici nová verze (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Klient OpenSSH (%1) není nainstalován. Nainstalujte balíček klienta OpenSSH (např. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Ověření selhalo</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Ověření selhalo: server odmítl soukromý klíč</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identita serveru není ověřena</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Ověření identity serveru selhalo, spusťte ověření důvěryhodnosti v předvolbách</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adresa serveru nenalezena</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Adresu serveru nelze přeložit</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server je nedostupný</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server je nedostupný</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Port proxy je obsazený</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Port místní proxy SOCKS5 je již používán</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Spojení ztraceno</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Server ukončil připojení</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Připojení selhalo</translation>
     </message>
 </context>
 </TS>

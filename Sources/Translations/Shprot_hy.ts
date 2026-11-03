@@ -388,12 +388,24 @@
         <translation>Փակել %1-ը</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH-ը տեղադրված չէ</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Չհաջողվեց գործարկել ssh-ը՝ %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Չհաջողվեց գործարկել ssh-ը</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Սերվերին միացված է, բայց կայքերը թունելով հասանելի չեն</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Թունելով ինտերնետ չկա</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Թունելը բաց է</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Միացում…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Թունելը փակ է</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Պատճենել %1 պրոքսիի հասցեն (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Վերամիանալ հիմա</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Չհաջողվեց բացել թունելը</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>միացում…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>կրկնում %1-ից</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Հասանելի է նոր տարբերակ (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH հաճախորդը (%1) տեղադրված չէ։ Տեղադրեք OpenSSH հաճախորդի փաթեթը (օր.՝ openssh-client)։</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Նույնականացումը ձախողվեց</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Նույնականացումը ձախողվեց՝ սերվերը մերժեց գաղտնի բանալին</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Սերվերի ինքնությունը հաստատված չէ</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Սերվերի ինքնության ստուգումը ձախողվեց, կարգավորումներում գործարկեք վստահության ստուգումը</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Սերվերի հասցեն չի գտնվել</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Չհաջողվեց որոշել սերվերի հասցեն</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Սերվերն անհասանելի է</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Սերվերն անհասանելի է</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Պրոքսիի պորտը զբաղված է</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Տեղային SOCKS5 պրոքսիի պորտն արդեն զբաղված է</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Կապը կորավ</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Սերվերը փակեց կապը</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Միացումը ձախողվեց</translation>
     </message>
 </context>
 </TS>

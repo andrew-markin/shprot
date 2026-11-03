@@ -388,12 +388,24 @@
         <translation>Ieșire din %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH nu este instalat</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Nu se poate porni ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Nu se poate porni ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Conectat la server, dar site-urile web nu sunt accesibile prin tunel</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Fără internet prin tunel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunelul este deschis</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Se conectează…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunelul este închis</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Copiază adresa proxy-ului %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Reconectează acum</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Nu se poate deschide tunelul</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>se conectează…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>reîncercare în %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Versiune nouă disponibilă (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Clientul OpenSSH (%1) nu este instalat. Instalați pachetul clientului OpenSSH (de ex. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentificare eșuată</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentificare eșuată: serverul a respins cheia privată</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identitatea serverului nu este verificată</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Verificarea identității serverului a eșuat, rulați verificarea încrederii în preferințe</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adresa serverului nu a fost găsită</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Nu se poate rezolva adresa serverului</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server inaccesibil</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serverul nu poate fi accesat</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Portul proxy este ocupat</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Portul proxy-ului SOCKS5 local este deja în uz</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Conexiune pierdută</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Conexiunea a fost închisă de server</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Conectare eșuată</translation>
     </message>
 </context>
 </TS>

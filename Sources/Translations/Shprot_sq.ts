@@ -388,12 +388,24 @@
         <translation>Dil nga %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH nuk është instaluar</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh nuk mund të niset: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh nuk mund të niset</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>U lidh me serverin, por sajtet nuk arrihen përmes tunelit</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Pa internet përmes tunelit</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tuneli është i hapur</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Po lidhet…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tuneli është i mbyllur</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopjo adresën e proxy-t %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Rilidhu tani</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tuneli nuk mund të hapet</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>po lidhet…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>riprovim pas %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Ka një version të ri (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Klienti OpenSSH (%1) nuk është i instaluar. Instaloni paketën e klientit OpenSSH (p.sh. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Vërtetimi dështoi</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Vërtetimi dështoi: serveri e refuzoi çelësin privat</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identiteti i serverit nuk është verifikuar</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Verifikimi i identitetit të serverit dështoi, kontrolloni besueshmërinë te parapëlqimet</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adresa e serverit nuk u gjet</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Adresa e serverit nuk mund të zgjidhet</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serveri nuk është i arritshëm</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serveri është i paarritshëm</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Porta e proxy-t është e zënë</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Porta e proxy-t lokal SOCKS5 është tashmë në përdorim</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Lidhja u humb</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Serveri e mbylli lidhjen</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Lidhja dështoi</translation>
     </message>
 </context>
 </TS>

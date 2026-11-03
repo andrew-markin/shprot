@@ -388,12 +388,24 @@
         <translation>Lopeta %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH ei ole asennettu</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh:n käynnistys epäonnistui: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh:n käynnistys epäonnistui</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Yhteys palvelimeen on, mutta verkkosivustoja ei tavoiteta tunnelin kautta</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Ei internetiä tunnelin kautta</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunneli on auki</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Yhdistetään…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunneli on suljettu</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopioi %1-välityspalvelimen osoite (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Yhdistä uudelleen nyt</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunnelin avaaminen epäonnistui</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>yhdistetään…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>uusi yritys %1 kuluttua</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Uusi versio saatavilla (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH-asiakasohjelmaa (%1) ei ole asennettu. Asenna OpenSSH-asiakaspaketti (esim. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Todennus epäonnistui</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Todennus epäonnistui: palvelin hylkäsi yksityisen avaimen</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Palvelinta ei ole vahvistettu</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Palvelimen identiteetin vahvistus epäonnistui, suorita luotettavuustarkistus asetuksissa</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Palvelimen osoitetta ei löytynyt</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Palvelimen osoitetta ei voi selvittää</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Palvelimeen ei saada yhteyttä</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Palvelinta ei tavoiteta</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Välityspalvelimen portti varattu</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Paikallisen SOCKS5-välityspalvelimen portti on jo käytössä</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Yhteys katkesi</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Palvelin sulki yhteyden</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Yhteys epäonnistui</translation>
     </message>
 </context>
 </TS>

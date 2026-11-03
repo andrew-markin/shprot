@@ -388,12 +388,24 @@
         <translation>%1 बंद करें</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH इंस्टॉल नहीं है</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh शुरू नहीं हो सका: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh शुरू नहीं हो सका</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>सर्वर से कनेक्ट है, लेकिन टनल के ज़रिए वेबसाइटें उपलब्ध नहीं हैं</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>टनल से इंटरनेट उपलब्ध नहीं</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>टनल खुली है</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>कनेक्ट हो रहा है…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>टनल बंद है</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 प्रॉक्सी पता कॉपी करें (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>अभी पुनः कनेक्ट करें</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>टनल नहीं खुल सकी</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>कनेक्ट हो रहा है…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 में पुनः प्रयास</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>नया संस्करण उपलब्ध है (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH क्लाइंट (%1) इंस्टॉल नहीं है। OpenSSH क्लाइंट पैकेज इंस्टॉल करें (जैसे openssh-client)।</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>प्रमाणीकरण विफल</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>प्रमाणीकरण विफल: सर्वर ने निजी कुंजी अस्वीकार कर दी</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>सर्वर की पहचान सत्यापित नहीं</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>सर्वर की पहचान सत्यापित नहीं हो सकी, प्राथमिकताओं में विश्वास जाँच चलाएँ</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>सर्वर का पता नहीं मिला</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>सर्वर का पता हल नहीं हो सका</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>सर्वर तक नहीं पहुँचा जा सका</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>सर्वर तक नहीं पहुँचा जा सकता</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>प्रॉक्सी पोर्ट व्यस्त है</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>स्थानीय SOCKS5 प्रॉक्सी पोर्ट पहले से उपयोग में है</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>कनेक्शन टूट गया</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>सर्वर ने कनेक्शन बंद कर दिया</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>कनेक्शन विफल</translation>
     </message>
 </context>
 </TS>

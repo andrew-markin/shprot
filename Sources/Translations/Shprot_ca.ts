@@ -388,12 +388,24 @@
         <translation>Surt de %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH no està instal·lat</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>No es pot iniciar ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>No es pot iniciar ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Connectat al servidor, però els llocs web no són accessibles a través del túnel</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Sense Internet a través del túnel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>El túnel està obert</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>S&apos;està connectant…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>El túnel està tancat</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Copia l&apos;adreça del servidor intermediari %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Torna a connectar ara</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>No es pot obrir el túnel</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>s&apos;està connectant…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nou intent d&apos;aquí a %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Hi ha una versió nova disponible (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>El client OpenSSH (%1) no està instal·lat. Instal·leu el paquet del client OpenSSH (p. ex. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Ha fallat l&apos;autenticació</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Ha fallat l&apos;autenticació: el servidor ha rebutjat la clau privada</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Servidor no verificat</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Ha fallat la verificació de la identitat del servidor, executeu la comprovació de confiança a les preferències</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adreça del servidor no trobada</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>No es pot resoldre l&apos;adreça del servidor</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Servidor inaccessible</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>El servidor no és accessible</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Port del proxy ocupat</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>El port del servidor intermediari SOCKS5 local ja està en ús</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>S&apos;ha perdut la connexió</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>El servidor ha tancat la connexió</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Ha fallat la connexió</translation>
     </message>
 </context>
 </TS>

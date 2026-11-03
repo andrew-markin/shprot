@@ -388,12 +388,24 @@
         <translation>%1 থেকে প্রস্থান</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH ইনস্টল করা নেই</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh চালু করা যাচ্ছে না: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh চালু করা যাচ্ছে না</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>সার্ভারে সংযুক্ত, কিন্তু টানেলের মাধ্যমে ওয়েবসাইটে পৌঁছানো যাচ্ছে না</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>টানেলে ইন্টারনেট নেই</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>টানেল খোলা আছে</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>সংযোগ করা হচ্ছে…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>টানেল বন্ধ আছে</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 প্রক্সির ঠিকানা কপি করুন (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>এখনই পুনরায় সংযোগ করুন</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>টানেল খোলা যাচ্ছে না</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>সংযোগ করা হচ্ছে…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 পরে আবার চেষ্টা</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>নতুন সংস্করণ উপলব্ধ (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH ক্লায়েন্ট (%1) ইনস্টল করা নেই। OpenSSH ক্লায়েন্ট প্যাকেজ ইনস্টল করুন (যেমন openssh-client)।</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>প্রমাণীকরণ ব্যর্থ</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>প্রমাণীকরণ ব্যর্থ: সার্ভার ব্যক্তিগত কী প্রত্যাখ্যান করেছে</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>সার্ভারের পরিচয় যাচাই হয়নি</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>সার্ভারের পরিচয় যাচাই ব্যর্থ হয়েছে, পছন্দসমূহে বিশ্বস্ততা যাচাই চালান</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>সার্ভারের ঠিকানা পাওয়া যায়নি</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>সার্ভারের ঠিকানা নির্ণয় করা যাচ্ছে না</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>সার্ভারে পৌঁছানো যাচ্ছে না</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>সার্ভারে পৌঁছানো যাচ্ছে না</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>প্রক্সি পোর্ট ব্যস্ত</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>স্থানীয় SOCKS5 প্রক্সির পোর্ট ইতিমধ্যে ব্যবহৃত হচ্ছে</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>সংযোগ বিচ্ছিন্ন</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>সার্ভার সংযোগ বন্ধ করেছে</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>সংযোগ ব্যর্থ</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>ออกจาก %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>ไม่ได้ติดตั้ง OpenSSH</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ไม่สามารถเริ่ม ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ไม่สามารถเริ่ม ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>เชื่อมต่อกับเซิร์ฟเวอร์แล้ว แต่เข้าถึงเว็บไซต์ผ่านอุโมงค์ไม่ได้</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>ไม่มีอินเทอร์เน็ตผ่านอุโมงค์</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>อุโมงค์เปิดอยู่</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>กำลังเชื่อมต่อ…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>อุโมงค์ปิดอยู่</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>คัดลอกที่อยู่พร็อกซี %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>เชื่อมต่อใหม่เดี๋ยวนี้</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>ไม่สามารถเปิดอุโมงค์</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>กำลังเชื่อมต่อ…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>ลองใหม่ใน %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>มีเวอร์ชันใหม่ (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>ไม่ได้ติดตั้งไคลเอนต์ OpenSSH (%1) โปรดติดตั้งแพ็กเกจไคลเอนต์ OpenSSH (เช่น openssh-client)</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>การยืนยันตัวตนล้มเหลว</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>การยืนยันตัวตนล้มเหลว: เซิร์ฟเวอร์ปฏิเสธคีย์ส่วนตัว</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>ยังไม่ได้ยืนยันตัวตนของเซิร์ฟเวอร์</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>ยืนยันตัวตนของเซิร์ฟเวอร์ไม่สำเร็จ โปรดตรวจสอบความน่าเชื่อถือในการตั้งค่า</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>ไม่พบที่อยู่เซิร์ฟเวอร์</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>ไม่สามารถแปลงที่อยู่เซิร์ฟเวอร์</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>เข้าถึงเซิร์ฟเวอร์ไม่ได้</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>เข้าถึงเซิร์ฟเวอร์ไม่ได้</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>พอร์ตพร็อกซีถูกใช้งานอยู่</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>พอร์ตของพร็อกซี SOCKS5 ในเครื่องถูกใช้งานอยู่แล้ว</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>การเชื่อมต่อขาดหาย</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>เซิร์ฟเวอร์ปิดการเชื่อมต่อ</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>การเชื่อมต่อล้มเหลว</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>%1 بند کریں</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH انسٹال نہیں ہے</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh شروع نہیں ہو سکا: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh شروع نہیں ہو سکا</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>سرور سے منسلک ہیں، لیکن ٹنل کے ذریعے ویب سائٹس تک رسائی نہیں ہو رہی</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>ٹنل کے ذریعے انٹرنیٹ نہیں</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>ٹنل کھلی ہے</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>جڑ رہا ہے…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>ٹنل بند ہے</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 پراکسی کا پتہ کاپی کریں (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>ابھی دوبارہ جڑیں</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>ٹنل نہیں کھل سکی</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>جڑ رہا ہے…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 میں دوبارہ کوشش</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>نیا ورژن دستیاب ہے (%1 ← %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH کلائنٹ (%1) انسٹال نہیں ہے۔ OpenSSH کلائنٹ پیکیج انسٹال کریں (مثلاً openssh-client)۔</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>تصدیق ناکام</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>تصدیق ناکام: سرور نے نجی کلید مسترد کر دی</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>سرور کی شناخت کی تصدیق نہیں ہوئی</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>سرور کی شناخت کی تصدیق ناکام ہو گئی، ترجیحات میں اعتماد کی جانچ چلائیں</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>سرور کا پتہ نہیں ملا</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>سرور کا پتہ حل نہیں ہو سکا</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>سرور تک رسائی نہیں</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>سرور تک رسائی نہیں ہو سکتی</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>پراکسی پورٹ مصروف ہے</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>مقامی SOCKS5 پراکسی کا پورٹ پہلے سے استعمال میں ہے</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>کنکشن ٹوٹ گیا</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>سرور نے کنکشن بند کر دیا</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>کنکشن ناکام</translation>
     </message>
 </context>
 </TS>

@@ -61,6 +61,9 @@ static const int TunnelProcessRestartDelayAuthMax = 1800000; // 30m
 // Installed OpenSSH client is picked up without restarting the application
 static const int TunnelProcessRestartDelaySshMissing = 60000; // 1m
 
+// Shorter delays would only flash in the menu
+static const int TunnelProcessRestartCountdownDelayMin = 5000; // 5s
+
 static const int HealthCheckStartDelay = 100; // 100ms
 static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
@@ -217,6 +220,10 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_statusAction = m_contextMenu->addAction(QString());
     m_statusAction->setEnabled(false);
 
+    // Failures are still counted, so this doesn't undo the growing delay protecting from being banned
+    m_reconnectAction = m_contextMenu->addAction(tr("Reconnect Now"), this, &Shprot::maybeRestartTunnelProcess);
+    m_reconnectAction->setVisible(false);
+
     m_tunnelEnabledAction = m_contextMenu->addAction(tr("Enable SSH Proxy Tunnel"));
     m_tunnelEnabledAction->setCheckable(true);
     m_tunnelEnabledAction->setChecked(m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool());
@@ -284,6 +291,11 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_statusTimer->setSingleShot(true);
 
     connect(m_statusTimer, &QTimer::timeout, this, &Shprot::maybeUpdateStatus);
+
+    m_statusCountdownTimer = new QTimer(this);
+    m_statusCountdownTimer->setSingleShot(true);
+
+    connect(m_statusCountdownTimer, &QTimer::timeout, this, &Shprot::updateStatusText);
 
     m_updateChecker = new UpdateChecker(m_preferences, this);
     connect(m_updateChecker, &UpdateChecker::latestVersionChanged, this, &Shprot::updateNewVersionAction);
@@ -366,7 +378,7 @@ void Shprot::maybeRestartTunnelProcess()
 
     if (!sshProxyTunnel.value("enabled", false).toBool())
     {
-        setLastError(QString());
+        setLastError(QString(), QString());
         return; // SSH Proxy Tunnel is disabled
     }
 
@@ -380,7 +392,7 @@ void Shprot::maybeRestartTunnelProcess()
     if (!missingSshMessage.isEmpty())
     {
         qWarning() << qPrintable(missingSshMessage);
-        setLastError(missingSshMessage);
+        setLastError(missingSshMessage, tr("OpenSSH not installed"));
         m_tunnelTimer->start(TunnelProcessRestartDelaySshMissing);
         return;
     }
@@ -445,7 +457,7 @@ void Shprot::maybeRestartTunnelProcess()
     if (!m_tunnelProcess->waitForStarted(TunnelProcessStartTimeout))
     {
         qWarning() << "Failed to start tunnel process:" << m_tunnelProcess->errorString();
-        setLastError(tr("Unable to start ssh: %1").arg(m_tunnelProcess->errorString()));
+        setLastError(tr("Unable to start ssh: %1").arg(m_tunnelProcess->errorString()), tr("Unable to start ssh"));
         m_tunnelTimer->start(TunnelProcessRestartDelaySshMissing);
         return;
     }
@@ -510,6 +522,8 @@ void Shprot::handleTunnelProcessStart()
 
     maybeStartHttpProxyServer();
 
+    // Frequent health checks during warmup keep postponing the status timer, connection attempt is shown right away
+    updateStatusText();
     m_statusTimer->start(StatusUpdateTimeout);
 }
 
@@ -537,7 +551,7 @@ void Shprot::handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitSt
 
     if (!errorDescription.isEmpty())
     {
-        setLastError(errorDescription);
+        setLastError(errorDescription, Utilities::summarizeSshError(errorOutput));
     }
 
     // "Permission denied (publickey)." – not to be confused with "bind ...: Permission denied"
@@ -659,6 +673,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             m_healthCheckTimer->start(HealthCheckDelayLong);
 
             m_lastError.clear();
+            m_lastErrorSummary.clear();
             m_notifiedError.clear();
         }
         else if (tunnelProcessUptime < TunnelProcessWarmupTime)
@@ -684,7 +699,8 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             }
             else
             {
-                setLastError(tr("Connected to the server, but websites are not reachable through the tunnel"));
+                setLastError(tr("Connected to the server, but websites are not reachable through the tunnel"),
+                             tr("No internet through tunnel"));
                 scheduleTunnelProcessRestart(false);
             }
         }
@@ -749,6 +765,7 @@ void Shprot::handlePreferencesChange(const QStringList& changes)
     {
         m_failedRestartsCount = 0;
         m_lastError.clear(); // New settings deserve fresh notifications
+        m_lastErrorSummary.clear();
         m_notifiedError.clear();
         m_httpProxyError.clear();
         m_tunnelTimer->start(0);
@@ -799,24 +816,7 @@ void Shprot::maybeUpdateStatus()
     bool tunnelIsOpened = (m_tunnelProcess->state() == QProcess::Running) && m_internetReachable;
     bool showNotifications = m_preferences->value("showNotifications", true).toBool();
 
-    QString status;
-
-    if (!tunnelIsEnabled)
-    {
-        status = tr("Tunnel is disabled");
-    }
-    else if (tunnelIsOpened)
-    {
-        status = tr("Tunnel is open");
-    }
-    else
-    {
-        status = m_lastError.isEmpty() ? tr("Tunnel is closed") : tr("Tunnel is closed: %1").arg(m_lastError);
-    }
-
-    // Long error descriptions would make the menu too wide
-    static const int MenuStatusLengthMax = 80;
-    m_statusAction->setText((status.size() > MenuStatusLengthMax) ? status.left(MenuStatusLengthMax - 1) + "…" : status);
+    updateStatusText();
 
     // Proxy addresses are offered only while they can be used
     auto updateCopyAction = [tunnelIsOpened](QAction* action, const QString& label, const QString& url) {
@@ -826,13 +826,6 @@ void Shprot::maybeUpdateStatus()
 
     updateCopyAction(m_copySocks5ProxyUrlAction, "SOCKS5", m_socks5ProxyUrl);
     updateCopyAction(m_copyHttpProxyUrlAction, "HTTP", m_httpProxyUrl);
-
-    if (!m_httpProxyError.isEmpty())
-    {
-        status += "\n" + m_httpProxyError;
-    }
-
-    m_systemTrayIcon->setToolTip(QString("%1\n%2").arg(PROJECT_TITLE, status));
 
     if (m_tunnelIndicatedAsOpened != tunnelIsOpened)
     {
@@ -877,6 +870,78 @@ void Shprot::maybeUpdateStatus()
     }
 }
 
+void Shprot::updateStatusText()
+{
+    bool tunnelIsEnabled = m_preferences->value("sshProxyTunnel").toMap().value("enabled", false).toBool();
+    bool tunnelIsOpened = (m_tunnelProcess->state() == QProcess::Running) && m_internetReachable;
+
+    bool restartIsAwaited = tunnelIsEnabled && !tunnelIsOpened && m_tunnelTimer->isActive() &&
+                            (m_tunnelTimer->interval() >= TunnelProcessRestartCountdownDelayMin);
+
+    bool tunnelIsConnecting = tunnelIsEnabled && !tunnelIsOpened && !restartIsAwaited &&
+                              (m_tunnelProcess->state() != QProcess::NotRunning);
+
+    QString status;
+    QString menuStatus; // Only differs from the status when there is an error to explain
+    QString statusDetails; // What happens next, always stays visible when the status is shortened
+
+    if (!tunnelIsEnabled)
+    {
+        status = tr("Tunnel is disabled");
+    }
+    else if (tunnelIsOpened)
+    {
+        status = tr("Tunnel is open");
+    }
+    else if (tunnelIsConnecting && m_lastError.isEmpty())
+    {
+        status = tr("Connecting…");
+    }
+    else
+    {
+        status = m_lastError.isEmpty() ? tr("Tunnel is closed") : tr("Tunnel is closed: %1").arg(m_lastError);
+        menuStatus = m_lastErrorSummary;
+
+        if (tunnelIsConnecting)
+        {
+            statusDetails = QString(" (%1)").arg(tr("connecting…"));
+        }
+    }
+
+    if (restartIsAwaited)
+    {
+        int remainingTime = m_tunnelTimer->remainingTime();
+        int remainingSeconds = (remainingTime + 999) / 1000;
+
+        QString countdown = QString("%1:%2").arg(remainingSeconds / 60).arg(remainingSeconds % 60, 2, 10, QChar('0'));
+        statusDetails = QString(" (%1)").arg(tr("retry in %1").arg(countdown));
+
+        // Woken up exactly when the displayed second changes
+        m_statusCountdownTimer->start(remainingTime % 1000 + 1);
+    }
+
+    m_reconnectAction->setVisible(restartIsAwaited);
+
+    if (menuStatus.isEmpty())
+    {
+        menuStatus = status;
+    }
+
+    // Translations may turn out long and would make the menu too wide
+    static const int MenuStatusLengthMax = 64;
+    int menuStatusLength = MenuStatusLengthMax - statusDetails.size();
+    m_statusAction->setText(((menuStatus.size() > menuStatusLength) ? menuStatus.left(menuStatusLength - 1) + "…" : menuStatus) + statusDetails);
+
+    QString toolTip = status + statusDetails;
+
+    if (!m_httpProxyError.isEmpty())
+    {
+        toolTip += "\n" + m_httpProxyError;
+    }
+
+    m_systemTrayIcon->setToolTip(QString("%1\n%2").arg(PROJECT_TITLE, toolTip));
+}
+
 void Shprot::updateNewVersionAction()
 {
     QString newVersion = m_updateChecker->newVersion();
@@ -885,9 +950,10 @@ void Shprot::updateNewVersionAction()
     m_newVersionAction->setVisible(!newVersion.isEmpty());
 }
 
-void Shprot::setLastError(const QString& error)
+void Shprot::setLastError(const QString& error, const QString& errorSummary)
 {
     m_lastError = error;
+    m_lastErrorSummary = errorSummary;
     m_statusTimer->start(StatusUpdateTimeout);
 }
 

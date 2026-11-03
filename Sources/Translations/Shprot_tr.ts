@@ -388,12 +388,24 @@
         <translation>%1 Uygulamasından Çık</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH yüklü değil</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh başlatılamıyor: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh başlatılamıyor</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Sunucuya bağlanıldı, ancak web sitelerine tünel üzerinden erişilemiyor</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tünel üzerinden internet yok</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tünel açık</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Bağlanıyor…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tünel kapalı</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 Proxy Adresini Kopyala (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Şimdi yeniden bağlan</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tünel açılamıyor</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>bağlanıyor…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 sonra yeniden denenecek</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Yeni sürüm mevcut (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH istemcisi (%1) yüklü değil. OpenSSH istemci paketini yükleyin (ör. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Kimlik doğrulama başarısız</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Kimlik doğrulaması başarısız: sunucu özel anahtarı reddetti</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Sunucu kimliği doğrulanmadı</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Sunucu kimliği doğrulanamadı, Tercihler&apos;de Güven Denetimi yapın</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Sunucu adresi bulunamadı</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Sunucu adresi çözümlenemiyor</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Sunucuya ulaşılamıyor</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Sunucuya ulaşılamıyor</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxy bağlantı noktası meşgul</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Yerel SOCKS5 proxy bağlantı noktası zaten kullanımda</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Bağlantı kesildi</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Bağlantı sunucu tarafından kapatıldı</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Bağlantı başarısız</translation>
     </message>
 </context>
 </TS>

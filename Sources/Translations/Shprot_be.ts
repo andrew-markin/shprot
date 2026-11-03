@@ -388,12 +388,24 @@
         <translation>Выйсці з %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH не ўсталяваны</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Не ўдалося запусціць ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Не ўдалося запусціць ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Злучэнне з серверам ёсць, але сайты праз тунэль недаступныя</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Няма інтэрнэту праз тунэль</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Тунэль адкрыты</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Падключэнне…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Тунэль закрыты</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Капіяваць адрас %1-проксі (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Перападключыцца зараз</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Не ўдалося адкрыць тунэль</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>падключэнне…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>паўтор праз %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Даступная новая версія (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Кліент OpenSSH (%1) не ўсталяваны. Усталюйце пакет кліента OpenSSH (напрыклад, openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Памылка аўтэнтыфікацыі</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Памылка аўтэнтыфікацыі: сервер адхіліў закрыты ключ</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Асоба сервера не пацверджана</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Не ўдалося праверыць сапраўднасць сервера, выканайце праверку даверу ў наладах</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Адрас сервера не знойдзены</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Не ўдалося вызначыць адрас сервера</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Сервер недаступны</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Сервер недаступны</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Порт проксі заняты</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Порт лакальнага SOCKS5-проксі ўжо заняты</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Злучэнне страчана</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Сервер закрыў злучэнне</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Не ўдалося падключыцца</translation>
     </message>
 </context>
 </TS>

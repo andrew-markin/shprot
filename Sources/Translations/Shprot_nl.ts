@@ -388,12 +388,24 @@
         <translation>%1 afsluiten</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH niet geïnstalleerd</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Kan ssh niet starten: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Kan ssh niet starten</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Verbonden met de server, maar websites zijn niet bereikbaar via de tunnel</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Geen internet via de tunnel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunnel is open</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Verbinding maken…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunnel is gesloten</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1-proxyadres kopiëren (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Nu opnieuw verbinden</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Kan tunnel niet openen</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>verbinding maken…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nieuwe poging over %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Nieuwe versie beschikbaar (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH-client (%1) is niet geïnstalleerd. Installeer het OpenSSH-clientpakket (bijv. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Authenticatie mislukt</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Authenticatie mislukt: de server heeft de persoonlijke sleutel geweigerd</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serveridentiteit niet geverifieerd</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Controle van serveridentiteit mislukt, voer de vertrouwenscontrole uit in Voorkeuren</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serveradres niet gevonden</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Kan het serveradres niet omzetten</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server onbereikbaar</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server is onbereikbaar</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxypoort is bezet</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Poort van lokale SOCKS5-proxy is al in gebruik</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Verbinding verbroken</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Verbinding is door de server gesloten</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Verbinding mislukt</translation>
     </message>
 </context>
 </TS>

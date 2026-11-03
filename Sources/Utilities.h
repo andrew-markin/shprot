@@ -32,6 +32,7 @@ bool hostIsExposed(const QString& host);
 QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port);
 
 QString describeSshError(const QByteArray& errorOutput);
+QString summarizeSshError(const QByteArray& errorOutput);
 
 } // namespace Utilities
 

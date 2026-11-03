@@ -388,12 +388,24 @@
         <translation>Quitter %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH n&apos;est pas installé</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Impossible de lancer ssh : %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Impossible de lancer ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Connecté au serveur, mais les sites web ne sont pas accessibles via le tunnel</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Pas d&apos;Internet via le tunnel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Le tunnel est ouvert</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Connexion…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Le tunnel est fermé</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Copier l&apos;adresse du proxy %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Reconnecter maintenant</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Impossible d&apos;ouvrir le tunnel</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>connexion…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nouvel essai dans %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Nouvelle version disponible (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Le client OpenSSH (%1) n&apos;est pas installé. Installez le paquet du client OpenSSH (par ex. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Échec de l&apos;authentification</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Échec de l&apos;authentification : le serveur a refusé la clé privée</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identité du serveur non vérifiée</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Échec de la vérification de l&apos;identité du serveur, lancez la vérification de confiance dans les préférences</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adresse du serveur introuvable</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Impossible de résoudre l&apos;adresse du serveur</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serveur inaccessible</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serveur injoignable</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Le port du proxy est occupé</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Le port du proxy SOCKS5 local est déjà utilisé</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Connexion perdue</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>La connexion a été fermée par le serveur</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Échec de la connexion</translation>
     </message>
 </context>
 </TS>

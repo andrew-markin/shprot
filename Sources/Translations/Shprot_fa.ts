@@ -388,12 +388,24 @@
         <translation>خروج از %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH نصب نیست</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>اجرای ssh ممکن نیست: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>اجرای ssh ممکن نیست</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>به سرور متصل شد، اما وب‌سایت‌ها از طریق تونل در دسترس نیستند</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>اینترنت از طریق تونل در دسترس نیست</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>تونل باز است</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>در حال اتصال…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>تونل بسته است</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>کپی نشانی پراکسی %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>اتصال مجدد هم‌اکنون</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>باز کردن تونل ممکن نیست</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>در حال اتصال…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>تلاش مجدد تا %1 دیگر</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>نسخهٔ جدید در دسترس است (%1 ← %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>کلاینت OpenSSH (%1) نصب نشده است. بسته کلاینت OpenSSH (مثلاً openssh-client) را نصب کنید.</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>احراز هویت ناموفق بود</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>احراز هویت ناموفق بود: سرور کلید خصوصی را رد کرد</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>هویت سرور تأیید نشده است</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>تأیید هویت سرور ناموفق بود، بررسی اعتماد را در تنظیمات اجرا کنید</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>نشانی سرور پیدا نشد</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>نشانی سرور قابل تشخیص نیست</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>سرور در دسترس نیست</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>سرور در دسترس نیست</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>درگاه پروکسی اشغال است</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>درگاه پراکسی محلی SOCKS5 در حال استفاده است</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>اتصال قطع شد</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>اتصال توسط سرور بسته شد</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>اتصال ناموفق بود</translation>
     </message>
 </context>
 </TS>

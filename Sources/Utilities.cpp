@@ -436,41 +436,83 @@ QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
     return QString("%1://%2:%3").arg(scheme, normalizedHost).arg(port);
 }
 
-QString describeSshError(const QByteArray& errorOutput)
+struct KnownSshError
 {
-    static const QList<QPair<QStringList, const char*>> KnownErrors = {
+    QStringList patterns;
+    const char* summary; // Short enough for the tray menu
+    const char* description;
+};
+
+static const KnownSshError* findKnownSshError(const QString& output)
+{
+    static const QList<KnownSshError> KnownErrors = {
         {{"Permission denied (", "Too many authentication failures"},
+         QT_TRANSLATE_NOOP("Utilities", "Authentication failed"),
          QT_TRANSLATE_NOOP("Utilities", "Authentication failed: the server rejected the private key")},
         {{"Host key verification failed", "REMOTE HOST IDENTIFICATION HAS CHANGED"},
+         QT_TRANSLATE_NOOP("Utilities", "Server identity not verified"),
          QT_TRANSLATE_NOOP("Utilities", "Server identity verification failed, run Trust Check in Preferences")},
-        {{"Could not resolve hostname"}, QT_TRANSLATE_NOOP("Utilities", "Unable to resolve the server address")},
-        {{"Connection refused"}, QT_TRANSLATE_NOOP("Utilities", "Connection refused by the server")},
+        {{"Could not resolve hostname"},
+         QT_TRANSLATE_NOOP("Utilities", "Server address not found"),
+         QT_TRANSLATE_NOOP("Utilities", "Unable to resolve the server address")},
+        {{"Connection refused"},
+         QT_TRANSLATE_NOOP("Utilities", "Server unreachable"),
+         QT_TRANSLATE_NOOP("Utilities", "Connection refused by the server")},
         {{"Connection timed out", "Operation timed out"},
+         QT_TRANSLATE_NOOP("Utilities", "Server unreachable"),
          QT_TRANSLATE_NOOP("Utilities", "Connection to the server timed out")},
-        {{"Network is unreachable", "No route to host"}, QT_TRANSLATE_NOOP("Utilities", "Server is unreachable")},
+        {{"Network is unreachable", "No route to host"},
+         QT_TRANSLATE_NOOP("Utilities", "Server unreachable"),
+         QT_TRANSLATE_NOOP("Utilities", "Server is unreachable")},
         {{"Address already in use", "cannot listen to port"},
+         QT_TRANSLATE_NOOP("Utilities", "Proxy port is busy"),
          QT_TRANSLATE_NOOP("Utilities", "Local SOCKS5 proxy port is already in use")},
-        {{"Timeout, server"}, QT_TRANSLATE_NOOP("Utilities", "Server stopped responding")},
+        {{"Timeout, server"},
+         QT_TRANSLATE_NOOP("Utilities", "Connection lost"),
+         QT_TRANSLATE_NOOP("Utilities", "Server stopped responding")},
         {{"closed by remote host", "Connection reset", "Broken pipe"},
+         QT_TRANSLATE_NOOP("Utilities", "Connection lost"),
          QT_TRANSLATE_NOOP("Utilities", "Connection was closed by the server")}
     };
 
-    QString output = QString::fromUtf8(errorOutput);
-
-    for (const auto& [patterns, description] : KnownErrors)
+    for (const KnownSshError& error : KnownErrors)
     {
-        for (const QString& pattern : patterns)
+        for (const QString& pattern : error.patterns)
         {
             if (output.contains(pattern, Qt::CaseInsensitive))
             {
-                return QCoreApplication::translate("Utilities", description);
+                return &error;
             }
         }
+    }
+
+    return nullptr;
+}
+
+QString describeSshError(const QByteArray& errorOutput)
+{
+    QString output = QString::fromUtf8(errorOutput);
+
+    if (const KnownSshError* error = findKnownSshError(output))
+    {
+        return QCoreApplication::translate("Utilities", error->description);
     }
 
     // Unknown error: the last line of ssh output usually explains it best
     QStringList lines = output.split('\n', Qt::SkipEmptyParts);
     return lines.isEmpty() ? QString() : lines.last().trimmed().left(200);
+}
+
+QString summarizeSshError(const QByteArray& errorOutput)
+{
+    QString output = QString::fromUtf8(errorOutput);
+
+    if (const KnownSshError* error = findKnownSshError(output))
+    {
+        return QCoreApplication::translate("Utilities", error->summary);
+    }
+
+    return output.trimmed().isEmpty() ? QString() : QCoreApplication::translate("Utilities", "Connection failed");
 }
 
 } // namespace Utilities

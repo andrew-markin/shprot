@@ -28,6 +28,9 @@ private slots:
     void describeSshError_data();
     void describeSshError();
 
+    void summarizeSshError_data();
+    void summarizeSshError();
+
     void sshPrivateKeyLooksValid_data();
     void sshPrivateKeyLooksValid();
 
@@ -223,6 +226,52 @@ void TestUtilities::describeSshError()
     QFETCH(QString, expected);
 
     QCOMPARE(Utilities::describeSshError(output), expected);
+}
+
+void TestUtilities::summarizeSshError_data()
+{
+    QTest::addColumn<QByteArray>("output");
+    QTest::addColumn<QString>("expected");
+
+    QTest::newRow("authentication")
+            << QByteArray("tunnel@192.0.2.1: Permission denied (publickey).")
+            << "Authentication failed";
+    QTest::newRow("host key")
+            << QByteArray("Host key verification failed.")
+            << "Server identity not verified";
+    QTest::newRow("resolve")
+            << QByteArray("ssh: Could not resolve hostname nonexistent.invalid: Name or service not known")
+            << "Server address not found";
+    QTest::newRow("refused")
+            << QByteArray("ssh: connect to host 127.0.0.1 port 1: Connection refused")
+            << "Server unreachable";
+    QTest::newRow("timeout")
+            << QByteArray("ssh: connect to host 192.0.2.1 port 22: Connection timed out")
+            << "Server unreachable";
+    QTest::newRow("no route")
+            << QByteArray("ssh: connect to host 192.0.2.1 port 22: No route to host")
+            << "Server unreachable";
+    QTest::newRow("local port in use")
+            << QByteArray("bind [127.0.0.1]:1080: Address already in use")
+            << "Proxy port is busy";
+    QTest::newRow("server alive timeout")
+            << QByteArray("Timeout, server 192.0.2.1 not responding.")
+            << "Connection lost";
+    QTest::newRow("closed by server")
+            << QByteArray("Connection to 192.0.2.1 closed by remote host.")
+            << "Connection lost";
+    QTest::newRow("unknown error doesn't expose ssh output")
+            << QByteArray("debug noise\nSomething unexpected happened\n")
+            << "Connection failed";
+    QTest::newRow("empty") << QByteArray() << "";
+}
+
+void TestUtilities::summarizeSshError()
+{
+    QFETCH(QByteArray, output);
+    QFETCH(QString, expected);
+
+    QCOMPARE(Utilities::summarizeSshError(output), expected);
 }
 
 void TestUtilities::sshPrivateKeyLooksValid_data()

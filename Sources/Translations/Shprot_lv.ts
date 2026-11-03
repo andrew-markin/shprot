@@ -388,12 +388,24 @@
         <translation>Iziet no %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH nav instalēts</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Neizdevās palaist ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Neizdevās palaist ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Savienojums ar serveri ir, bet tīmekļa vietnes caur tuneli nav pieejamas</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Caur tuneli nav interneta</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunelis ir atvērts</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Notiek savienošana…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunelis ir aizvērts</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopēt %1 starpniekservera adresi (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Atkārtoti savienot tagad</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Neizdevās atvērt tuneli</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>notiek savienošana…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>atkārtojums pēc %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Pieejama jauna versija (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH klients (%1) nav instalēts. Instalējiet OpenSSH klienta pakotni (piem., openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentifikācija neizdevās</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentifikācija neizdevās: serveris noraidīja privāto atslēgu</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serveris nav apstiprināts</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Servera identitātes pārbaude neizdevās, iestatījumos palaidiet uzticamības pārbaudi</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Servera adrese nav atrasta</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Neizdevās noteikt servera adresi</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serveris nav sasniedzams</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serveris nav sasniedzams</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Starpniekservera ports ir aizņemts</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Lokālā SOCKS5 starpniekservera ports jau tiek izmantots</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Savienojums zaudēts</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Serveris aizvēra savienojumu</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Savienojums neizdevās</translation>
     </message>
 </context>
 </TS>

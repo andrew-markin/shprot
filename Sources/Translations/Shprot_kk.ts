@@ -388,12 +388,24 @@
         <translation>%1 бағдарламасынан шығу</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH орнатылмаған</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh іске қосылмады: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh іске қосылмады</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Серверге қосылды, бірақ сайттар туннель арқылы қолжетімсіз</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Туннель арқылы интернет жоқ</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Туннель ашық</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Қосылуда…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Туннель жабық</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 прокси мекенжайын көшіру (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Қазір қайта қосылу</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Туннельді ашу мүмкін болмады</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>қосылуда…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 кейін қайталау</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Жаңа нұсқа қолжетімді (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH клиенті (%1) орнатылмаған. OpenSSH клиенті бумасын орнатыңыз (мысалы, openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Аутентификация сәтсіз аяқталды</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Аутентификация сәтсіз: сервер жабық кілтті қабылдамады</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Сервердің сәйкестігі расталмаған</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Сервердің сәйкестендіргішін растау сәтсіз аяқталды, баптауларда сенімділікті тексеруді іске қосыңыз</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Сервер мекенжайы табылмады</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Сервер мекенжайын анықтау мүмкін емес</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Серверге қол жеткізу мүмкін емес</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Сервер қолжетімсіз</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Прокси порты бос емес</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Жергілікті SOCKS5 прокси порты бос емес</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Байланыс үзілді</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Сервер қосылымды жапты</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Қосылу сәтсіз аяқталды</translation>
     </message>
 </context>
 </TS>

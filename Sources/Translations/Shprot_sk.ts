@@ -388,12 +388,24 @@
         <translation>Ukončiť %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH nie je nainštalovaný</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Nie je možné spustiť ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Nie je možné spustiť ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Pripojené k serveru, ale webové stránky nie sú cez tunel dostupné</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Cez tunel nie je dostupný internet</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunel je otvorený</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Pripája sa…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunel je zatvorený</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopírovať adresu proxy %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Znova pripojiť teraz</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunel nie je možné otvoriť</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>pripája sa…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>ďalší pokus o %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>K dispozícii je nová verzia (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Klient OpenSSH (%1) nie je nainštalovaný. Nainštalujte balík klienta OpenSSH (napr. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Overenie zlyhalo</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Overenie zlyhalo: server odmietol súkromný kľúč</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identita servera nie je overená</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Overenie identity servera zlyhalo, spustite overenie dôveryhodnosti v predvoľbách</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Adresa servera sa nenašla</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Adresu servera nie je možné preložiť</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server je nedostupný</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server je nedostupný</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Port proxy je obsadený</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Port lokálneho proxy SOCKS5 sa už používa</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Spojenie sa stratilo</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Server ukončil pripojenie</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Pripojenie zlyhalo</translation>
     </message>
 </context>
 </TS>

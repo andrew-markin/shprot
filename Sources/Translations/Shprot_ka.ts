@@ -388,12 +388,24 @@
         <translation>%1-დან გასვლა</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH არ არის დაინსტალირებული</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh-ის გაშვება ვერ მოხერხდა: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh-ის გაშვება ვერ მოხერხდა</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>სერვერთან კავშირი არის, მაგრამ საიტები გვირაბით მიუწვდომელია</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>გვირაბით ინტერნეტი არ არის</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>გვირაბი ღიაა</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>მიმდინარეობს დაკავშირება…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>გვირაბი დახურულია</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 პროქსის მისამართის კოპირება (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>ხელახლა დაკავშირება ახლავე</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>გვირაბის გახსნა ვერ მოხერხდა</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>მიმდინარეობს დაკავშირება…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>ხელახლა ცდა %1-ში</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>ხელმისაწვდომია ახალი ვერსია (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH კლიენტი (%1) არ არის დაინსტალირებული. დააინსტალირეთ OpenSSH კლიენტის პაკეტი (მაგ. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>ავთენტიფიკაცია ვერ მოხერხდა</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>ავთენტიკაცია ვერ მოხერხდა: სერვერმა უარყო პირადი გასაღები</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>სერვერის იდენტურობა დაუდასტურებელია</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>სერვერის იდენტობის დადასტურება ვერ მოხერხდა, გაუშვით ნდობის შემოწმება პარამეტრებში</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>სერვერის მისამართი ვერ მოიძებნა</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>სერვერის მისამართის განსაზღვრა ვერ მოხერხდა</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>სერვერი მიუწვდომელია</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>სერვერი მიუწვდომელია</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>პროქსის პორტი დაკავებულია</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>ლოკალური SOCKS5 პროქსის პორტი უკვე დაკავებულია</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>კავშირი დაიკარგა</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>სერვერმა დახურა კავშირი</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>დაკავშირება ვერ მოხერხდა</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>%1 を終了</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH がインストールされていません</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh を起動できません: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh を起動できません</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>サーバーに接続しましたが、トンネル経由で Web サイトにアクセスできません</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>トンネル経由でインターネットに接続できません</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>トンネルは開いています</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>接続しています…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>トンネルは閉じています</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 プロキシのアドレスをコピー（%2）</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>今すぐ再接続</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>トンネルを開けません</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>接続しています…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 後に再試行</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>新しいバージョンがあります (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH クライアント（%1）がインストールされていません。OpenSSH クライアントのパッケージ（例: openssh-client）をインストールしてください。</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>認証に失敗しました</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>認証に失敗しました: サーバーが秘密鍵を拒否しました</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>サーバーの身元を確認できません</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>サーバーの ID の確認に失敗しました。設定で信頼性チェックを実行してください</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>サーバーのアドレスが見つかりません</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>サーバーのアドレスを解決できません</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>サーバーに到達できません</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>サーバーに到達できません</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>プロキシポートは使用中です</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>ローカル SOCKS5 プロキシのポートは既に使用されています</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>接続が切断されました</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>サーバーによって接続が閉じられました</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>接続に失敗しました</translation>
     </message>
 </context>
 </TS>

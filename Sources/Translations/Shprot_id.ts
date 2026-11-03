@@ -388,12 +388,24 @@
         <translation>Keluar dari %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH tidak terpasang</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Tidak dapat menjalankan ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Tidak dapat menjalankan ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Terhubung ke server, tetapi situs web tidak dapat dijangkau melalui terowongan</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tidak ada internet melalui terowongan</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Terowongan terbuka</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Menyambungkan…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Terowongan tertutup</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Salin Alamat Proksi %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Sambungkan ulang sekarang</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tidak dapat membuka terowongan</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>menyambungkan…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>coba lagi dalam %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Versi baru tersedia (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Klien OpenSSH (%1) belum terinstal. Instal paket klien OpenSSH (mis. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentikasi gagal</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentikasi gagal: server menolak kunci privat</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Identitas server belum terverifikasi</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Verifikasi identitas server gagal, jalankan Pemeriksaan Kepercayaan di Preferensi</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Alamat server tidak ditemukan</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Tidak dapat menemukan alamat server</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server tidak dapat dijangkau</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server tidak dapat dijangkau</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Port proksi sedang digunakan</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Port proksi SOCKS5 lokal sudah digunakan</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Koneksi terputus</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Koneksi ditutup oleh server</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Koneksi gagal</translation>
     </message>
 </context>
 </TS>

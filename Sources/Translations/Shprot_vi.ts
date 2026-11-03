@@ -388,12 +388,24 @@
         <translation>Thoát %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>Chưa cài đặt OpenSSH</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Không thể khởi động ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Không thể khởi động ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Đã kết nối máy chủ, nhưng không thể truy cập trang web qua đường hầm</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Không có Internet qua đường hầm</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Đường hầm đang mở</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Đang kết nối…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Đường hầm đã đóng</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Sao chép địa chỉ proxy %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Kết nối lại ngay</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Không thể mở đường hầm</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>đang kết nối…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>thử lại sau %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Đã có phiên bản mới (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Chưa cài đặt máy khách OpenSSH (%1). Hãy cài gói máy khách OpenSSH (ví dụ: openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Xác thực thất bại</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Xác thực thất bại: máy chủ đã từ chối khóa riêng</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Chưa xác minh danh tính máy chủ</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Xác minh danh tính máy chủ thất bại, hãy chạy kiểm tra độ tin cậy trong Tùy chọn</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Không tìm thấy địa chỉ máy chủ</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Không thể phân giải địa chỉ máy chủ</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Không thể truy cập máy chủ</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Không thể truy cập máy chủ</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Cổng proxy đang bận</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Cổng proxy SOCKS5 cục bộ đã được sử dụng</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Mất kết nối</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Máy chủ đã đóng kết nối</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Kết nối thất bại</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>Afslut %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH er ikke installeret</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Kan ikke starte ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Kan ikke starte ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Forbundet til serveren, men websteder kan ikke nås gennem tunnelen</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Intet internet gennem tunnelen</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunnelen er åben</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Opretter forbindelse…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunnelen er lukket</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopiér adressen på %1-proxy (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Genopret forbindelse nu</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Kan ikke åbne tunnelen</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>opretter forbindelse…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>nyt forsøg om %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Ny version tilgængelig (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH-klienten (%1) er ikke installeret. Installér OpenSSH-klientpakken (f.eks. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Godkendelse mislykkedes</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Godkendelse mislykkedes: serveren afviste den private nøgle</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serverens identitet er ikke bekræftet</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Bekræftelse af serverens identitet mislykkedes, kør tillidstjek i indstillingerne</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serveradressen blev ikke fundet</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Kan ikke slå serverens adresse op</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serveren kan ikke nås</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serveren kan ikke nås</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxyporten er optaget</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Porten til den lokale SOCKS5-proxy er allerede i brug</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Forbindelsen blev afbrudt</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Serveren lukkede forbindelsen</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Forbindelsen mislykkedes</translation>
     </message>
 </context>
 </TS>

@@ -388,12 +388,24 @@
         <translation>%1 dan chiqish</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH o&apos;rnatilmagan</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh ishga tushmadi: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh ishga tushmadi</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Serverga ulandi, ammo saytlar tunnel orqali ochilmayapti</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tunnel orqali internet yo&apos;q</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunnel ochiq</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Ulanmoqda…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunnel yopiq</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 proksi manzilini nusxalash (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Hozir qayta ulanish</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunnelni ochib bo‘lmadi</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>ulanmoqda…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 dan keyin urinish</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Yangi versiya mavjud (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH mijozi (%1) o‘rnatilmagan. OpenSSH mijozi paketini o‘rnating (masalan, openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentifikatsiya muvaffaqiyatsiz</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentifikatsiya muvaffaqiyatsiz: server maxfiy kalitni rad etdi</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Server haqiqiyligi tasdiqlanmagan</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Server identifikatorini tasdiqlab bo‘lmadi, sozlamalarda ishonchni tekshirishni bajaring</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Server manzili topilmadi</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Server manzilini aniqlab bo‘lmadi</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serverga ulanib bo&apos;lmaydi</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server mavjud emas</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proksi porti band</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Mahalliy SOCKS5 proksi porti allaqachon band</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Aloqa uzildi</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Server ulanishni yopdi</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Ulanib bo&apos;lmadi</translation>
     </message>
 </context>
 </TS>

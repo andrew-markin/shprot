@@ -388,12 +388,24 @@
         <translation>%1 beenden</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH nicht installiert</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh kann nicht gestartet werden: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh kann nicht gestartet werden</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Mit dem Server verbunden, aber Websites sind über den Tunnel nicht erreichbar</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Kein Internet durch den Tunnel</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunnel ist geöffnet</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Verbindung wird hergestellt…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunnel ist geschlossen</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1-Proxy-Adresse kopieren (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Jetzt neu verbinden</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunnel kann nicht geöffnet werden</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>Verbindung wird hergestellt…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>neuer Versuch in %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Neue Version verfügbar (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Der OpenSSH-Client (%1) ist nicht installiert. Installieren Sie das OpenSSH-Client-Paket (z. B. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Authentifizierung fehlgeschlagen</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Authentifizierung fehlgeschlagen: Der Server hat den privaten Schlüssel abgelehnt</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serveridentität nicht bestätigt</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Überprüfung der Server-Identität fehlgeschlagen, führen Sie die Vertrauensprüfung in den Einstellungen aus</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serveradresse nicht gefunden</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Die Serveradresse kann nicht aufgelöst werden</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server nicht erreichbar</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server ist nicht erreichbar</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proxy-Port ist belegt</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Der Port des lokalen SOCKS5-Proxys wird bereits verwendet</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Verbindung verloren</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Verbindung wurde vom Server geschlossen</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Verbindung fehlgeschlagen</translation>
     </message>
 </context>
 </TS>

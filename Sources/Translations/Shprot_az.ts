@@ -388,12 +388,24 @@
         <translation>%1 proqramından çıx</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH quraşdırılmayıb</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh başladıla bilmədi: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh başladıla bilmədi</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Serverə qoşulub, lakin saytlar tunel vasitəsilə əlçatan deyil</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tunel vasitəsilə internet yoxdur</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunel açıqdır</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Qoşulur…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunel bağlıdır</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>%1 proksi ünvanını kopyala (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>İndi yenidən qoşul</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunel açıla bilmədi</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>qoşulur…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>%1 sonra təkrar cəhd</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Yeni versiya mövcuddur (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH müştərisi (%1) quraşdırılmayıb. OpenSSH müştəri paketini quraşdırın (məs. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentifikasiya uğursuz oldu</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentifikasiya alınmadı: server şəxsi açarı rədd etdi</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Server kimliyi təsdiqlənməyib</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Serverin kimliyini təsdiqləmək alınmadı, parametrlərdə etibar yoxlamasını işə salın</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Server ünvanı tapılmadı</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Server ünvanını müəyyən etmək mümkün deyil</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serverə çatmaq mümkün deyil</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server əlçatan deyil</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Proksi portu məşğuldur</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Lokal SOCKS5 proksi portu artıq istifadə olunur</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Bağlantı kəsildi</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Server bağlantını bağladı</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Bağlantı alınmadı</translation>
     </message>
 </context>
 </TS>

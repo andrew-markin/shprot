@@ -388,12 +388,24 @@
         <translation>Затвори %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH није инсталиран</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Није могуће покренути ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Није могуће покренути ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Повезано са сервером, али веб-сајтови нису доступни кроз тунел</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Нема интернета кроз тунел</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Тунел је отворен</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Повезивање…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Тунел је затворен</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Копирај адресу %1 проксија (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Поново се повежи сада</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Није могуће отворити тунел</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>повезивање…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>нови покушај за %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Доступна је нова верзија (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH клијент (%1) није инсталиран. Инсталирајте пакет OpenSSH клијента (нпр. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Потврда идентитета није успела</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Аутентификација није успела: сервер је одбио приватни кључ</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Идентитет сервера није потврђен</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Провера идентитета сервера није успела, покрените проверу поверења у подешавањима</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Адреса сервера није пронађена</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Није могуће разрешити адресу сервера</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Сервер је недоступан</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Сервер није доступан</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Порт проксија је заузет</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Порт локалног SOCKS5 проксија је већ у употреби</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Веза је изгубљена</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Сервер је затворио везу</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Повезивање није успело</translation>
     </message>
 </context>
 </TS>

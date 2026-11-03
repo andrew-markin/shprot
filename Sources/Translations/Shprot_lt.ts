@@ -388,12 +388,24 @@
         <translation>Išeiti iš %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH neįdiegtas</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>Nepavyko paleisti ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>Nepavyko paleisti ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Prisijungta prie serverio, bet svetainės per tunelį nepasiekiamos</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Per tunelį nėra interneto</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunelis atvertas</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Jungiamasi…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunelis uždarytas</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopijuoti %1 tarpinio serverio adresą (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Prisijungti iš naujo dabar</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Nepavyko atverti tunelio</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>jungiamasi…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>kitas bandymas po %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Yra nauja versija (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH klientas (%1) neįdiegtas. Įdiekite OpenSSH kliento paketą (pvz., openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Tapatybės nustatymas nepavyko</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentifikavimas nepavyko: serveris atmetė privatųjį raktą</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serverio tapatybė nepatvirtinta</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Nepavyko patvirtinti serverio tapatybės, nuostatose atlikite patikimumo tikrinimą</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serverio adresas nerastas</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Nepavyko nustatyti serverio adreso</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Serveris nepasiekiamas</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Serveris nepasiekiamas</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Tarpinio serverio prievadas užimtas</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Vietinio SOCKS5 tarpinio serverio prievadas jau naudojamas</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Ryšys nutrūko</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Serveris nutraukė ryšį</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Prisijungti nepavyko</translation>
     </message>
 </context>
 </TS>

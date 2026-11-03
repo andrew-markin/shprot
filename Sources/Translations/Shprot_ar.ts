@@ -388,12 +388,24 @@
         <translation>إنهاء %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH غير مثبت</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>تعذّر تشغيل ssh: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>تعذّر تشغيل ssh</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>تم الاتصال بالخادم، لكن لا يمكن الوصول إلى المواقع عبر النفق</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>لا إنترنت عبر النفق</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>النفق مفتوح</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>جارٍ الاتصال…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>النفق مغلق</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>نسخ عنوان وكيل %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>إعادة الاتصال الآن</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>تعذّر فتح النفق</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>جارٍ الاتصال…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>إعادة المحاولة خلال %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>يتوفر إصدار جديد (%1 ← %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>عميل OpenSSH (%1) غير مثبت. ثبّت حزمة عميل OpenSSH (مثل openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>فشلت المصادقة</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>فشلت المصادقة: رفض الخادم المفتاح الخاص</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>هوية الخادم غير موثقة</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>فشل التحقق من هوية الخادم، شغّل فحص الثقة من التفضيلات</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>عنوان الخادم غير موجود</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>تعذّر تحليل عنوان الخادم</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>تعذر الوصول إلى الخادم</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>لا يمكن الوصول إلى الخادم</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>منفذ الوكيل مشغول</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>منفذ وكيل SOCKS5 المحلي قيد الاستخدام بالفعل</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>انقطع الاتصال</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>أغلق الخادم الاتصال</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>فشل الاتصال</translation>
     </message>
 </context>
 </TS>

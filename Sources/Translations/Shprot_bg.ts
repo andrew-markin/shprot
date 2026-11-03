@@ -388,12 +388,24 @@
         <translation>Изход от %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH не е инсталиран</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh не може да бъде стартиран: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh не може да бъде стартиран</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Има връзка със сървъра, но сайтовете не са достъпни през тунела</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Няма интернет през тунела</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Тунелът е отворен</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Свързване…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Тунелът е затворен</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Копиране на адреса на %1 прокси (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Свързване отново сега</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Тунелът не може да бъде отворен</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>свързване…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>нов опит след %1</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Налична е нова версия (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>Клиентът OpenSSH (%1) не е инсталиран. Инсталирайте пакета на клиента OpenSSH (напр. openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Неуспешно удостоверяване</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Неуспешно удостоверяване: сървърът отхвърли частния ключ</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Самоличността на сървъра не е потвърдена</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Неуспешна проверка на самоличността на сървъра, изпълнете проверка на доверието в настройките</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Адресът на сървъра не е намерен</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Адресът на сървъра не може да бъде открит</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Сървърът е недостъпен</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Сървърът е недостъпен</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Портът на проксито е зает</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Портът на локалния SOCKS5 прокси вече се използва</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Връзката е прекъсната</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Сървърът затвори връзката</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Неуспешно свързване</translation>
     </message>
 </context>
 </TS>

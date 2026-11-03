@@ -388,12 +388,24 @@
         <translation>Välju rakendusest %1</translation>
     </message>
     <message>
+        <source>OpenSSH not installed</source>
+        <translation>OpenSSH pole paigaldatud</translation>
+    </message>
+    <message>
         <source>Unable to start ssh: %1</source>
         <translation>ssh käivitamine nurjus: %1</translation>
     </message>
     <message>
+        <source>Unable to start ssh</source>
+        <translation>ssh käivitamine nurjus</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Server on ühendatud, kuid veebisaidid pole tunneli kaudu kättesaadavad</translation>
+    </message>
+    <message>
+        <source>No internet through tunnel</source>
+        <translation>Tunneli kaudu pole internetti</translation>
     </message>
     <message>
         <source>Local HTTP proxy is not available: %1</source>
@@ -412,6 +424,10 @@
         <translation>Tunnel on avatud</translation>
     </message>
     <message>
+        <source>Connecting…</source>
+        <translation>Ühendamine…</translation>
+    </message>
+    <message>
         <source>Tunnel is closed</source>
         <translation>Tunnel on suletud</translation>
     </message>
@@ -422,6 +438,10 @@
     <message>
         <source>Copy %1 Proxy Address (%2)</source>
         <translation>Kopeeri %1-puhverserveri aadress (%2)</translation>
+    </message>
+    <message>
+        <source>Reconnect Now</source>
+        <translation>Ühenda kohe uuesti</translation>
     </message>
     <message>
         <source>Tunnel opened</source>
@@ -444,6 +464,14 @@
         <translation>Tunneli avamine nurjus</translation>
     </message>
     <message>
+        <source>connecting…</source>
+        <translation>ühendamine…</translation>
+    </message>
+    <message>
+        <source>retry in %1</source>
+        <translation>uus katse %1 pärast</translation>
+    </message>
+    <message>
         <source>New Version Available (%1 → %2)</source>
         <translation>Saadaval on uus versioon (%1 → %2)</translation>
     </message>
@@ -459,16 +487,32 @@
         <translation>OpenSSH klient (%1) pole paigaldatud. Paigaldage OpenSSH kliendi pakett (nt openssh-client).</translation>
     </message>
     <message>
+        <source>Authentication failed</source>
+        <translation>Autentimine ebaõnnestus</translation>
+    </message>
+    <message>
         <source>Authentication failed: the server rejected the private key</source>
         <translation>Autentimine nurjus: server lükkas privaatvõtme tagasi</translation>
+    </message>
+    <message>
+        <source>Server identity not verified</source>
+        <translation>Serveri identiteet pole kinnitatud</translation>
     </message>
     <message>
         <source>Server identity verification failed, run Trust Check in Preferences</source>
         <translation>Serveri identiteedi kinnitamine nurjus, kontrollige usaldust eelistustes</translation>
     </message>
     <message>
+        <source>Server address not found</source>
+        <translation>Serveri aadressi ei leitud</translation>
+    </message>
+    <message>
         <source>Unable to resolve the server address</source>
         <translation>Serveri aadressi ei saa lahendada</translation>
+    </message>
+    <message>
+        <source>Server unreachable</source>
+        <translation>Server pole kättesaadav</translation>
     </message>
     <message>
         <source>Connection refused by the server</source>
@@ -483,8 +527,16 @@
         <translation>Server pole kättesaadav</translation>
     </message>
     <message>
+        <source>Proxy port is busy</source>
+        <translation>Puhverserveri port on hõivatud</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 proxy port is already in use</source>
         <translation>Kohaliku SOCKS5-puhverserveri port on juba kasutusel</translation>
+    </message>
+    <message>
+        <source>Connection lost</source>
+        <translation>Ühendus katkes</translation>
     </message>
     <message>
         <source>Server stopped responding</source>
@@ -493,6 +545,10 @@
     <message>
         <source>Connection was closed by the server</source>
         <translation>Server sulges ühenduse</translation>
+    </message>
+    <message>
+        <source>Connection failed</source>
+        <translation>Ühendamine ebaõnnestus</translation>
     </message>
 </context>
 </TS>
