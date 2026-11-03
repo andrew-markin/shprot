@@ -282,6 +282,14 @@ void TestUtilities::sshPrivateKeyLooksValid_data()
     QTest::newRow("openssh") << "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----"
                              << true;
     QTest::newRow("rsa") << "-----BEGIN RSA PRIVATE KEY-----\nMIIEow==\n-----END RSA PRIVATE KEY-----" << true;
+    QTest::newRow("final line break") << "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----\n"
+                                      << true;
+    QTest::newRow("crlf") << "-----BEGIN OPENSSH PRIVATE KEY-----\r\nb3BlbnNzaA==\r\n-----END OPENSSH PRIVATE KEY-----\r\n"
+                          << true;
+    QTest::newRow("surrounding whitespace") << "\n  -----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----  \n\n"
+                                            << true;
+    QTest::newRow("text after the key") << "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----\nmore"
+                                        << false;
     QTest::newRow("public key") << "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOZWfDXuZUACUxEdbYQYIdIcF1/+5hhtVwvnZ6AqraZH"
                                 << false;
     QTest::newRow("no body") << "-----BEGIN OPENSSH PRIVATE KEY-----\n-----END OPENSSH PRIVATE KEY-----" << false;
@@ -357,6 +365,19 @@ void TestUtilities::writePrivateKeyFile()
     QFile file(path);
     QVERIFY(file.open(QIODevice::ReadOnly));
     QCOMPARE(file.readAll(), privateKey);
+    file.close();
+
+    // OpenSSH doesn't accept these forms of a key, so they are normalized
+    for (const QByteArray& untidyPrivateKey : {
+             QByteArray("-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----"),
+             QByteArray("-----BEGIN OPENSSH PRIVATE KEY-----\r\nb3BlbnNzaA==\r\n-----END OPENSSH PRIVATE KEY-----\r\n"),
+             QByteArray("\n -----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY----- \n\n")})
+    {
+        QVERIFY(Utilities::writePrivateKeyFile(path, untidyPrivateKey));
+        QVERIFY(file.open(QIODevice::ReadOnly));
+        QCOMPARE(file.readAll(), privateKey);
+        file.close();
+    }
 
 #ifndef Q_OS_WIN
     // On Windows the file inherits the profile directory ACL, which QFile::permissions() doesn't reflect
@@ -378,6 +399,10 @@ void TestUtilities::generateSshKeys()
 
     QString publicKey = Utilities::getSshPublicKey(privateKey);
     QVERIFY2(publicKey.startsWith("ssh-ed25519 "), qPrintable(publicKey));
+
+    // Key damaged by copying still works, ssh-keygen loads it the same way ssh does
+    QCOMPARE(Utilities::getSshPublicKey(privateKey.trimmed()), publicKey);
+    QCOMPARE(Utilities::getSshPublicKey(QString(privateKey).replace("\n", "\r\n")), publicKey);
 }
 
 QTEST_GUILESS_MAIN(TestUtilities)

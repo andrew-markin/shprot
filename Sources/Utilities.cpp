@@ -77,7 +77,11 @@ bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey)
         return false;
     }
 
-    return file.write(privateKey) == privateKey.size();
+    // OpenSSH rejects keys with CRLF line endings or without the final line break ("invalid format"),
+    // which is easy to lose while copying a key. Applied here, so already saved keys are fixed as well.
+    QByteArray normalizedPrivateKey = QByteArray(privateKey).replace("\r\n", "\n").trimmed() + '\n';
+
+    return file.write(normalizedPrivateKey) == normalizedPrivateKey.size();
 }
 
 QString generateSshPrivateKey()
@@ -174,7 +178,8 @@ bool sshPrivateKeyLooksValid(const QString& privateKey)
                 R"(^-----BEGIN [A-Z0-9 ]+ PRIVATE KEY-----\n.+\n-----END [A-Z0-9 ]+ PRIVATE KEY-----$)",
                 QRegularExpression::DotMatchesEverythingOption);
 
-    return SshPrivateKeyRegEx.match(privateKey).hasMatch();
+    // Line endings and surrounding whitespace are normalized when the key is written to a file
+    return SshPrivateKeyRegEx.match(QString(privateKey).replace("\r\n", "\n").trimmed()).hasMatch();
 }
 
 QString getAddressFromSshDestination(const QString& destination)
