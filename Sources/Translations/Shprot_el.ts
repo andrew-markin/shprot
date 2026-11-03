@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>Αδυναμία ανοίγματος της σήραγγας</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>Διαθέσιμη νέα έκδοση (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

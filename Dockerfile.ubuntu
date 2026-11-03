@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y \
     libgtk-3-dev \
     libice-dev \
     libsm-dev \
+    libssl-dev \
     libx11-dev \
     libx11-xcb-dev \
     libxcb-cursor-dev \
@@ -119,10 +120,12 @@ RUN ../sources/configure \
     -no-icu \
     -xcb \
     \
-    # Not used by the application: widgets are rendered without OpenGL, there are
-    # no TLS connections and no compressed HTTP downloads (fewer runtime dependencies)
+    # Not used by the application: widgets are rendered without OpenGL and there are
+    # no compressed HTTP downloads (fewer runtime dependencies)
     -no-opengl \
-    -no-openssl \
+    \
+    # TLS for update checks: system OpenSSL is loaded at runtime, so it's not linked
+    -openssl-runtime \
     -no-feature-brotli \
     \
     # Disable heavy / non‑essential modules

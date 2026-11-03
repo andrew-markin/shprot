@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>Az alagút nem nyitható meg</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>Új verzió érhető el (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

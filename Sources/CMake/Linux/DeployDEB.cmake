@@ -13,6 +13,8 @@ set(DEB_PACKAGE_ARCH "amd64")
 set(DEB_PACKAGE_DEPENDENCIES
     # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
     "openssh-client"       # OpenSSH client (ssh, ssh-keygen)
+    # TLS for update checks - OpenSSL is loaded by Qt at runtime (renamed to libssl3t64 in Ubuntu 24.04)
+    "libssl3 | libssl3t64"
 )
 
 string(

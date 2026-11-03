@@ -29,3 +29,11 @@ add_shprot_test(
     ${PROJECT_SOURCE_DIR}/Utilities.cpp
     ${PROJECT_SOURCE_DIR}/Utilities.h
 )
+
+add_shprot_test(
+    TestUpdateChecker
+    ${PROJECT_SOURCE_DIR}/Preferences.cpp
+    ${PROJECT_SOURCE_DIR}/Preferences.h
+    ${PROJECT_SOURCE_DIR}/UpdateChecker.cpp
+    ${PROJECT_SOURCE_DIR}/UpdateChecker.h
+)

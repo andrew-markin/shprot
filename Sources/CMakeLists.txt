@@ -99,6 +99,8 @@ add_executable(
     Translations.h
     TweakStyle.cpp
     TweakStyle.h
+    UpdateChecker.cpp
+    UpdateChecker.h
     Utilities.cpp
     Utilities.h
     Websites.cpp

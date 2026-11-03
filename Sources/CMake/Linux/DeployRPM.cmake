@@ -16,6 +16,8 @@ set(RPM_PACKAGE_ARCH "x86_64")
 set(RPM_PACKAGE_DEPENDENCIES
     # SSH tools - tunnel is run by ssh, keys are handled by ssh-keygen
     "openssh-clients"        # OpenSSH client (ssh; ssh-keygen comes with required openssh package)
+    # TLS for update checks - OpenSSL is loaded by Qt at runtime
+    "openssl-libs"
 )
 
 set(RPM_PACKAGE_REQUIRES "")

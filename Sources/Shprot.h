@@ -15,6 +15,7 @@ class HttpProxyServer;
 class LogsDialog;
 class Preferences;
 class PreferencesDialog;
+class UpdateChecker;
 
 class Shprot : public QObject
 {
@@ -53,6 +54,7 @@ private slots:
     void handleSystemTrayIconActivation(QSystemTrayIcon::ActivationReason reason);
 
     void maybeUpdateStatus();
+    void updateNewVersionAction();
     void setLastError(const QString& error);
 
 private:
@@ -79,6 +81,7 @@ private:
     QAction* m_tunnelEnabledAction;
     QAction* m_copySocks5ProxyUrlAction;
     QAction* m_copyHttpProxyUrlAction;
+    QAction* m_newVersionAction;
     QString m_socks5ProxyUrl; // Empty when the proxy is not started
     QString m_httpProxyUrl;
     QIcon m_tunnelOpenIcon;
@@ -92,6 +95,8 @@ private:
     QString m_lastError; // Why the tunnel is not opened, shown in notifications and tray icon tool tip
     QString m_notifiedError;
     QString m_httpProxyError;
+
+    UpdateChecker* m_updateChecker;
 
     PreferencesDialog* m_preferencesDialog;
     LogsDialog* m_logsDialog = nullptr;

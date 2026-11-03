@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>No es pot obrir el túnel</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>Hi ha una versió nova disponible (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

@@ -41,6 +41,7 @@ set(
     "networkinformation/libqnetworkmanager.so"
     "platforms/libqxcb.so"
     "platformthemes/libqgtk3.so"
+    "tls/libqopensslbackend.so" # System OpenSSL is loaded at runtime, not shipped
 )
 
 foreach(REQUIRED_QT_PLUGIN ${REQUIRED_QT_PLUGINS})

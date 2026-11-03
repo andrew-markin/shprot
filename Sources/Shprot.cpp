@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDir>
 #include <QLocalServer>
 #include <QLocalSocket>
@@ -31,6 +32,7 @@
 #include "PreferencesDialog.h"
 #include "Translations.h"
 #include "TweakStyle.h"
+#include "UpdateChecker.h"
 #include "Utilities.h"
 #include "Websites.h"
 
@@ -257,6 +259,12 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_contextMenu->addAction(tr("Show Logs…"), this, &Shprot::openLogsDialog);
     m_contextMenu->addAction(tr("About %1…").arg(PROJECT_TITLE), this, &Shprot::openAboutDialog);
 
+    // Hidden until a newer release is found, the user is not bothered otherwise
+    m_newVersionAction = m_contextMenu->addAction(QString(), this, [this]() {
+        QDesktopServices::openUrl(m_updateChecker->newVersionUrl());
+    });
+    m_newVersionAction->setVisible(false);
+
     m_contextMenu->addSeparator();
 
     m_contextMenu->addAction(tr("Quit %1").arg(PROJECT_TITLE), qApp, &QApplication::quit);
@@ -276,6 +284,11 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_statusTimer->setSingleShot(true);
 
     connect(m_statusTimer, &QTimer::timeout, this, &Shprot::maybeUpdateStatus);
+
+    m_updateChecker = new UpdateChecker(m_preferences, this);
+    connect(m_updateChecker, &UpdateChecker::latestVersionChanged, this, &Shprot::updateNewVersionAction);
+
+    updateNewVersionAction(); // Version found before restart is offered right away
 
     m_preferencesDialog = new PreferencesDialog(m_preferences);
 
@@ -307,6 +320,7 @@ Shprot::~Shprot()
 void Shprot::start()
 {
     m_tunnelTimer->start(0);
+    m_updateChecker->start();
 }
 
 void Shprot::stop()
@@ -824,6 +838,9 @@ void Shprot::maybeUpdateStatus()
     {
         m_tunnelIndicatedAsOpened = tunnelIsOpened;
 
+        // Updates are checked through the tunnel while it's open, the same way the user goes online
+        m_updateChecker->setProxy(tunnelIsOpened ? m_tunnelSocksProxy : QNetworkProxy(QNetworkProxy::NoProxy));
+
         if (tunnelIsOpened)
         {
             m_systemTrayIcon->setIcon(m_tunnelOpenIcon);
@@ -858,6 +875,14 @@ void Shprot::maybeUpdateStatus()
             m_systemTrayIcon->showMessage(tr("Unable to open tunnel"), m_lastError, QSystemTrayIcon::NoIcon);
         }
     }
+}
+
+void Shprot::updateNewVersionAction()
+{
+    QString newVersion = m_updateChecker->newVersion();
+
+    m_newVersionAction->setText(tr("New Version Available (%1 → %2)").arg(PROJECT_VERSION, newVersion));
+    m_newVersionAction->setVisible(!newVersion.isEmpty());
 }
 
 void Shprot::setLastError(const QString& error)

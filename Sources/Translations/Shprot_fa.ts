@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>باز کردن تونل ممکن نیست</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>نسخهٔ جدید در دسترس است (%1 ← %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

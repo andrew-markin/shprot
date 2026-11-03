@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>გვირაბის გახსნა ვერ მოხერხდა</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>ხელმისაწვდომია ახალი ვერსია (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

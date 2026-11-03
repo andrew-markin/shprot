@@ -28,6 +28,7 @@ set(
     "networkinformation/qnetworklistmanager.dll"
     "platforms/qwindows.dll"
     "styles/qmodernwindowsstyle.dll"
+    "tls/qschannelbackend.dll" # TLS by Windows itself, no OpenSSL to ship
 )
 
 foreach(REQUIRED_QT_PLUGIN ${REQUIRED_QT_PLUGINS})

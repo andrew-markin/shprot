@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>לא ניתן לפתוח את המנהרה</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>גרסה חדשה זמינה (%1 ← %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

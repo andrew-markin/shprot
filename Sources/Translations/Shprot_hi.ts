@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>टनल नहीं खुल सकी</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>नया संस्करण उपलब्ध है (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

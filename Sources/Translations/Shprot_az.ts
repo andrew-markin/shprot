@@ -443,6 +443,10 @@
         <source>Unable to open tunnel</source>
         <translation>Tunel açıla bilmədi</translation>
     </message>
+    <message>
+        <source>New Version Available (%1 → %2)</source>
+        <translation>Yeni versiya mövcuddur (%1 → %2)</translation>
+    </message>
 </context>
 <context>
     <name>Utilities</name>

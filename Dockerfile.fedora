@@ -51,6 +51,7 @@ RUN dnf install -y -v --verbose \
     libXext-devel \
     libxkbcommon-devel \
     libxkbcommon-x11-devel \
+    openssl-devel \
     pkgconfig \
     xcb-util-cursor-devel \
     xcb-util-devel \
@@ -110,10 +111,12 @@ RUN ../sources/configure \
     -no-icu \
     -xcb \
     \
-    # Not used by the application: widgets are rendered without OpenGL, there are
-    # no TLS connections and no compressed HTTP downloads (fewer runtime dependencies)
+    # Not used by the application: widgets are rendered without OpenGL and there are
+    # no compressed HTTP downloads (fewer runtime dependencies)
     -no-opengl \
-    -no-openssl \
+    \
+    # TLS for update checks: system OpenSSL is loaded at runtime, so it's not linked
+    -openssl-runtime \
     -no-feature-brotli \
     \
     # Disable heavy / non‑essential modules
