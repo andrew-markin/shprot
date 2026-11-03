@@ -15,7 +15,7 @@ Whether you're a developer, tester, or just need a stable proxy for daily browsi
 - **Automated SSH Tunneling:** Easily establish and manage secure SSH tunnels that route traffic through a local SOCKS5 proxy.
 - **Smart Connection Resilience:** Automatically monitors internet status and network switches (e.g., changing Wi-Fi networks or waking from sleep) and transparently restarts the tunnel.
 - **Advanced Health Checks:** Periodically verifies connection integrity by testing popular website availability through the proxy, reviving the tunnel instantly if the underlying SSH process stalls.
-- **Server-Friendly Reconnection:** Repeated restart attempts are spaced out with a growing delay, and authentication failures are retried no more than once a minute (backing off up to 30 minutes), so a misconfigured key will not get your IP address banned by tools like fail2ban.
+- **Server-Friendly Reconnection:** Repeated restart attempts are spaced out with a growing delay, and authentication failures are retried no more than once a minute (backing off up to 30 minutes), so a misconfigured key will not get your IP address banned by tools like fail2ban. The tray menu shows the time left until the next attempt, and **Reconnect Now** skips the wait.
 - **Integrated Key Management:** Simplifies client authentication with built-in SSH key generation, allowing you to easily copy your public key to the remote server's `authorized_keys`.
 - **User-Friendly Authentication:** Provides a clean interface for managing remote server credentials and server/client authentication parameters.
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
@@ -159,7 +159,7 @@ Follow these steps to configure the proxy tunnel:
 
 ### Step 3: Set Up Client Key Authentication
 1. Go to the **"SSH Private Key"** area. To provide a secure client key, you can:
-   * Paste an existing private key text into the field.
+   * Paste an existing private key text into the field. Line endings and a missing final line break are fixed automatically.
    * Click **"Import…"** to load a key from a file.
    * Click **"Generate"** (Highly Recommended) to let Shprot instantly create a fresh cryptographic key pair.
 2. Click **"Copy Public Key"** to copy the generated public key text to your clipboard.
