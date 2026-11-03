@@ -344,10 +344,10 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
 ### 运行测试
 
-单元测试（Qt Test）覆盖了工具函数和 HTTP 代理。默认情况下不会构建测试；可通过 CMake 选项 `SHPROT_BUILD_TESTS` 启用：
+单元测试（Qt Test）覆盖了工具函数、HTTP 代理以及检查更新时的版本比较。默认情况下不会构建测试；可通过 CMake 选项 `SHPROT_BUILD_TESTS` 启用：
 
     cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH=<Qt 6.11.2 的路径> -DSHPROT_BUILD_TESTS=ON
-    cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+    cmake --build Builds/Tests --target ShprotTests --parallel
     ctest --test-dir Builds/Tests --output-on-failure
 
 在 Windows 上使用 Visual Studio 生成器时，请在构建命令中添加 `--config Release`，并在 `ctest` 命令中添加 `-C Release`。

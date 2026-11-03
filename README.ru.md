@@ -344,10 +344,10 @@ HTTP-прокси работает **через** тот же SSH-туннель
 
 ### Запуск тестов
 
-Модульные тесты (Qt Test) покрывают вспомогательные функции и HTTP-прокси. По умолчанию они не собираются; включите их опцией CMake `SHPROT_BUILD_TESTS`:
+Модульные тесты (Qt Test) покрывают вспомогательные функции, HTTP-прокси и сравнение версий при проверке обновлений. По умолчанию они не собираются; включите их опцией CMake `SHPROT_BUILD_TESTS`:
 
     cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH=<путь к Qt 6.11.2> -DSHPROT_BUILD_TESTS=ON
-    cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+    cmake --build Builds/Tests --target ShprotTests --parallel
     ctest --test-dir Builds/Tests --output-on-failure
 
 В Windows с генератором Visual Studio добавьте `--config Release` к команде сборки и `-C Release` к команде `ctest`.

@@ -344,10 +344,10 @@ Now you can write code, debug, and run the application directly from the IDE. In
 
 ### Running Tests
 
-Unit tests (Qt Test) cover utility functions and the HTTP proxy. They are not built by default; enable them with the `SHPROT_BUILD_TESTS` CMake option:
+Unit tests (Qt Test) cover utility functions, the HTTP proxy and version comparison for update checks. They are not built by default; enable them with the `SHPROT_BUILD_TESTS` CMake option:
 
     cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH=<path to Qt 6.11.2> -DSHPROT_BUILD_TESTS=ON
-    cmake --build Builds/Tests --target TestUtilities TestHttpProxy --parallel
+    cmake --build Builds/Tests --target ShprotTests --parallel
     ctest --test-dir Builds/Tests --output-on-failure
 
 On Windows with the Visual Studio generator, add `--config Release` to the build command and `-C Release` to the `ctest` command.

@@ -1,5 +1,8 @@
 find_package(Qt6 REQUIRED COMPONENTS Test Network)
 
+# All tests are built by this target, so build scripts don't have to list them
+add_custom_target(ShprotTests)
+
 # Tests compile the application sources they cover directly, so the application target stays untouched
 function(add_shprot_test TEST_NAME)
     add_executable(${TEST_NAME} ${TEST_NAME}.cpp ${ARGN})
@@ -12,6 +15,7 @@ function(add_shprot_test TEST_NAME)
     endif()
 
     add_test(NAME ${TEST_NAME} COMMAND ${TEST_NAME})
+    add_dependencies(ShprotTests ${TEST_NAME})
 endfunction()
 
 add_shprot_test(
