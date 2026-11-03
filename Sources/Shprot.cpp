@@ -46,7 +46,7 @@ static const int SingleInstanceMessageSizeMax = 64;
 static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
-static const int TunnelProcessWarmupTime = 5000; // 5s
+static const int TunnelProcessWarmupTime = 5000; // 5s since ssh opened the local port
 static const int TunnelProcessRestartDelayLazy = 1000; // 1s
 
 // Restart delay doubles after each failed attempt until the tunnel passes a health check
@@ -515,7 +515,7 @@ void Shprot::stopTunnelProcess(int timeout)
 
 void Shprot::handleTunnelProcessStart()
 {
-    m_tunnelProcess->setProperty("startedAt", QDateTime::currentMSecsSinceEpoch());
+    m_tunnelPortOpened = false;
 
     m_healthCheckTimer->start(HealthCheckStartDelay);
     m_healthCheckFailsCount = 0;
@@ -613,13 +613,18 @@ void Shprot::maybeRunHealthCheck()
 
     QTcpSocket* healthCheckSocket = new QTcpSocket(this);
     healthCheckSocket->setProperty("url", healthCheckUrl);
-    healthCheckSocket->setProxy(m_tunnelSocksProxy);
+    healthCheckSocket->setProperty("portProbe", !m_tunnelPortOpened);
+    healthCheckSocket->setProxy(m_tunnelPortOpened ? m_tunnelSocksProxy : QNetworkProxy(QNetworkProxy::NoProxy));
 
     QTimer::singleShot(HealthCheckConnectionTimeout, healthCheckSocket, [healthCheckSocket]() {
         QAbstractSocket::SocketState state = healthCheckSocket->state();
         if ((state == QAbstractSocket::HostLookupState) || (state == QAbstractSocket::ConnectingState))
         {
-            qWarning() << "Aborting health checker after timeout...";
+            if (!healthCheckSocket->property("portProbe").toBool())
+            {
+                qWarning() << "Aborting health checker after timeout...";
+            }
+
             healthCheckSocket->abort();
         }
     });
@@ -627,6 +632,12 @@ void Shprot::maybeRunHealthCheck()
     connect(healthCheckSocket, &QTcpSocket::stateChanged, this, &Shprot::handleHealthCheckSocketStateChange);
 
     m_healthCheckSocket = healthCheckSocket;
+
+    if (!m_tunnelPortOpened)
+    {
+        m_healthCheckSocket->connectToHost(m_tunnelSocksProxy.hostName(), m_tunnelSocksProxy.port());
+        return;
+    }
 
     quint16 healthCheckUrlPort = healthCheckUrl.port(healthCheckUrl.scheme().toLower() == "https" ? 443 : 80);
     m_healthCheckSocket->connectToHost(healthCheckUrl.host(), healthCheckUrlPort);
@@ -660,8 +671,23 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
 
         m_healthCheckSocket = nullptr;
 
-        qint64 tunnelProcessUptime = QDateTime::currentMSecsSinceEpoch() -
-                                     m_tunnelProcess->property("startedAt").toLongLong();
+        // ssh is still connecting until its local port is opened, and it gives up on its own (ConnectTimeout,
+        // ServerAliveInterval). Failed or aborted probe is harmless, since opened port accepts right away.
+        if (socket->property("portProbe").toBool())
+        {
+            if (socket->property("success").toBool())
+            {
+                m_tunnelPortOpened = true;
+                m_tunnelWarmupTimer.start();
+                m_healthCheckTimer->start(HealthCheckDelayShort);
+            }
+            else
+            {
+                m_healthCheckTimer->start(HealthCheckStartDelay);
+            }
+
+            return;
+        }
 
         if (socket->property("success").toBool())
         {
@@ -676,7 +702,7 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
             m_lastErrorSummary.clear();
             m_notifiedError.clear();
         }
-        else if (tunnelProcessUptime < TunnelProcessWarmupTime)
+        else if (m_tunnelWarmupTimer.elapsed() < TunnelProcessWarmupTime)
         {
             m_internetReachable = false;
             m_statusTimer->start(StatusUpdateTimeout);

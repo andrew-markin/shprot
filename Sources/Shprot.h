@@ -67,6 +67,8 @@ private:
     QNetworkProxy m_tunnelSocksProxy;
     bool m_tunnelStoppedIntentionally = false;
     int m_failedRestartsCount = 0;
+    bool m_tunnelPortOpened = false; // Local port is opened by ssh only after authentication
+    QElapsedTimer m_tunnelWarmupTimer;
 
     QTimer* m_healthCheckTimer;
     QTcpSocket* m_healthCheckSocket = nullptr;
