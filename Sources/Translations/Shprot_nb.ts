@@ -388,8 +388,20 @@
         <translation>Avslutt %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Ingen nettverkstilkobling</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH er ikke installert</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Den private nøkkelen har en passordfrase</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Kunne ikke skrive filen med den private nøkkelen</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH-klienten (%1) er ikke installert. Installer OpenSSH-klientpakken (f.eks. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Private SSH-nøkler med passordfrase støttes ikke. Fjern passordfrasen eller generer en ny nøkkel.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

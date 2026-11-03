@@ -388,8 +388,20 @@
         <translation>Dil nga %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Nuk ka lidhje rrjeti</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH nuk është instaluar</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Çelësi privat ka frazëkalim</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Skedari i çelësit privat nuk mund të shkruhej</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Klienti OpenSSH (%1) nuk është i instaluar. Instaloni paketën e klientit OpenSSH (p.sh. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Çelësi privat SSH me frazëkalim nuk mbështetet. Hiqeni frazëkalimin ose krijoni një çelës të ri.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

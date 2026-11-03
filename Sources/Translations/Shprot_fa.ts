@@ -388,8 +388,20 @@
         <translation>خروج از %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>اتصال شبکه وجود ندارد</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH نصب نیست</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>کلید خصوصی دارای عبارت عبور است</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>نوشتن فایل کلید خصوصی ممکن نشد</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>کلاینت OpenSSH (%1) نصب نشده است. بسته کلاینت OpenSSH (مثلاً openssh-client) را نصب کنید.</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>کلید خصوصی SSH دارای عبارت عبور پشتیبانی نمی‌شود. عبارت عبور را حذف کنید یا کلید جدیدی بسازید.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

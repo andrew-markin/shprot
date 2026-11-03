@@ -388,8 +388,20 @@
         <translation>יציאה מ־%1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>אין חיבור לרשת</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH אינו מותקן</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>המפתח הפרטי מוגן בביטוי סיסמה</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>לא ניתן לכתוב את קובץ המפתח הפרטי</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>לקוח OpenSSH (%1) אינו מותקן. יש להתקין את חבילת לקוח OpenSSH (לדוגמה openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>מפתח SSH פרטי עם ביטוי סיסמה אינו נתמך. הסירו את ביטוי הסיסמה או צרו מפתח חדש.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

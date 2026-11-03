@@ -388,8 +388,20 @@
         <translation>Išeiti iš %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Nėra tinklo ryšio</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH neįdiegtas</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Privatusis raktas turi slaptafrazę</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Nepavyko įrašyti privačiojo rakto failo</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH klientas (%1) neįdiegtas. Įdiekite OpenSSH kliento paketą (pvz., openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Privatusis SSH raktas su slaptafraze nepalaikomas. Pašalinkite slaptafrazę arba sugeneruokite naują raktą.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

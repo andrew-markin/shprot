@@ -388,8 +388,20 @@
         <translation>結束 %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>沒有網路連線</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>未安裝 OpenSSH</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>私密金鑰設有密碼片語</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>無法寫入私密金鑰檔案</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>未安裝 OpenSSH 用戶端（%1）。請安裝 OpenSSH 用戶端套件（例如 openssh-client）。</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>不支援帶密碼片語的 SSH 私密金鑰。請移除密碼片語或產生新金鑰。</translation>
     </message>
     <message>
         <source>Authentication failed</source>

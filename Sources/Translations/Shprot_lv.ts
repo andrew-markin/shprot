@@ -388,8 +388,20 @@
         <translation>Iziet no %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Nav tīkla savienojuma</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH nav instalēts</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Privātajai atslēgai ir ieejas frāze</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Neizdevās ierakstīt privātās atslēgas failu</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH klients (%1) nav instalēts. Instalējiet OpenSSH klienta pakotni (piem., openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Privātā SSH atslēga ar ieejas frāzi netiek atbalstīta. Noņemiet ieejas frāzi vai ģenerējiet jaunu atslēgu.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

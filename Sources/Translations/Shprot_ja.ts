@@ -388,8 +388,20 @@
         <translation>%1 を終了</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>ネットワークに接続されていません</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH がインストールされていません</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>秘密鍵にパスフレーズが設定されています</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>秘密鍵ファイルを書き込めません</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH クライアント（%1）がインストールされていません。OpenSSH クライアントのパッケージ（例: openssh-client）をインストールしてください。</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>パスフレーズ付きの SSH 秘密鍵はサポートされていません。パスフレーズを削除するか、新しい鍵を生成してください。</translation>
     </message>
     <message>
         <source>Authentication failed</source>

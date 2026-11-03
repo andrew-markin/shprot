@@ -388,8 +388,20 @@
         <translation>ออกจาก %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>ไม่มีการเชื่อมต่อเครือข่าย</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>ไม่ได้ติดตั้ง OpenSSH</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>คีย์ส่วนตัวมีวลีรหัสผ่าน</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>ไม่สามารถเขียนไฟล์คีย์ส่วนตัวได้</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>ไม่ได้ติดตั้งไคลเอนต์ OpenSSH (%1) โปรดติดตั้งแพ็กเกจไคลเอนต์ OpenSSH (เช่น openssh-client)</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>ไม่รองรับคีย์ส่วนตัว SSH ที่มีวลีรหัสผ่าน โปรดลบวลีรหัสผ่านหรือสร้างคีย์ใหม่</translation>
     </message>
     <message>
         <source>Authentication failed</source>

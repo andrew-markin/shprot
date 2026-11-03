@@ -388,8 +388,20 @@
         <translation>Изход от %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Няма мрежова връзка</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH не е инсталиран</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Частният ключ е защитен с парола</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Файлът с частния ключ не може да бъде записан</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Клиентът OpenSSH (%1) не е инсталиран. Инсталирайте пакета на клиента OpenSSH (напр. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Частен SSH ключ с парола не се поддържа. Премахнете паролата или генерирайте нов ключ.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

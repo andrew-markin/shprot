@@ -382,9 +382,14 @@ void Shprot::maybeRestartTunnelProcess()
         return; // SSH Proxy Tunnel is disabled
     }
 
-    if (networkInformation->reachability() != QNetworkInformation::Reachability::Online)
+    // Only a missing network stops the attempt: the system reports a limited connection when its own connectivity
+    // check is blocked, and the server may be available anyway (e.g. in the local network)
+    if (networkInformation && (networkInformation->reachability() == QNetworkInformation::Reachability::Disconnected))
     {
-        return; // The Internet is not currently reachable
+        QString noNetworkMessage = tr("No network connection");
+        setLastError(noNetworkMessage, noNetworkMessage);
+        m_notifiedError = noNetworkMessage; // Shown in the status, not a failure to notify about
+        return;
     }
 
     QString missingSshMessage = Utilities::getMissingSshToolMessage("ssh");
@@ -415,14 +420,26 @@ void Shprot::maybeRestartTunnelProcess()
 
     QString privateKey = sshProxyTunnel.value("sshPrivateKey").toString();
 
+    // ssh can't ask for a passphrase in batch mode, so retrying is useless until the settings are changed
+    if (Utilities::sshPrivateKeyIsEncrypted(privateKey))
+    {
+        qWarning() << "SSH private key is protected with a passphrase";
+        setLastError(Utilities::getEncryptedPrivateKeyMessage(), tr("Private key has a passphrase"));
+        return;
+    }
+
     if (!Utilities::writePrivateKeyFile(m_identityFilePath, privateKey.toUtf8()))
     {
         qCritical() << "Unable to write identity file";
+
+        QString writeFailedMessage = tr("Unable to write private key file");
+        setLastError(writeFailedMessage, writeFailedMessage);
+        scheduleTunnelProcessRestart(false);
         return;
     }
 
     m_tunnelSocksProxy.setType(QNetworkProxy::Socks5Proxy);
-    m_tunnelSocksProxy.setHostName(localSocks5ProxyHost);
+    m_tunnelSocksProxy.setHostName(Utilities::getProxyConnectionHost(localSocks5ProxyHost));
     m_tunnelSocksProxy.setPort(localSocks5ProxyPort);
     m_tunnelSocksProxy.setCapabilities(m_tunnelSocksProxy.capabilities() | QNetworkProxy::HostNameLookupCapability);
 
@@ -584,6 +601,7 @@ void Shprot::scheduleTunnelProcessRestart(bool authenticationFailed)
 void Shprot::handleNetworkChange()
 {
     m_failedRestartsCount = 0; // New network deserves a fresh start
+    setLastError(QString(), QString()); // The reason found for the previous network is out of date
     maybeRestartTunnelProcessLater();
 }
 

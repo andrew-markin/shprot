@@ -388,8 +388,20 @@
         <translation>Ieșire din %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Nicio conexiune la rețea</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH nu este instalat</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Cheia privată are o frază de acces</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Fișierul cheii private nu a putut fi scris</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Clientul OpenSSH (%1) nu este instalat. Instalați pachetul clientului OpenSSH (de ex. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Cheile private SSH cu frază de acces nu sunt acceptate. Eliminați fraza de acces sau generați o cheie nouă.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

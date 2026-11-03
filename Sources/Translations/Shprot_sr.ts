@@ -388,8 +388,20 @@
         <translation>Затвори %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Нема мрежне везе</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH није инсталиран</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Приватни кључ има лозинку</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Није могуће уписати датотеку приватног кључа</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH клијент (%1) није инсталиран. Инсталирајте пакет OpenSSH клијента (нпр. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Приватни SSH кључ са лозинком није подржан. Уклоните лозинку или генеришите нови кључ.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

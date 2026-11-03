@@ -388,8 +388,20 @@
         <translation>Keluar dari %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Tidak ada koneksi jaringan</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH tidak terpasang</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Kunci privat memiliki frasa sandi</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Tidak dapat menulis file kunci privat</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Klien OpenSSH (%1) belum terinstal. Instal paket klien OpenSSH (mis. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Kunci privat SSH dengan frasa sandi tidak didukung. Hapus frasa sandi atau buat kunci baru.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

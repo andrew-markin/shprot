@@ -388,8 +388,20 @@
         <translation>إنهاء %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>لا يوجد اتصال بالشبكة</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH غير مثبت</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>المفتاح الخاص محمي بعبارة مرور</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>تعذرت كتابة ملف المفتاح الخاص</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>عميل OpenSSH (%1) غير مثبت. ثبّت حزمة عميل OpenSSH (مثل openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>مفتاح SSH الخاص المحمي بعبارة مرور غير مدعوم. أزل عبارة المرور أو أنشئ مفتاحًا جديدًا.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

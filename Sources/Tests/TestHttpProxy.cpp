@@ -20,6 +20,7 @@ private slots:
     void upgradeIsPreserved();
     void connectTunnel();
     void connectTunnelIpv6();
+    void listensOnIpv6InBrackets();
 
     void invalidRequest_data();
     void invalidRequest();
@@ -149,6 +150,22 @@ void TestHttpProxy::connectTunnelIpv6()
     QVERIFY2(response.startsWith("HTTP/1.1 200 Connection Established\r\n"), response.constData());
     QCOMPARE(m_originRequests.size(), 1);
     QVERIFY(m_originRequests.first().startsWith("GET /ipv6 HTTP/1.1\r\n"));
+}
+
+void TestHttpProxy::listensOnIpv6InBrackets()
+{
+    QTcpServer serverIpv6;
+
+    if (!serverIpv6.listen(QHostAddress::LocalHostIPv6))
+    {
+        QSKIP("IPv6 loopback is not available");
+    }
+
+    serverIpv6.close();
+
+    // Preferences require brackets around IPv6 addresses
+    HttpProxyServer proxy;
+    QVERIFY2(proxy.start("[::1]", 0, QNetworkProxy(QNetworkProxy::NoProxy)), qPrintable(proxy.errorString()));
 }
 
 void TestHttpProxy::invalidRequest_data()

@@ -388,8 +388,20 @@
         <translation>Keluar %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Tiada sambungan rangkaian</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH tidak dipasang</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Kunci peribadi mempunyai frasa laluan</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Tidak dapat menulis fail kunci peribadi</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Klien OpenSSH (%1) tidak dipasang. Pasang pakej klien OpenSSH (cth. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Kunci peribadi SSH dengan frasa laluan tidak disokong. Alih keluar frasa laluan atau jana kunci baharu.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

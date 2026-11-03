@@ -388,8 +388,20 @@
         <translation>Välju rakendusest %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Võrguühendus puudub</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH pole paigaldatud</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Privaatvõtmel on salafraas</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Privaatvõtme faili ei õnnestunud kirjutada</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH klient (%1) pole paigaldatud. Paigaldage OpenSSH kliendi pakett (nt openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Salafraasiga SSH privaatvõtit ei toetata. Eemaldage salafraas või looge uus võti.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

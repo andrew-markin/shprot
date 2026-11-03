@@ -159,7 +159,7 @@ Follow these steps to configure the proxy tunnel:
 
 ### Step 3: Set Up Client Key Authentication
 1. Go to the **"SSH Private Key"** area. To provide a secure client key, you can:
-   * Paste an existing private key text into the field. Line endings and a missing final line break are fixed automatically.
+   * Paste an existing private key text into the field. Line endings and a missing final line break are fixed automatically. Keys protected with a passphrase are not supported.
    * Click **"Import…"** to load a key from a file.
    * Click **"Generate"** (Highly Recommended) to let Shprot instantly create a fresh cryptographic key pair.
 2. Click **"Copy Public Key"** to copy the generated public key text to your clipboard.

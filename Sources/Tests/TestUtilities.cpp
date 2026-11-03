@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QProcess>
 #include <QStandardPaths>
 #include <QTemporaryDir>
 #include <QTest>
@@ -22,6 +23,9 @@ private slots:
     void hostIsExposed_data();
     void hostIsExposed();
 
+    void getProxyConnectionHost_data();
+    void getProxyConnectionHost();
+
     void formatProxyUrl_data();
     void formatProxyUrl();
 
@@ -33,6 +37,12 @@ private slots:
 
     void sshPrivateKeyLooksValid_data();
     void sshPrivateKeyLooksValid();
+
+    void sshPrivateKeyIsEncrypted_data();
+    void sshPrivateKeyIsEncrypted();
+
+    void generatedKeysEncryption_data();
+    void generatedKeysEncryption();
 
     void getKeyTypeLabel_data();
     void getKeyTypeLabel();
@@ -157,6 +167,30 @@ void TestUtilities::hostIsExposed()
     QFETCH(bool, expected);
 
     QCOMPARE(Utilities::hostIsExposed(host), expected);
+}
+
+void TestUtilities::getProxyConnectionHost_data()
+{
+    QTest::addColumn<QString>("host");
+    QTest::addColumn<QString>("expected");
+
+    QTest::newRow("localhost") << "localhost" << "localhost";
+    QTest::newRow("empty") << "" << "localhost";
+    QTest::newRow("any ipv4") << "0.0.0.0" << "localhost";
+    QTest::newRow("any ipv6") << "::" << "localhost";
+    QTest::newRow("any ipv6 in brackets") << "[::]" << "localhost";
+    QTest::newRow("ipv4") << "192.168.1.5" << "192.168.1.5";
+    QTest::newRow("ipv6") << "::1" << "::1";
+    QTest::newRow("ipv6 in brackets") << "[::1]" << "::1";
+    QTest::newRow("host name") << "proxy.local" << "proxy.local";
+}
+
+void TestUtilities::getProxyConnectionHost()
+{
+    QFETCH(QString, host);
+    QFETCH(QString, expected);
+
+    QCOMPARE(Utilities::getProxyConnectionHost(host), expected);
 }
 
 void TestUtilities::formatProxyUrl_data()
@@ -306,6 +340,78 @@ void TestUtilities::sshPrivateKeyLooksValid()
     QCOMPARE(Utilities::sshPrivateKeyLooksValid(privateKey), expected);
 }
 
+void TestUtilities::sshPrivateKeyIsEncrypted_data()
+{
+    QTest::addColumn<QString>("privateKey");
+    QTest::addColumn<bool>("expected");
+
+    auto openSshKey = [](const QByteArray& data) {
+        return QString("-----BEGIN OPENSSH PRIVATE KEY-----\n%1\n-----END OPENSSH PRIVATE KEY-----\n")
+            .arg(QString::fromLatin1(data.toBase64()));
+    };
+
+    QByteArray signature("openssh-key-v1\0", 15);
+
+    QTest::newRow("openssh without passphrase") << openSshKey(signature + QByteArray("\0\0\0\4none\0\0\0\4none", 16)) << false;
+    QTest::newRow("openssh with passphrase") << openSshKey(signature + QByteArray("\0\0\0\12aes256-ctr", 14)) << true;
+    QTest::newRow("not openssh format") << openSshKey("something else") << false;
+    QTest::newRow("legacy pem without passphrase") << "-----BEGIN RSA PRIVATE KEY-----\nMIIEow==\n-----END RSA PRIVATE KEY-----" << false;
+    QTest::newRow("legacy pem with passphrase") << "-----BEGIN RSA PRIVATE KEY-----\nProc-Type: 4,ENCRYPTED\n"
+                                                   "DEK-Info: AES-128-CBC,00\n\nMIIEow==\n-----END RSA PRIVATE KEY-----" << true;
+    QTest::newRow("pkcs8 with passphrase") << "-----BEGIN ENCRYPTED PRIVATE KEY-----\nMIIEow==\n-----END ENCRYPTED PRIVATE KEY-----" << true;
+    QTest::newRow("empty") << "" << false;
+}
+
+void TestUtilities::sshPrivateKeyIsEncrypted()
+{
+    QFETCH(QString, privateKey);
+    QFETCH(bool, expected);
+
+    QCOMPARE(Utilities::sshPrivateKeyIsEncrypted(privateKey), expected);
+}
+
+void TestUtilities::generatedKeysEncryption_data()
+{
+    QTest::addColumn<QString>("format");
+    QTest::addColumn<QString>("passphrase");
+
+    QTest::newRow("openssh without passphrase") << "RFC4716" << "";
+    QTest::newRow("openssh with passphrase") << "RFC4716" << "secret";
+    QTest::newRow("legacy pem without passphrase") << "PEM" << "";
+    QTest::newRow("legacy pem with passphrase") << "PEM" << "secret";
+    QTest::newRow("pkcs8 with passphrase") << "PKCS8" << "secret";
+}
+
+// Keys of all formats as they are actually written by ssh-keygen
+void TestUtilities::generatedKeysEncryption()
+{
+    QFETCH(QString, format);
+    QFETCH(QString, passphrase);
+
+    if (QStandardPaths::findExecutable("ssh-keygen").isEmpty())
+    {
+        QSKIP("ssh-keygen is not installed");
+    }
+
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+
+    QString path = directory.filePath("Key");
+
+    QProcess process;
+    process.start("ssh-keygen", {"-t", "rsa", "-b", "2048", "-m", format, "-N", passphrase, "-f", path, "-q"});
+    QVERIFY(process.waitForFinished(30000));
+    QCOMPARE(process.exitCode(), 0);
+
+    QFile file(path);
+    QVERIFY(file.open(QIODevice::ReadOnly));
+
+    QString privateKey = QString::fromUtf8(file.readAll());
+
+    QVERIFY(Utilities::sshPrivateKeyLooksValid(privateKey));
+    QCOMPARE(Utilities::sshPrivateKeyIsEncrypted(privateKey), !passphrase.isEmpty());
+}
+
 void TestUtilities::getKeyTypeLabel_data()
 {
     QTest::addColumn<QString>("keyType");
@@ -403,6 +509,10 @@ void TestUtilities::generateSshKeys()
     // Key damaged by copying still works, ssh-keygen loads it the same way ssh does
     QCOMPARE(Utilities::getSshPublicKey(privateKey.trimmed()), publicKey);
     QCOMPARE(Utilities::getSshPublicKey(QString(privateKey).replace("\n", "\r\n")), publicKey);
+
+    // Nothing to copy from a key that can't be loaded
+    QVERIFY(Utilities::getSshPublicKey("-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----").isEmpty());
+    QVERIFY(Utilities::getSshPublicKey("").isEmpty());
 }
 
 QTEST_GUILESS_MAIN(TestUtilities)

@@ -388,8 +388,20 @@
         <translation>Surt de %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>No hi ha connexió de xarxa</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH no està instal·lat</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>La clau privada té una contrasenya</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>No s'ha pogut escriure el fitxer de la clau privada</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>El client OpenSSH (%1) no està instal·lat. Instal·leu el paquet del client OpenSSH (p. ex. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>No s'admeten claus privades SSH amb contrasenya. Elimineu la contrasenya o genereu una clau nova.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

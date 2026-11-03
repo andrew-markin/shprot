@@ -388,8 +388,20 @@
         <translation>%1 proqramından çıx</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Şəbəkə bağlantısı yoxdur</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH quraşdırılmayıb</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Şəxsi açarın parol ifadəsi var</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Şəxsi açar faylını yazmaq mümkün olmadı</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH müştərisi (%1) quraşdırılmayıb. OpenSSH müştəri paketini quraşdırın (məs. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Parol ifadəli SSH şəxsi açarı dəstəklənmir. Parol ifadəsini silin və ya yeni açar yaradın.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

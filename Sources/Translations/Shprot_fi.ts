@@ -388,8 +388,20 @@
         <translation>Lopeta %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Ei verkkoyhteyttä</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH ei ole asennettu</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Yksityisellä avaimella on tunnuslause</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Yksityisen avaimen tiedostoa ei voitu kirjoittaa</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH-asiakasohjelmaa (%1) ei ole asennettu. Asenna OpenSSH-asiakaspaketti (esim. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Tunnuslauseella suojattua yksityistä SSH-avainta ei tueta. Poista tunnuslause tai luo uusi avain.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

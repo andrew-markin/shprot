@@ -388,8 +388,20 @@
         <translation>%1 종료</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>네트워크에 연결되어 있지 않음</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH가 설치되지 않음</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>개인 키에 암호 문구가 있음</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>개인 키 파일을 쓸 수 없음</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH 클라이언트(%1)가 설치되어 있지 않습니다. OpenSSH 클라이언트 패키지(예: openssh-client)를 설치하세요.</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>암호 문구가 있는 SSH 개인 키는 지원되지 않습니다. 암호 문구를 제거하거나 새 키를 생성하세요.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -388,8 +388,20 @@
         <translation>%1 dan chiqish</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Tarmoq ulanishi yoʻq</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH o&apos;rnatilmagan</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Maxfiy kalitda parol iborasi bor</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Maxfiy kalit faylini yozib boʻlmadi</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH mijozi (%1) o‘rnatilmagan. OpenSSH mijozi paketini o‘rnating (masalan, openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Parol iborali SSH maxfiy kaliti qoʻllab-quvvatlanmaydi. Parol iborasini olib tashlang yoki yangi kalit yarating.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

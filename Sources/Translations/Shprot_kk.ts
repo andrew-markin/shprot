@@ -388,8 +388,20 @@
         <translation>%1 бағдарламасынан шығу</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Желі байланысы жоқ</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH орнатылмаған</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Жеке кілт құпия сөзбен қорғалған</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Жеке кілт файлын жазу мүмкін болмады</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH клиенті (%1) орнатылмаған. OpenSSH клиенті бумасын орнатыңыз (мысалы, openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Құпия сөзі бар SSH жеке кілтіне қолдау көрсетілмейді. Құпия сөзді алып тастаңыз немесе жаңа кілт жасаңыз.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

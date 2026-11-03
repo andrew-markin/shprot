@@ -388,8 +388,20 @@
         <translation>Փակել %1-ը</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Ցանցային կապ չկա</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH-ը տեղադրված չէ</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Գաղտնի բանալին ունի գաղտնաբառ</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Չհաջողվեց գրել գաղտնի բանալու ֆայլը</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH հաճախորդը (%1) տեղադրված չէ։ Տեղադրեք OpenSSH հաճախորդի փաթեթը (օր.՝ openssh-client)։</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Գաղտնաբառով SSH գաղտնի բանալին չի աջակցվում։ Հեռացրեք գաղտնաբառը կամ ստեղծեք նոր բանալի։</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -1,6 +1,7 @@
 #include "HttpProxyServer.h"
 
 #include "HttpProxyStream.h"
+#include "Utilities.h"
 
 HttpProxyServer::HttpProxyServer(QObject* parent) : QObject(parent)
 {
@@ -12,7 +13,7 @@ bool HttpProxyServer::start(const QString& host, quint16 port, const QNetworkPro
 {
     stop();
     m_socksProxy = socksProxy;
-    QHostAddress address(host.toLower() == "localhost" ? QHostAddress::LocalHost : QHostAddress(host));
+    QHostAddress address(host.toLower() == "localhost" ? QHostAddress::LocalHost : QHostAddress(Utilities::stripHostBrackets(host)));
 
     if (!m_tcpServer->listen(address, port))
     {

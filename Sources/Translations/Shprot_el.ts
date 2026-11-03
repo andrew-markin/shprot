@@ -388,8 +388,20 @@
         <translation>Έξοδος από το %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Δεν υπάρχει σύνδεση δικτύου</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>Το OpenSSH δεν είναι εγκατεστημένο</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Το ιδιωτικό κλειδί έχει φράση πρόσβασης</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Δεν ήταν δυνατή η εγγραφή του αρχείου ιδιωτικού κλειδιού</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Ο πελάτης OpenSSH (%1) δεν είναι εγκατεστημένος. Εγκαταστήστε το πακέτο του πελάτη OpenSSH (π.χ. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Τα ιδιωτικά κλειδιά SSH με φράση πρόσβασης δεν υποστηρίζονται. Αφαιρέστε τη φράση πρόσβασης ή δημιουργήστε νέο κλειδί.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

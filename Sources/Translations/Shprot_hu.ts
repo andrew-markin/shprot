@@ -388,8 +388,20 @@
         <translation>Kilépés: %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Nincs hálózati kapcsolat</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>Az OpenSSH nincs telepítve</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>A privát kulcs jelmondattal védett</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>A privát kulcs fájlja nem írható</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Az OpenSSH-ügyfél (%1) nincs telepítve. Telepítse az OpenSSH-ügyfél csomagot (pl. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>A jelmondattal védett privát SSH-kulcs nem támogatott. Távolítsa el a jelmondatot, vagy hozzon létre új kulcsot.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

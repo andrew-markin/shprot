@@ -14,6 +14,8 @@ bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey);
 QString generateSshPrivateKey();
 QString getSshPublicKey(const QString& privateKey);
 bool sshPrivateKeyLooksValid(const QString& privateKey);
+bool sshPrivateKeyIsEncrypted(const QString& privateKey);
+QString getEncryptedPrivateKeyMessage();
 
 QString getAddressFromSshDestination(const QString& destination);
 
@@ -29,6 +31,8 @@ QPair<QString, QString> getKeyTypeAndFingerprint(const QString& hostRecord);
 quint16 parsePort(const QString& text, quint16 defaultValue);
 bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& host, quint16& port);
 bool hostIsExposed(const QString& host);
+QString stripHostBrackets(const QString& host);
+QString getProxyConnectionHost(const QString& host);
 QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port);
 
 QString describeSshError(const QByteArray& errorOutput);

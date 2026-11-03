@@ -388,8 +388,20 @@
         <translation>%1 بند کریں</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>کوئی نیٹ ورک کنکشن نہیں</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH انسٹال نہیں ہے</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>نجی کلید پر پاس فریز ہے</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>نجی کلید کی فائل نہیں لکھی جا سکی</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH کلائنٹ (%1) انسٹال نہیں ہے۔ OpenSSH کلائنٹ پیکیج انسٹال کریں (مثلاً openssh-client)۔</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>پاس فریز والی SSH نجی کلید معاون نہیں ہے۔ پاس فریز ہٹائیں یا نئی کلید بنائیں۔</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -388,8 +388,20 @@
         <translation>Thoát %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Không có kết nối mạng</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>Chưa cài đặt OpenSSH</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Khóa riêng tư có cụm mật khẩu</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Không thể ghi tệp khóa riêng tư</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Chưa cài đặt máy khách OpenSSH (%1). Hãy cài gói máy khách OpenSSH (ví dụ: openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Không hỗ trợ khóa riêng tư SSH có cụm mật khẩu. Hãy xóa cụm mật khẩu hoặc tạo khóa mới.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

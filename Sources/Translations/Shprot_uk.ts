@@ -388,8 +388,20 @@
         <translation>Вийти з %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Немає підключення до мережі</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH не встановлено</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Закритий ключ захищено паролем</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Не вдалося записати файл закритого ключа</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Клієнт OpenSSH (%1) не встановлено. Установіть пакет клієнта OpenSSH (наприклад, openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Закритий ключ SSH з паролем не підтримується. Видаліть пароль або створіть новий ключ.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

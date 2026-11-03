@@ -388,8 +388,20 @@
         <translation>退出 %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>没有网络连接</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>未安装 OpenSSH</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>私钥设有密码短语</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>无法写入私钥文件</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>未安装 OpenSSH 客户端（%1）。请安装 OpenSSH 客户端软件包（例如 openssh-client）。</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>不支持带密码短语的 SSH 私钥。请移除密码短语或生成新密钥。</translation>
     </message>
     <message>
         <source>Authentication failed</source>

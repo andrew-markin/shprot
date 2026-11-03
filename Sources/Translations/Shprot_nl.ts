@@ -388,8 +388,20 @@
         <translation>%1 afsluiten</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Geen netwerkverbinding</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH niet geïnstalleerd</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Privésleutel heeft een wachtwoordzin</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Kan het bestand met de privésleutel niet schrijven</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH-client (%1) is niet geïnstalleerd. Installeer het OpenSSH-clientpakket (bijv. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Een persoonlijke SSH-sleutel met wachtwoordzin wordt niet ondersteund. Verwijder de wachtwoordzin of genereer een nieuwe sleutel.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

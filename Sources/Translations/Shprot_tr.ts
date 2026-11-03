@@ -388,8 +388,20 @@
         <translation>%1 Uygulamasından Çık</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Ağ bağlantısı yok</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH yüklü değil</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Özel anahtarın parolası var</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Özel anahtar dosyası yazılamadı</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH istemcisi (%1) yüklü değil. OpenSSH istemci paketini yükleyin (ör. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Parolalı SSH özel anahtarı desteklenmiyor. Parolayı kaldırın veya yeni bir anahtar oluşturun.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -388,8 +388,20 @@
         <translation>Ukončiť %1</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>Žiadne pripojenie k sieti</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH nie je nainštalovaný</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>Súkromný kľúč je chránený heslom</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>Súbor súkromného kľúča sa nepodarilo zapísať</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>Klient OpenSSH (%1) nie je nainštalovaný. Nainštalujte balík klienta OpenSSH (napr. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>Súkromný kľúč SSH s heslom nie je podporovaný. Odstráňte heslo alebo vygenerujte nový kľúč.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

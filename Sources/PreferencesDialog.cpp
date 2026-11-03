@@ -593,6 +593,11 @@ QStringList PreferencesDialog::validate()
         errors.append(tr("Invalid SSH Private Key"));
         setWidgetHighlighted(m_sshPrivateKeyEdit, true);
     }
+    else if (Utilities::sshPrivateKeyIsEncrypted(m_sshPrivateKeyEdit->toPlainText()))
+    {
+        errors.append(Utilities::getEncryptedPrivateKeyMessage());
+        setWidgetHighlighted(m_sshPrivateKeyEdit, true);
+    }
 
     // Local SOCKS5 Proxy Host
 
@@ -789,6 +794,7 @@ void PreferencesDialog::importSshPrivateKey()
     m_preferences->setValue("sshPrivateKeyImportDirectory", fileDialog.directory().canonicalPath());
 
     QFile selectedFile(fileDialog.selectedFiles().first());
+    QString importError = tr("Invalid SSH Private Key file");
 
     if ((selectedFile.size() <= 32768) && selectedFile.open(QIODevice::ReadOnly))
     {
@@ -796,15 +802,20 @@ void PreferencesDialog::importSshPrivateKey()
 
         if (Utilities::sshPrivateKeyLooksValid(privateKey))
         {
-            m_sshPrivateKeyEdit->setPlainText(privateKey);
-            m_sshPrivateKeyEdit->reveal();
-            return;
+            if (!Utilities::sshPrivateKeyIsEncrypted(privateKey))
+            {
+                m_sshPrivateKeyEdit->setPlainText(privateKey);
+                m_sshPrivateKeyEdit->reveal();
+                return;
+            }
+
+            importError = Utilities::getEncryptedPrivateKeyMessage();
         }
     }
 
     QMessageBox messageBox;
     messageBox.setWindowTitle(tr("SSH Private Key Import Error"));
-    messageBox.setText(tr("Invalid SSH Private Key file"));
+    messageBox.setText(importError);
     messageBox.setIcon(QMessageBox::Critical);
     messageBox.exec();
 }
@@ -820,7 +831,21 @@ void PreferencesDialog::copySshPublicKey()
     }
 
     QString privateKey = m_sshPrivateKeyEdit->toPlainText();
+
+    if (Utilities::sshPrivateKeyIsEncrypted(privateKey))
+    {
+        QMessageBox::warning(this, tr("SSH Public Key Error"), Utilities::getEncryptedPrivateKeyMessage(), QMessageBox::Ok);
+        return;
+    }
+
     QString publicKey = Utilities::getSshPublicKey(privateKey);
+
+    if (publicKey.isEmpty())
+    {
+        QMessageBox::warning(this, tr("SSH Public Key Error"), tr("Invalid SSH Private Key"), QMessageBox::Ok);
+        return;
+    }
+
     QGuiApplication::clipboard()->setText(publicKey);
 
     QToolButton* button = m_copySshPublicKeyButton;

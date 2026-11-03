@@ -388,8 +388,20 @@
         <translation>%1-დან გასვლა</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>ქსელთან კავშირი არ არის</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH არ არის დაინსტალირებული</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>პირად გასაღებს საიდუმლო ფრაზა აქვს</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>პირადი გასაღების ფაილის ჩაწერა ვერ მოხერხდა</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH კლიენტი (%1) არ არის დაინსტალირებული. დააინსტალირეთ OpenSSH კლიენტის პაკეტი (მაგ. openssh-client).</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>საიდუმლო ფრაზით დაცული SSH პირადი გასაღები არ არის მხარდაჭერილი. წაშალეთ საიდუმლო ფრაზა ან შექმენით ახალი გასაღები.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -81,7 +81,8 @@ bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey)
     // which is easy to lose while copying a key. Applied here, so already saved keys are fixed as well.
     QByteArray normalizedPrivateKey = QByteArray(privateKey).replace("\r\n", "\n").trimmed() + '\n';
 
-    return file.write(normalizedPrivateKey) == normalizedPrivateKey.size();
+    // Flushed here, since a full disk is reported only when buffered data is actually written
+    return (file.write(normalizedPrivateKey) == normalizedPrivateKey.size()) && file.flush();
 }
 
 QString generateSshPrivateKey()
@@ -180,6 +181,39 @@ bool sshPrivateKeyLooksValid(const QString& privateKey)
 
     // Line endings and surrounding whitespace are normalized when the key is written to a file
     return SshPrivateKeyRegEx.match(QString(privateKey).replace("\r\n", "\n").trimmed()).hasMatch();
+}
+
+bool sshPrivateKeyIsEncrypted(const QString& privateKey)
+{
+    // PKCS#8 and legacy PEM formats say it in plain text
+    if (privateKey.contains("-----BEGIN ENCRYPTED PRIVATE KEY-----") || privateKey.contains("Proc-Type: 4,ENCRYPTED"))
+    {
+        return true;
+    }
+
+    static const QRegularExpression OpenSshKeyRegEx(
+                R"(-----BEGIN OPENSSH PRIVATE KEY-----(.+)-----END OPENSSH PRIVATE KEY-----)",
+                QRegularExpression::DotMatchesEverythingOption);
+
+    QRegularExpressionMatch match = OpenSshKeyRegEx.match(privateKey);
+
+    if (!match.hasMatch())
+    {
+        return false;
+    }
+
+    // OpenSSH format starts with a signature followed by the cipher name with its length, it's "none" without a passphrase
+    static const QByteArray Signature("openssh-key-v1\0", 15);
+    static const QByteArray NoCipher("\0\0\0\4none", 8);
+
+    QByteArray data = QByteArray::fromBase64(match.captured(1).toLatin1());
+    return data.startsWith(Signature) && !data.sliced(Signature.size()).startsWith(NoCipher);
+}
+
+QString getEncryptedPrivateKeyMessage()
+{
+    return QCoreApplication::translate("Utilities", "SSH private key with a passphrase is not supported. "
+                                       "Remove the passphrase or generate a new key.");
 }
 
 QString getAddressFromSshDestination(const QString& destination)
@@ -399,26 +433,19 @@ bool parseAuthority(const QByteArray& authority, quint16 defaultPort, QString& h
 // are treated as exposed too, since they are not resolved here and may point anywhere.
 bool hostIsExposed(const QString& host)
 {
-    QString normalizedHost = host.trimmed();
+    QString normalizedHost = stripHostBrackets(host);
 
     if (normalizedHost.isEmpty() || (normalizedHost.compare("localhost", Qt::CaseInsensitive) == 0))
     {
         return false;
     }
 
-    if (normalizedHost.startsWith('[') && normalizedHost.endsWith(']'))
-    {
-        normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
-    }
-
     QHostAddress address(normalizedHost);
     return address.isNull() || !address.isLoopback();
 }
 
-// Turns ssh error output into a short explanation for the user
-// URL to connect to a local proxy, e.g. "socks5h://localhost:1080". Clients can't connect to "any address",
-// so a proxy listening on all interfaces is reached through localhost.
-QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
+// IPv6 address is written in brackets next to a port, but neither QHostAddress nor sockets accept them
+QString stripHostBrackets(const QString& host)
 {
     QString normalizedHost = host.trimmed();
 
@@ -427,19 +454,38 @@ QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
         normalizedHost = normalizedHost.mid(1, normalizedHost.size() - 2);
     }
 
+    return normalizedHost;
+}
+
+// Host to connect to a local proxy. Clients can't connect to "any address" (e.g. it fails on Windows),
+// so a proxy listening on all interfaces is reached through localhost.
+QString getProxyConnectionHost(const QString& host)
+{
+    QString normalizedHost = stripHostBrackets(host);
     QHostAddress address(normalizedHost);
 
     if (normalizedHost.isEmpty() || (address == QHostAddress::AnyIPv4) || (address == QHostAddress::AnyIPv6))
     {
-        normalizedHost = "localhost";
-    }
-    else if (address.protocol() == QAbstractSocket::IPv6Protocol)
-    {
-        normalizedHost = QString("[%1]").arg(normalizedHost);
+        return "localhost";
     }
 
-    return QString("%1://%2:%3").arg(scheme, normalizedHost).arg(port);
+    return normalizedHost;
 }
+
+// URL to connect to a local proxy, e.g. "socks5h://localhost:1080"
+QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
+{
+    QString connectionHost = getProxyConnectionHost(host);
+
+    if (QHostAddress(connectionHost).protocol() == QAbstractSocket::IPv6Protocol)
+    {
+        connectionHost = QString("[%1]").arg(connectionHost);
+    }
+
+    return QString("%1://%2:%3").arg(scheme, connectionHost).arg(port);
+}
+
+// Turns ssh error output into a short explanation for the user
 
 struct KnownSshError
 {

@@ -388,8 +388,20 @@
         <translation>%1 बंद करें</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>कोई नेटवर्क कनेक्शन नहीं</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH इंस्टॉल नहीं है</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>निजी कुंजी में पासफ़्रेज़ है</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>निजी कुंजी फ़ाइल नहीं लिखी जा सकी</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH क्लाइंट (%1) इंस्टॉल नहीं है। OpenSSH क्लाइंट पैकेज इंस्टॉल करें (जैसे openssh-client)।</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>पासफ़्रेज़ वाली SSH निजी कुंजी समर्थित नहीं है। पासफ़्रेज़ हटाएँ या नई कुंजी बनाएँ।</translation>
     </message>
     <message>
         <source>Authentication failed</source>

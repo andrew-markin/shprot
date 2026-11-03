@@ -388,8 +388,20 @@
         <translation>%1 থেকে প্রস্থান</translation>
     </message>
     <message>
+        <source>No network connection</source>
+        <translation>কোনো নেটওয়ার্ক সংযোগ নেই</translation>
+    </message>
+    <message>
         <source>OpenSSH not installed</source>
         <translation>OpenSSH ইনস্টল করা নেই</translation>
+    </message>
+    <message>
+        <source>Private key has a passphrase</source>
+        <translation>ব্যক্তিগত কী পাসফ্রেজ দিয়ে সুরক্ষিত</translation>
+    </message>
+    <message>
+        <source>Unable to write private key file</source>
+        <translation>ব্যক্তিগত কী ফাইল লেখা যায়নি</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -485,6 +497,10 @@
     <message>
         <source>OpenSSH client (%1) is not installed. Install the OpenSSH client package (e.g. openssh-client).</source>
         <translation>OpenSSH ক্লায়েন্ট (%1) ইনস্টল করা নেই। OpenSSH ক্লায়েন্ট প্যাকেজ ইনস্টল করুন (যেমন openssh-client)।</translation>
+    </message>
+    <message>
+        <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
+        <translation>পাসফ্রেজযুক্ত SSH ব্যক্তিগত কী সমর্থিত নয়। পাসফ্রেজ সরান অথবা একটি নতুন কী তৈরি করুন।</translation>
     </message>
     <message>
         <source>Authentication failed</source>
