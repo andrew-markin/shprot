@@ -86,6 +86,10 @@
         <translation>Kopiraj javni ključ</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopiraj naredbu za instalaciju ključa na poslužitelj</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresa lokalnog SOCKS5 proxyja (npr. localhost ili 0.0.0.0):</translation>
     </message>

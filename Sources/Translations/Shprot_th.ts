@@ -86,6 +86,10 @@
         <translation>คัดลอกคีย์สาธารณะ</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>คัดลอกคำสั่งติดตั้งคีย์บนเซิร์ฟเวอร์</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>ที่อยู่พร็อกซี SOCKS5 ในเครื่อง (เช่น localhost หรือ 0.0.0.0):</translation>
     </message>

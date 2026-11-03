@@ -86,6 +86,10 @@
         <translation>Copiază cheia publică</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Copiază comanda de instalare a cheii pe server</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresa proxy-ului SOCKS5 local (de ex. localhost sau 0.0.0.0):</translation>
     </message>

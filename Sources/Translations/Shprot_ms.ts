@@ -86,6 +86,10 @@
         <translation>Salin Kunci Awam</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Salin arahan untuk memasang kunci pada pelayan</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Alamat Proksi SOCKS5 Setempat (cth. localhost atau 0.0.0.0):</translation>
     </message>

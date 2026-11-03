@@ -86,6 +86,10 @@
         <translation>Kopiuj klucz publiczny</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopiuj polecenie instalacji klucza na serwerze</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adres lokalnego proxy SOCKS5 (np. localhost lub 0.0.0.0):</translation>
     </message>

@@ -13,6 +13,7 @@ bool writePrivateKeyFile(const QString& path, const QByteArray& privateKey);
 
 QString generateSshPrivateKey();
 QString getSshPublicKey(const QString& privateKey);
+QString getSshKeyInstallCommand(const QString& publicKey);
 bool sshPrivateKeyLooksValid(const QString& privateKey);
 bool sshPrivateKeyIsEncrypted(const QString& privateKey);
 QString getEncryptedPrivateKeyMessage();

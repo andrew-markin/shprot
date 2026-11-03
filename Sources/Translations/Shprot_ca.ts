@@ -86,6 +86,10 @@
         <translation>Copia la clau pública</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Copia l'ordre per instal·lar la clau al servidor</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adreça del servidor intermediari SOCKS5 local (p. ex. localhost o 0.0.0.0):</translation>
     </message>
@@ -401,7 +405,7 @@
     </message>
     <message>
         <source>Unable to write private key file</source>
-        <translation>No s'ha pogut escriure el fitxer de la clau privada</translation>
+        <translation>No s&apos;ha pogut escriure el fitxer de la clau privada</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>
@@ -500,7 +504,7 @@
     </message>
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
-        <translation>No s'admeten claus privades SSH amb contrasenya. Elimineu la contrasenya o genereu una clau nova.</translation>
+        <translation>No s&apos;admeten claus privades SSH amb contrasenya. Elimineu la contrasenya o genereu una clau nova.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

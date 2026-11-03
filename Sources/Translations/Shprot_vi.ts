@@ -86,6 +86,10 @@
         <translation>Sao chép khóa công khai</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Sao chép lệnh cài đặt khóa trên máy chủ</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Địa chỉ proxy SOCKS5 cục bộ (ví dụ: localhost hoặc 0.0.0.0):</translation>
     </message>

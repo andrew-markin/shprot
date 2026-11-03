@@ -86,6 +86,10 @@
         <translation>Kopírovať verejný kľúč</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopírovať príkaz na inštaláciu kľúča na server</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresa lokálneho proxy SOCKS5 (napr. localhost alebo 0.0.0.0):</translation>
     </message>

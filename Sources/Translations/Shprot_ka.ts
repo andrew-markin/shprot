@@ -86,6 +86,10 @@
         <translation>საჯარო გასაღების კოპირება</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>გასაღების სერვერზე დაყენების ბრძანების კოპირება</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>ლოკალური SOCKS5 პროქსის მისამართი (მაგ. localhost ან 0.0.0.0):</translation>
     </message>

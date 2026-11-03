@@ -86,6 +86,10 @@
         <translation>Kopioi julkinen avain</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopioi komento avaimen asentamiseksi palvelimelle</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Paikallisen SOCKS5-välityspalvelimen osoite (esim. localhost tai 0.0.0.0):</translation>
     </message>

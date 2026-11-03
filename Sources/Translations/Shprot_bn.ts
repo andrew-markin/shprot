@@ -86,6 +86,10 @@
         <translation>পাবলিক কী কপি করুন</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>সার্ভারে কী ইনস্টল করার কমান্ড কপি করুন</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>স্থানীয় SOCKS5 প্রক্সির ঠিকানা (যেমন localhost বা 0.0.0.0):</translation>
     </message>

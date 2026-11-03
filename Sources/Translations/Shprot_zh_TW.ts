@@ -86,6 +86,10 @@
         <translation>複製公開金鑰</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>複製在伺服器上安裝金鑰的命令</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>本機 SOCKS5 代理位址（例如 localhost 或 0.0.0.0）：</translation>
     </message>

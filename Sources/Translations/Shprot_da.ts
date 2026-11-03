@@ -86,6 +86,10 @@
         <translation>Kopiér offentlig nøgle</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopiér kommando til installation af nøglen på serveren</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresse på lokal SOCKS5-proxy (f.eks. localhost eller 0.0.0.0):</translation>
     </message>

@@ -86,6 +86,10 @@
         <translation>نسخ المفتاح العام</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>نسخ أمر تثبيت المفتاح على الخادم</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>عنوان وكيل SOCKS5 المحلي (مثل localhost أو 0.0.0.0):</translation>
     </message>

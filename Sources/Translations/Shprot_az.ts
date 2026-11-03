@@ -86,6 +86,10 @@
         <translation>Açıq açarı kopyala</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Açarı serverdə quraşdırma əmrini kopyala</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Lokal SOCKS5 proksi ünvanı (məs. localhost və ya 0.0.0.0):</translation>
     </message>

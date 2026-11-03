@@ -86,6 +86,10 @@
         <translation>Ochiq kalitni nusxalash</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kalitni serverga oʻrnatish buyrugʻini nusxalash</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Mahalliy SOCKS5 proksi manzili (masalan, localhost yoki 0.0.0.0):</translation>
     </message>

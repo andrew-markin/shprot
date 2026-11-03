@@ -168,6 +168,19 @@ QString getSshPublicKey(const QString& privateKey)
     return QString::fromUtf8(process.readAllStandardOutput().trimmed());
 }
 
+// Shell command adding the key to authorized_keys of the current user on the server. The key can only forward ports:
+// "restrict" turns off everything else and "command" doesn't let it run anything, the tunnel doesn't need that.
+QString getSshKeyInstallCommand(const QString& publicKey)
+{
+    QString authorizedKey = QString(R"(restrict,port-forwarding,command="false" %1)").arg(publicKey);
+
+    // The comment of an imported key can contain anything. Unlike echo, printf doesn't interpret its argument.
+    authorizedKey.replace("'", R"('\'')");
+
+    return QString(R"(mkdir -p ~/.ssh && chmod 700 ~/.ssh && printf '%s\n' '%1' >> ~/.ssh/authorized_keys && )"
+                   R"(chmod 600 ~/.ssh/authorized_keys)").arg(authorizedKey);
+}
+
 bool sshPrivateKeyLooksValid(const QString& privateKey)
 {
     if (privateKey.isEmpty() || privateKey.size() > 32768)

@@ -41,13 +41,14 @@ private:
     QStringList validateSshDestinationAndPort();
     QStringList validate();
 
+    void copySshPublicKey(bool asInstallCommand);
+
 private slots:
     bool runTrustCheck(bool forceProbe);
     void handleTrustCheckButtonClick();
 
     void generateSshPrivateKey();
     void importSshPrivateKey();
-    void copySshPublicKey();
 
 private:
     Preferences* m_preferences;

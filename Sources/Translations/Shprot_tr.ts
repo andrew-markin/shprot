@@ -86,6 +86,10 @@
         <translation>Genel Anahtarı Kopyala</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Anahtarı sunucuya yükleme komutunu kopyala</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Yerel SOCKS5 Proxy Adresi (ör. localhost veya 0.0.0.0):</translation>
     </message>

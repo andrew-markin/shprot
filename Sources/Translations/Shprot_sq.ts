@@ -86,6 +86,10 @@
         <translation>Kopjo çelësin publik</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopjo komandën për instalimin e çelësit në server</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresa e proxy-t lokal SOCKS5 (p.sh. localhost ose 0.0.0.0):</translation>
     </message>

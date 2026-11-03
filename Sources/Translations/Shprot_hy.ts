@@ -86,6 +86,10 @@
         <translation>Պատճենել բաց բանալին</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Պատճենել բանալին սերվերում տեղադրելու հրամանը</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Տեղային SOCKS5 պրոքսիի հասցե (օր.՝ localhost կամ 0.0.0.0)՝</translation>
     </message>

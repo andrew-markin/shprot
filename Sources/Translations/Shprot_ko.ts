@@ -86,6 +86,10 @@
         <translation>공개 키 복사</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>서버에 키를 설치하는 명령 복사</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>로컬 SOCKS5 프록시 주소(예: localhost 또는 0.0.0.0):</translation>
     </message>

@@ -86,6 +86,10 @@
         <translation>عوامی کلید کاپی کریں</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>سرور پر کلید انسٹال کرنے کی کمانڈ کاپی کریں</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>مقامی SOCKS5 پراکسی کا پتہ (مثلاً localhost یا 0.0.0.0):</translation>
     </message>

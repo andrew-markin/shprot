@@ -86,6 +86,10 @@
         <translation>Kopeeri avalik võti</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopeeri võtme serverisse paigaldamise käsk</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Kohaliku SOCKS5-puhverserveri aadress (nt localhost või 0.0.0.0):</translation>
     </message>

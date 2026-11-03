@@ -86,6 +86,10 @@
         <translation>Αντιγραφή δημόσιου κλειδιού</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Αντιγραφή εντολής εγκατάστασης κλειδιού στον διακομιστή</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Διεύθυνση τοπικού διακομιστή μεσολάβησης SOCKS5 (π.χ. localhost ή 0.0.0.0):</translation>
     </message>

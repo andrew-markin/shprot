@@ -86,6 +86,10 @@
         <translation>Kopēt publisko atslēgu</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopēt atslēgas instalēšanas komandu serverim</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Lokālā SOCKS5 starpniekservera adrese (piem., localhost vai 0.0.0.0):</translation>
     </message>

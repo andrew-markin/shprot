@@ -86,6 +86,10 @@
         <translation>Copier la clé publique</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Copier la commande d'installation de la clé sur le serveur</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Adresse du proxy SOCKS5 local (par ex. localhost ou 0.0.0.0) :</translation>
     </message>
@@ -401,7 +405,7 @@
     </message>
     <message>
         <source>Unable to write private key file</source>
-        <translation>Impossible d'écrire le fichier de clé privée</translation>
+        <translation>Impossible d&apos;écrire le fichier de clé privée</translation>
     </message>
     <message>
         <source>Unable to start ssh: %1</source>

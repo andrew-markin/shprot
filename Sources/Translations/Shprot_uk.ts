@@ -86,6 +86,10 @@
         <translation>Копіювати відкритий ключ</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Копіювати команду встановлення ключа на сервер</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Адреса локального SOCKS5-проксі (наприклад, localhost або 0.0.0.0):</translation>
     </message>

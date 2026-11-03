@@ -86,6 +86,10 @@
         <translation>Kopijuoti viešąjį raktą</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Kopijuoti rakto diegimo serveryje komandą</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Vietinio SOCKS5 tarpinio serverio adresas (pvz., localhost arba 0.0.0.0):</translation>
     </message>

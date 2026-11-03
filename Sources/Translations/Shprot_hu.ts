@@ -86,6 +86,10 @@
         <translation>Nyilvános kulcs másolása</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>A kulcs kiszolgálóra telepítésére szolgáló parancs másolása</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Helyi SOCKS5-proxy címe (pl. localhost vagy 0.0.0.0):</translation>
     </message>

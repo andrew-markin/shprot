@@ -86,6 +86,10 @@
         <translation>公開鍵をコピー</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>サーバーに鍵をインストールするコマンドをコピー</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>ローカル SOCKS5 プロキシのアドレス（例: localhost または 0.0.0.0）:</translation>
     </message>

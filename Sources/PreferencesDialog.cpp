@@ -12,6 +12,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include <QMenu>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRegularExpressionValidator>
@@ -144,6 +145,14 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
 
     m_copySshPublicKeyButton = new QToolButton();
     m_copySshPublicKeyButton->setText(tr("Copy Public Key"));
+
+    // Long texts of the menu don't make the dialog wider, as one more button would do
+    QMenu* copySshPublicKeyMenu = new QMenu(m_copySshPublicKeyButton);
+    QAction* copySshPublicKeyAction = copySshPublicKeyMenu->addAction(tr("Copy Public Key"));
+    QAction* copySshKeyInstallCommandAction = copySshPublicKeyMenu->addAction(tr("Copy Command to Install Key on Server"));
+
+    m_copySshPublicKeyButton->setMenu(copySshPublicKeyMenu);
+    m_copySshPublicKeyButton->setPopupMode(QToolButton::InstantPopup);
 
     QHBoxLayout* sshPrivateKeyLabelLayout = new QHBoxLayout();
     sshPrivateKeyLabelLayout->setSpacing(Metrics::groupSpacing());
@@ -303,7 +312,8 @@ PreferencesDialog::PreferencesDialog(Preferences* preferences, QWidget* parent)
     connect(m_trustCheckButton, &QToolButton::clicked, this, &PreferencesDialog::handleTrustCheckButtonClick);
     connect(generateSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::generateSshPrivateKey);
     connect(importSshPrivateKeyButton, &QToolButton::clicked, this, &PreferencesDialog::importSshPrivateKey);
-    connect(m_copySshPublicKeyButton, &QToolButton::clicked, this, &PreferencesDialog::copySshPublicKey);
+    connect(copySshPublicKeyAction, &QAction::triggered, this, [this]() { copySshPublicKey(false); });
+    connect(copySshKeyInstallCommandAction, &QAction::triggered, this, [this]() { copySshPublicKey(true); });
 
     connect(m_localHttpProxyCheckBox, &QCheckBox::toggled, localHttpProxyAddressWidget, &QWidget::setEnabled);
 
@@ -820,7 +830,7 @@ void PreferencesDialog::importSshPrivateKey()
     messageBox.exec();
 }
 
-void PreferencesDialog::copySshPublicKey()
+void PreferencesDialog::copySshPublicKey(bool asInstallCommand)
 {
     QString missingSshKeygenMessage = Utilities::getMissingSshToolMessage("ssh-keygen");
 
@@ -846,7 +856,7 @@ void PreferencesDialog::copySshPublicKey()
         return;
     }
 
-    QGuiApplication::clipboard()->setText(publicKey);
+    QGuiApplication::clipboard()->setText(asInstallCommand ? Utilities::getSshKeyInstallCommand(publicKey) : publicKey);
 
     QToolButton* button = m_copySshPublicKeyButton;
     button->setMinimumWidth(button->width());

@@ -54,6 +54,9 @@ private slots:
     void writePrivateKeyFile();
 
     void generateSshKeys();
+
+    void getSshKeyInstallCommand_data();
+    void getSshKeyInstallCommand();
 };
 
 void TestUtilities::parsePort_data()
@@ -513,6 +516,73 @@ void TestUtilities::generateSshKeys()
     // Nothing to copy from a key that can't be loaded
     QVERIFY(Utilities::getSshPublicKey("-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaA==\n-----END OPENSSH PRIVATE KEY-----").isEmpty());
     QVERIFY(Utilities::getSshPublicKey("").isEmpty());
+}
+
+void TestUtilities::getSshKeyInstallCommand_data()
+{
+    QTest::addColumn<QString>("comment");
+
+    QTest::newRow("generated") << "user@host/Shprot";
+    QTest::newRow("single quote") << "it's mine";
+    QTest::newRow("double quotes") << R"("mine")";
+    QTest::newRow("backslash") << R"(C:\new\table)";
+    QTest::newRow("percent") << "100% %s %1";
+    QTest::newRow("substitution") << "$(touch injected) `touch injected`";
+    QTest::newRow("command separator") << "'; touch injected; echo '";
+}
+
+// The command is really executed the way it's done on a server, a comment must not be able to break out of it
+void TestUtilities::getSshKeyInstallCommand()
+{
+    QFETCH(QString, comment);
+
+#ifdef Q_OS_WIN
+    QSKIP("POSIX shell is not available");
+#endif
+
+    QTemporaryDir directory;
+    QVERIFY(directory.isValid());
+
+    QString publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOZWfDXuZUACUxEdbYQYIdIcF1/+5hhtVwvnZ6AqraZH " + comment;
+
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    environment.insert("HOME", directory.path());
+
+    QProcess process;
+    process.setProcessEnvironment(environment);
+    process.setWorkingDirectory(directory.path());
+
+    // Running it again adds the same line, the rest of the file stays
+    for (int i = 0; i < 2; i++)
+    {
+        process.start("sh", {"-c", Utilities::getSshKeyInstallCommand(publicKey)});
+        QVERIFY(process.waitForFinished(5000));
+        QVERIFY2(process.exitCode() == 0, process.readAllStandardError().constData());
+    }
+
+    QVERIFY(!QFile::exists(directory.filePath("injected")));
+
+    QString authorizedKeysPath = directory.filePath(".ssh/authorized_keys");
+    QFile authorizedKeys(authorizedKeysPath);
+    QVERIFY(authorizedKeys.open(QIODevice::ReadOnly));
+
+    QString line = QString(R"(restrict,port-forwarding,command="false" %1)").arg(publicKey) + "\n";
+    QCOMPARE(QString::fromUtf8(authorizedKeys.readAll()), line + line);
+
+    QFileDevice::Permissions others = QFileDevice::ReadGroup | QFileDevice::WriteGroup | QFileDevice::ExeGroup |
+                                      QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther;
+    QCOMPARE(authorizedKeys.permissions() & others, QFileDevice::Permissions());
+
+    if (QStandardPaths::findExecutable("ssh-keygen").isEmpty())
+    {
+        QSKIP("ssh-keygen is not installed");
+    }
+
+    // OpenSSH parses the line as a key with options. Expected fingerprint is the one from getKeyTypeAndFingerprint test.
+    process.start("ssh-keygen", {"-l", "-f", authorizedKeysPath});
+    QVERIFY(process.waitForFinished(5000));
+    QCOMPARE(process.exitCode(), 0);
+    QVERIFY(process.readAllStandardOutput().contains("SHA256:n9zl8+YNkmP5rLVUuGkf2vkQ6fwDALdhTzHK6vBovkA"));
 }
 
 QTEST_GUILESS_MAIN(TestUtilities)

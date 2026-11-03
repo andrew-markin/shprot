@@ -86,6 +86,10 @@
         <translation>Ашық кілтті көшіру</translation>
     </message>
     <message>
+        <source>Copy Command to Install Key on Server</source>
+        <translation>Кілтті серверге орнату пәрменін көшіру</translation>
+    </message>
+    <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
         <translation>Жергілікті SOCKS5 прокси мекенжайы (мысалы, localhost немесе 0.0.0.0):</translation>
     </message>
