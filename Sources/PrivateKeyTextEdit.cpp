@@ -3,8 +3,10 @@
 #include <QApplication>
 #include <QMenu>
 #include <QPainter>
+#include <QStyle>
 #include <QTextBlock>
 #include <QTimer>
+#include <QtMath>
 
 #include "PrivateKeyHighlighter.h"
 
@@ -15,8 +17,13 @@ PrivateKeyTextEdit::PrivateKeyTextEdit(QWidget* parent) : QPlainTextEdit(parent)
     fixedFont.setPointSizeF(defaultFont.pointSizeF());
     setFont(fixedFont);
 
+    // Fits the longest line of OpenSSH private key (70 characters) without horizontal scrolling,
+    // even when vertical scrollbar is shown for a long key
     QFontMetrics fixedFontMetrics(fixedFont);
-    setMinimumWidth(fixedFontMetrics.horizontalAdvance(QByteArray(75, 'W')));
+    setMinimumWidth(fixedFontMetrics.horizontalAdvance(QByteArray(70, 'W')) +
+                    qCeil(document()->documentMargin() * 2) +
+                    frameWidth() * 2 +
+                    style()->pixelMetric(QStyle::PM_ScrollBarExtent, nullptr, this));
     setMinimumHeight(fixedFontMetrics.lineSpacing() * 10);
 
     setLineWrapMode(QPlainTextEdit::NoWrap);
