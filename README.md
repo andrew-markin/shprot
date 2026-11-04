@@ -92,6 +92,12 @@ Every release includes a `SHA256SUMS` file with checksums of all packages. Downl
 
       Get-FileHash .\Shprot-*.exe -Algorithm SHA256
 
+Starting with version 1.7, you can also check that a package was built from this repository by its GitHub Actions workflow and not uploaded by someone else. This takes a recent version of [GitHub CLI](https://cli.github.com/), logged in with `gh auth login`:
+
+    gh attestation verify <package file> -R andrew-markin/shprot
+
+This confirms where the package came from, but it's not a code signature: Windows may still warn about an unrecognized publisher when you run the installer.
+
 ## Server-Side Setup (Secure Hardening)
 
 To ensure maximum security, it is highly recommended to create a dedicated, restricted user on your remote Linux server (e.g., Ubuntu/Debian) specifically for SSH tunneling. This prevents the tunneling account from accessing a command shell or executing arbitrary scripts on your server.

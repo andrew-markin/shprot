@@ -92,6 +92,12 @@ Shprot 适用于 Windows 和 Linux 平台。请从 **[Releases](../../releases)*
 
       Get-FileHash .\Shprot-*.exe -Algorithm SHA256
 
+从 1.7 版本开始，您还可以确认软件包是由本仓库的 GitHub Actions 工作流构建的，而不是由他人上传的。这需要较新版本的 [GitHub CLI](https://cli.github.com/)，并通过 `gh auth login` 登录：
+
+    gh attestation verify <软件包文件> -R andrew-markin/shprot
+
+这可以确认软件包的来源，但并不是代码签名：运行安装程序时，Windows 仍可能提示发布者未知。
+
 ## 服务端配置（安全加固）
 
 为确保最大安全性，强烈建议在远程 Linux 服务器（例如 Ubuntu/Debian）上创建一个专用的受限用户，专门用于 SSH 隧道。这可以防止隧道账户访问命令 shell 或在服务器上执行任意脚本。
