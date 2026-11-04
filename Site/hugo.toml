@@ -25,7 +25,7 @@ enableRobotsTXT = true
   changeFreq = "monthly"
 
 # Keys are URL prefixes. Screenshot suffix matches file names in Assets (Screenshot-Light.<suffix>.png),
-# languages without own screenshots use English ones.
+# languages without it use English screenshots.
 [languages]
   [languages.en]
     weight = 1
@@ -36,11 +36,15 @@ enableRobotsTXT = true
     locale = "ar"
     label = "العربية"
     direction = "rtl"
+    [languages.ar.params]
+      screenshotSuffix = "ar"
   [languages.fa]
     weight = 3
     locale = "fa"
     label = "فارسی"
     direction = "rtl"
+    [languages.fa.params]
+      screenshotSuffix = "fa"
   [languages.ru]
     weight = 4
     locale = "ru"
@@ -51,10 +55,14 @@ enableRobotsTXT = true
     weight = 5
     locale = "tr"
     label = "Türkçe"
+    [languages.tr.params]
+      screenshotSuffix = "tr"
   [languages.vi]
     weight = 6
     locale = "vi"
     label = "Tiếng Việt"
+    [languages.vi.params]
+      screenshotSuffix = "vi"
   [languages.zh-cn]
     weight = 7
     locale = "zh-CN"

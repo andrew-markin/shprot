@@ -158,7 +158,7 @@ Shprot работает полностью независимо от глоба�
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.ru.png">
         <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.ru.png">
-        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.ru.png" width="754" height="747">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.ru.png" width="733" height="747">
     </picture>
 </div>
 

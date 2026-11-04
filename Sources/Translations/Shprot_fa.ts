@@ -187,7 +187,7 @@
     </message>
     <message>
         <source>The authenticity of host &lt;b&gt;%1&lt;/b&gt; can&apos;t be established.&lt;br&gt;&lt;br&gt;%2 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;</source>
-        <translation>اصالت میزبان &lt;b&gt;%1&lt;/b&gt; قابل تأیید نیست.&lt;br&gt;&lt;br&gt;اثر انگشت کلید %2:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;</translation>
+        <translation>اصالت میزبان &lt;b&gt;%1&lt;/b&gt; قابل تأیید نیست.&lt;br&gt;&lt;br&gt;اثر انگشت کلید %2 این است:&lt;br&gt;&lt;nobr&gt;SHA256:%3&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>Are you sure you want to continue connecting and trust this server?</source>
@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>The server key fingerprint for &lt;b&gt;%1&lt;/b&gt; does not match the previously saved value. This could mean someone is intercepting your connection (Man-in-the-Middle attack) or the server administrator just reinstalled the OS.&lt;br&gt;&lt;br&gt;Saved %2 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;Received %4 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%5.&lt;/nobr&gt;</source>
-        <translation>اثر انگشت کلید سرور برای &lt;b&gt;%1&lt;/b&gt; با مقدار ذخیره‌شده قبلی مطابقت ندارد. ممکن است کسی اتصال شما را شنود کند (حمله مرد میانی) یا مدیر سرور به‌تازگی سیستم‌عامل را دوباره نصب کرده باشد.&lt;br&gt;&lt;br&gt;اثر انگشت ذخیره‌شده کلید %2:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;اثر انگشت دریافت‌شده کلید %4:&lt;br&gt;&lt;nobr&gt;SHA256:%5.&lt;/nobr&gt;</translation>
+        <translation>اثر انگشت کلید سرور برای &lt;b&gt;%1&lt;/b&gt; با مقدار ذخیره‌شده قبلی مطابقت ندارد. ممکن است کسی اتصال شما را شنود کند (حمله مرد میانی) یا مدیر سرور به‌تازگی سیستم‌عامل را دوباره نصب کرده باشد.&lt;br&gt;&lt;br&gt;اثر انگشت ذخیره‌شده کلید %2 این است:&lt;br&gt;&lt;nobr&gt;SHA256:%3&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;اثر انگشت دریافت‌شده کلید %4 این است:&lt;br&gt;&lt;nobr&gt;SHA256:%5&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>If you are certain this change is legitimate, you can update the trusted key.</source>

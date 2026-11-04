@@ -1,9 +1,9 @@
 #!/bin/bash -e
 
-# Takes README screenshots in a VirtualBox VM with Ubuntu GNOME desktop: Preferences
+# Takes README and site screenshots in a VirtualBox VM with Ubuntu GNOME desktop: Preferences
 # dialog (Assets/Screenshot-*), server key verification (Assets/HostVerification-*) and
-# tray menu with the tunnel open (Assets/TrayMenu-*), one per README language and theme, e.g. Assets/Screenshot-Light.png for README.md and
-# Assets/Screenshot-Dark.ru.png for README.ru.md. Image size in READMEs is updated too.
+# tray menu with the tunnel open (Assets/TrayMenu-*), one per language and theme, e.g. Assets/Screenshot-Light.png for English and
+# Assets/Screenshot-Dark.ru.png for Russian. Image size in READMEs is updated too.
 #
 # Usage: ./TakeScreenshots.sh [path/to/shprot.deb]
 #
@@ -13,10 +13,14 @@
 # really opened: a temporary SSH server runs as the guest user on 127.0.0.1:2022 with
 # its own throwaway keys, it only allows port forwarding and is stopped on exit.
 #
+# GNOME Shell draws the tray menu and takes its direction from the whole session, so the
+# tray menu of right-to-left languages is taken in a session with mirrored Shell. To enter
+# and leave it the script restarts the VM, so close other guest applications before running.
+#
 # One-time VM preparation (Ubuntu 26.04 GNOME, Wayland session):
 #
 # 1. In the guest, install tools and keep the desktop quiet and static:
-#      sudo apt install -y openssh-server xdotool python3-gi gir1.2-atspi-2.0 fonts-noto-cjk
+#      sudo apt install -y openssh-server xdotool python3-gi gir1.2-atspi-2.0 fonts-noto-cjk fonts-noto-core
 #      echo "127.0.0.1 myserver.com" | sudo tee -a /etc/hosts
 #      gsettings set org.gnome.desktop.screensaver lock-enabled false
 #      gsettings set org.gnome.desktop.session idle-delay 0
@@ -135,13 +139,74 @@ KbdInteractiveAuthentication no
 UsePAM no
 StrictModes no
 EOF
-setsid /usr/sbin/sshd -D -e -f $HOME/ShprotScreenshots/Server/sshd_config </dev/null >Server/sshd.log 2>&1 &
 rm DemoKey DemoKey.pub'
 
-# Remember the guest theme and restore it on exit
+start_demo_server() {
+    guest 'setsid /usr/sbin/sshd -D -e -f $HOME/ShprotScreenshots/Server/sshd_config </dev/null >$HOME/ShprotScreenshots/Server/sshd.log 2>&1 &'
+}
+
+start_demo_server
+
+# Restarts the VM from the host, as the guest does not allow rebooting over SSH.
+# The power button keeps the shutdown clean, the user is logged in automatically.
+restart_guest() {
+    VBoxManage controlvm "$VM_NAME" acpipowerbutton
+
+    local stopped=
+    for i in $(seq 60); do
+        if ! VBoxManage list runningvms | grep -qF "\"$VM_NAME\""; then
+            stopped=1
+            break
+        fi
+        sleep 2
+    done
+
+    if [ -z "$stopped" ]; then
+        echo "ERROR: VM did not shut down, close guest applications and try again."
+        exit 1
+    fi
+
+    sleep 3 # Let VirtualBox release the VM
+    VBoxManage startvm "$VM_NAME" --type gui >/dev/null
+
+    local started=
+    for i in $(seq 60); do
+        if ssh "${SSH_OPTIONS[@]}" -o ConnectTimeout=3 "$SSH_TARGET" 'pgrep -u $USER -x gnome-shell' >/dev/null 2>&1; then
+            started=1
+            break
+        fi
+        sleep 3
+    done
+
+    if [ -z "$started" ]; then
+        echo "ERROR: Guest session did not start, check automatic login."
+        exit 1
+    fi
+
+    sleep 15 # Let the session settle, the tray extension starts after GNOME Shell
+}
+
+# Remember guest settings and restore them on exit
 
 ORIGINAL_COLOR_SCHEME=$(guest "gsettings get org.gnome.desktop.interface color-scheme")
 ORIGINAL_GTK_THEME=$(guest "gsettings get org.gnome.desktop.interface gtk-theme")
+ORIGINAL_SHOW_HOME=$(guest "gsettings get org.gnome.shell.extensions.ding show-home")
+
+RTL_SESSION_CONFIG=90-shprot-screenshots.conf
+RTL_SESSION=
+
+# Mirrors GNOME Shell through a variable of Clutter, so no guest language packs are needed.
+# Home icon of the desktop is hidden, as the screen corner behind the menu gets into the image.
+enter_rtl_session() {
+    RTL_SESSION=1
+
+    guest "mkdir -p ~/.config/environment.d
+           echo CLUTTER_TEXT_DIRECTION=rtl > ~/.config/environment.d/$RTL_SESSION_CONFIG
+           gsettings set org.gnome.shell.extensions.ding show-home false"
+
+    restart_guest
+    start_demo_server
+}
 
 cleanup() {
     guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown
@@ -149,12 +214,24 @@ cleanup() {
            gsettings set org.gnome.desktop.interface color-scheme $ORIGINAL_COLOR_SCHEME
            gsettings set org.gnome.desktop.interface gtk-theme $ORIGINAL_GTK_THEME
            rm -rf ~/ShprotScreenshots"
+
+    if [ -n "$RTL_SESSION" ]; then
+        guest "rm -f ~/.config/environment.d/$RTL_SESSION_CONFIG
+               rmdir ~/.config/environment.d 2>/dev/null
+               gsettings set org.gnome.shell.extensions.ding show-home $ORIGINAL_SHOW_HOME"
+
+        restart_guest
+    fi
 }
 
 trap cleanup EXIT
 
-# README file suffix and UI language of its screenshots
-LANGUAGES=(":en_US" ".ru:ru_RU" ".zh:zh_CN")
+# File suffix and UI language of screenshots, same as README and site languages
+LANGUAGES=(":en_US" ".ar:ar_EG" ".fa:fa_IR" ".ru:ru_RU" ".tr:tr_TR" ".vi:vi_VN" ".zh:zh_CN")
+
+is_rtl_language() {
+    [ "$1" = ".ar" ] || [ "$1" = ".fa" ]
+}
 
 # Without it the key verification shows another host name or fails
 if ! guest "getent hosts myserver.com | grep -qE '^(127\.|::1)'"; then
@@ -289,17 +366,22 @@ EOF')
     fi
 
     local margin=24
-    local left=$((menuX - margin))
-    convert "$temporary/After.png" -crop "$((width - left))x$((bar + menuY + menuHeight + margin))+$left+0" +repage "$output"
+    local cropHeight=$((bar + menuY + menuHeight + margin))
+
+    # The image reaches the screen edge where the top bar has the icon: left one in a mirrored session
+    if [ "$iconX" -lt $((width / 2)) ]; then
+        convert "$temporary/After.png" -crop "$((menuX + menuWidth + margin))x$cropHeight+0+0" +repage "$output"
+    else
+        local left=$((menuX - margin))
+        convert "$temporary/After.png" -crop "$((width - left))x$cropHeight+$left+0" +repage "$output"
+    fi
 
     rm -rf "$temporary"
     echo "$output updated."
 }
 
-# Capture dialogs in each theme and language
-
-for THEME in Light Dark; do
-    if [ "$THEME" = "Light" ]; then
+set_guest_theme() {
+    if [ "$1" = "Light" ]; then
         guest "gsettings set org.gnome.desktop.interface color-scheme default
                gsettings set org.gnome.desktop.interface gtk-theme Yaru"
     else
@@ -308,16 +390,42 @@ for THEME in Light Dark; do
     fi
 
     sleep 1
+}
+
+# Tray menu with the tunnel open through the temporary SSH server
+capture_tray() {
+    local theme="$1" suffix="$2" locale="$3"
+
+    guest "rm -rf ~/ShprotScreenshots/Config/Shprot && mkdir -p ~/ShprotScreenshots/Config/Shprot/KnownHosts
+           cp ~/ShprotScreenshots/TrayPreferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
+           cp ~/ShprotScreenshots/Server/KnownHost ~/ShprotScreenshots/Config/Shprot/KnownHosts/\$(printf %s myserver.com | sha256sum | cut -d' ' -f1)
+           LANGUAGE=$locale LANG=$locale.UTF-8 LC_ALL=$locale.UTF-8 setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot </dev/null >/dev/null 2>&1 &
+           for i in \$(seq 60); do
+               ss -ltn | grep -q '127.0.0.1:1080 ' && ss -ltn | grep -q '127.0.0.1:8080 ' && break
+               sleep 0.5
+           done"
+
+    capture_tray_menu "Assets/TrayMenu-$theme$suffix.png"
+
+    guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
+
+    sleep 1
+}
+
+# Capture dialogs in each theme and language
+
+for THEME in Light Dark; do
+    set_guest_theme "$THEME"
 
     for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
         SUFFIX=${LANGUAGE_ENTRY%%:*}
         LOCALE=${LANGUAGE_ENTRY#*:}
 
         # Fresh preferences without known hosts, so the server key is always unknown
+        # Qt takes the language from these variables, so the locale need not be installed in the guest
         guest "rm -rf ~/ShprotScreenshots/Config/Shprot && mkdir -p ~/ShprotScreenshots/Config/Shprot
                cp ~/ShprotScreenshots/Preferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
-               export LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8
-               setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot --preferences </dev/null >/dev/null 2>&1 &"
+               LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8 setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot --preferences </dev/null >/dev/null 2>&1 &"
 
         # Window title is translated, so the dialog is found by its class
         guest 'w=$(xdotool search --sync --onlyvisible --class Shprot | head -1)
@@ -368,22 +476,26 @@ EOF
 
         sleep 1
 
-        # Tray menu with the tunnel open through the temporary SSH server
-        guest "rm -rf ~/ShprotScreenshots/Config/Shprot && mkdir -p ~/ShprotScreenshots/Config/Shprot/KnownHosts
-               cp ~/ShprotScreenshots/TrayPreferences.json ~/ShprotScreenshots/Config/Shprot/Preferences.json
-               cp ~/ShprotScreenshots/Server/KnownHost ~/ShprotScreenshots/Config/Shprot/KnownHosts/\$(printf %s myserver.com | sha256sum | cut -d' ' -f1)
-               export LANGUAGE=$LOCALE LANG=$LOCALE.UTF-8 LC_ALL=$LOCALE.UTF-8
-               setsid ~/ShprotScreenshots/Package/opt/Shprot/Shprot </dev/null >/dev/null 2>&1 &
-               for i in \$(seq 60); do
-                   ss -ltn | grep -q '127.0.0.1:1080 ' && ss -ltn | grep -q '127.0.0.1:8080 ' && break
-                   sleep 0.5
-               done"
+        if ! is_rtl_language "$SUFFIX"; then
+            capture_tray "$THEME" "$SUFFIX" "$LOCALE"
+        fi
+    done
+done
 
-        capture_tray_menu "Assets/TrayMenu-$THEME$SUFFIX.png"
+# Tray menu of right-to-left languages in a session with mirrored GNOME Shell
 
-        guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown"
+enter_rtl_session
 
-        sleep 1
+for THEME in Light Dark; do
+    set_guest_theme "$THEME"
+
+    for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
+        SUFFIX=${LANGUAGE_ENTRY%%:*}
+        LOCALE=${LANGUAGE_ENTRY#*:}
+
+        if is_rtl_language "$SUFFIX"; then
+            capture_tray "$THEME" "$SUFFIX" "$LOCALE"
+        fi
     done
 done
 
@@ -391,6 +503,9 @@ done
 
 for LANGUAGE_ENTRY in "${LANGUAGES[@]}"; do
     SUFFIX=${LANGUAGE_ENTRY%%:*}
+
+    # Some languages have screenshots for the site only
+    [ -f "README$SUFFIX.md" ] || continue
 
     for IMAGE in Screenshot HostVerification TrayMenu; do
         SIZE=$(file -b "Assets/$IMAGE-Light$SUFFIX.png" | grep -oE '[0-9]+ x [0-9]+')

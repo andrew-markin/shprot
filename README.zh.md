@@ -158,7 +158,7 @@ Shprot 完全独立于系统的全局 SSH 配置或现有的用户密钥，仅�
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="Assets/Screenshot-Dark.zh.png">
         <source media="(prefers-color-scheme: light)" srcset="Assets/Screenshot-Light.zh.png">
-        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.zh.png" width="754" height="779">
+        <img alt="Shprot Interface Overview" src="Assets/Screenshot-Light.zh.png" width="733" height="779">
     </picture>
 </div>
 

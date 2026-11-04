@@ -187,7 +187,7 @@
     </message>
     <message>
         <source>The authenticity of host &lt;b&gt;%1&lt;/b&gt; can&apos;t be established.&lt;br&gt;&lt;br&gt;%2 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;</source>
-        <translation>لا يمكن التحقق من أصالة المضيف &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;&lt;br&gt;بصمة مفتاح %2 هي:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;</translation>
+        <translation>لا يمكن التحقق من أصالة المضيف &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;&lt;br&gt;بصمة مفتاح %2 هي:&lt;br&gt;&lt;nobr&gt;SHA256:%3&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>Are you sure you want to continue connecting and trust this server?</source>
@@ -199,7 +199,7 @@
     </message>
     <message>
         <source>The server key fingerprint for &lt;b&gt;%1&lt;/b&gt; does not match the previously saved value. This could mean someone is intercepting your connection (Man-in-the-Middle attack) or the server administrator just reinstalled the OS.&lt;br&gt;&lt;br&gt;Saved %2 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;Received %4 key fingerprint is:&lt;br&gt;&lt;nobr&gt;SHA256:%5.&lt;/nobr&gt;</source>
-        <translation>بصمة مفتاح الخادم &lt;b&gt;%1&lt;/b&gt; لا تطابق القيمة المحفوظة سابقًا. قد يعني هذا أن شخصًا ما يعترض اتصالك (هجوم الوسيط) أو أن مسؤول الخادم أعاد تثبيت نظام التشغيل للتو.&lt;br&gt;&lt;br&gt;بصمة مفتاح %2 المحفوظة هي:&lt;br&gt;&lt;nobr&gt;SHA256:%3.&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;بصمة مفتاح %4 المستلمة هي:&lt;br&gt;&lt;nobr&gt;SHA256:%5.&lt;/nobr&gt;</translation>
+        <translation>بصمة مفتاح الخادم &lt;b&gt;%1&lt;/b&gt; لا تطابق القيمة المحفوظة سابقًا. قد يعني هذا أن شخصًا ما يعترض اتصالك (هجوم الوسيط) أو أن مسؤول الخادم أعاد تثبيت نظام التشغيل للتو.&lt;br&gt;&lt;br&gt;بصمة مفتاح %2 المحفوظة هي:&lt;br&gt;&lt;nobr&gt;SHA256:%3&lt;/nobr&gt;&lt;br&gt;&lt;br&gt;بصمة مفتاح %4 المستلمة هي:&lt;br&gt;&lt;nobr&gt;SHA256:%5&lt;/nobr&gt;</translation>
     </message>
     <message>
         <source>If you are certain this change is legitimate, you can update the trusted key.</source>
