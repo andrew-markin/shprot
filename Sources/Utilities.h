@@ -35,6 +35,9 @@ bool hostIsExposed(const QString& host);
 QString stripHostBrackets(const QString& host);
 QString getProxyConnectionHost(const QString& host);
 QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port);
+bool proxyAddressesConflict(const QString& firstHost, quint16 firstPort, const QString& secondHost, quint16 secondPort);
+
+QString formatUptime(qint64 milliseconds);
 
 QString describeSshError(const QByteArray& errorOutput);
 QString summarizeSshError(const QByteArray& errorOutput);

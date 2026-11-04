@@ -166,6 +166,10 @@
         <translation>Neveljavna vrata lokalnega posrednika HTTP</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Krajevna posrednika SOCKS5 in HTTP ne moreta uporabljati istih vrat</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Napaka pri preverjanju zaupanja</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Ni mogoče zagnati ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Sistemska vrstica ni na voljo</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 še naprej deluje v ozadju, vendar njegove ikone, menija in obvestil ni mogoče prikazati, ker to namizje nima sistemske vrstice. Če želite odpreti nastavitve, znova zaženite %1. V GNOME sistemsko vrstico zagotavlja razširitev AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Povezano s strežnikom, vendar spletna mesta prek tunela niso dosegljiva</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Zasebni ključ SSH z geslom ni podprt. Odstranite geslo ali ustvarite nov ključ.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 h</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 h %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

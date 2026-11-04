@@ -166,6 +166,10 @@
         <translation>Жергілікті HTTP прокси порты қате</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Жергілікті SOCKS5 және HTTP прокси бір портты пайдалана алмайды</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Сенімділікті тексеру қатесі</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh іске қосылмады</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Жүйелік науа қолжетімсіз</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 фондық режимде жұмысын жалғастырады, бірақ бұл жұмыс үстелінде жүйелік науа болмағандықтан, оның белгішесі, мәзірі мен хабарландырулары көрсетілмейді. Баптауларды ашу үшін %1 бағдарламасын қайта іске қосыңыз. GNOME-да науаны AppIndicator кеңейтімі қамтамасыз етеді.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Серверге қосылды, бірақ сайттар туннель арқылы қолжетімсіз</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Құпия сөзі бар SSH жеке кілтіне қолдау көрсетілмейді. Құпия сөзді алып тастаңыз немесе жаңа кілт жасаңыз.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 к %2 с</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 с %2 мин</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 мин</translation>
     </message>
     <message>
         <source>Authentication failed</source>

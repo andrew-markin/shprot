@@ -166,6 +166,10 @@
         <translation>Vigane kohaliku HTTP-puhverserveri port</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Kohalikud SOCKS5- ja HTTP-puhverserverid ei saa kasutada sama porti</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Usalduse kontrolli viga</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh käivitamine nurjus</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Süsteemisalv pole saadaval</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 töötab taustal edasi, kuid selle ikooni, menüüd ja teateid ei saa näidata, sest sellel töölaual pole süsteemisalve. Eelistuste avamiseks käivitage %1 uuesti. GNOME-is pakub süsteemisalve laiendus AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Server on ühendatud, kuid veebisaidid pole tunneli kaudu kättesaadavad</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Salafraasiga SSH privaatvõtit ei toetata. Eemaldage salafraas või looge uus võti.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 p %2 t</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 t %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

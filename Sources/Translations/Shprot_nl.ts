@@ -166,6 +166,10 @@
         <translation>Ongeldige poort van lokale HTTP-proxy</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Lokale SOCKS5- en HTTP-proxy&apos;s kunnen niet dezelfde poort gebruiken</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Fout bij vertrouwenscontrole</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Kan ssh niet starten</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Systeemvak niet beschikbaar</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 blijft op de achtergrond werken, maar het pictogram, het menu en de meldingen kunnen niet worden getoond omdat dit bureaublad geen systeemvak heeft. Start %1 opnieuw om de voorkeuren te openen. In GNOME wordt het systeemvak geleverd door de extensie AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Verbonden met de server, maar websites zijn niet bereikbaar via de tunnel</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Een persoonlijke SSH-sleutel met wachtwoordzin wordt niet ondersteund. Verwijder de wachtwoordzin of genereer een nieuwe sleutel.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 u</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 u %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -166,6 +166,10 @@
         <translation>Ungültiger Port des lokalen HTTP-Proxys</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Lokale SOCKS5- und HTTP-Proxys können nicht denselben Port verwenden</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Fehler bei der Vertrauensprüfung</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh kann nicht gestartet werden</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Infobereich nicht verfügbar</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 läuft im Hintergrund weiter, aber Symbol, Menü und Benachrichtigungen können nicht angezeigt werden, da diese Arbeitsumgebung keinen Infobereich hat. Starten Sie %1 erneut, um die Einstellungen zu öffnen. Unter GNOME stellt die Erweiterung AppIndicator den Infobereich bereit.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Mit dem Server verbunden, aber Websites sind über den Tunnel nicht erreichbar</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Private SSH-Schlüssel mit Passphrase werden nicht unterstützt. Entfernen Sie die Passphrase oder erzeugen Sie einen neuen Schlüssel.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 T. %2 Std.</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 Std. %2 Min.</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 Min.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

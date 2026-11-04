@@ -166,6 +166,10 @@
         <translation>স্থানীয় HTTP প্রক্সির অবৈধ পোর্ট</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>স্থানীয় SOCKS5 ও HTTP প্রক্সি একই পোর্ট ব্যবহার করতে পারে না</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>বিশ্বস্ততা যাচাইয়ে ত্রুটি</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh চালু করা যাচ্ছে না</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>সিস্টেম ট্রে উপলব্ধ নেই</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 পটভূমিতে চলছে, কিন্তু এই ডেস্কটপে সিস্টেম ট্রে না থাকায় এর আইকন, মেনু ও বিজ্ঞপ্তি দেখানো যাচ্ছে না। পছন্দসমূহ খুলতে %1 আবার চালু করুন। GNOME-এ AppIndicator এক্সটেনশন ট্রে প্রদান করে।</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>সার্ভারে সংযুক্ত, কিন্তু টানেলের মাধ্যমে ওয়েবসাইটে পৌঁছানো যাচ্ছে না</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>পাসফ্রেজযুক্ত SSH ব্যক্তিগত কী সমর্থিত নয়। পাসফ্রেজ সরান অথবা একটি নতুন কী তৈরি করুন।</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 দিন %2 ঘণ্টা</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ঘণ্টা %2 মিনিট</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 মিনিট</translation>
     </message>
     <message>
         <source>Authentication failed</source>

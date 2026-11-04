@@ -166,6 +166,10 @@
         <translation>مقامی HTTP پراکسی کا غلط پورٹ</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>مقامی SOCKS5 اور HTTP پراکسی ایک ہی پورٹ استعمال نہیں کر سکتیں</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>اعتماد کی جانچ میں خرابی</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh شروع نہیں ہو سکا</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>سسٹم ٹرے دستیاب نہیں</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 پس منظر میں چلتا رہتا ہے، لیکن اس کا آئیکن، مینو اور اطلاعات نہیں دکھائی جا سکتیں کیونکہ اس ڈیسک ٹاپ میں سسٹم ٹرے نہیں ہے۔ ترجیحات کھولنے کے لیے %1 دوبارہ شروع کریں۔ GNOME پر ٹرے AppIndicator ایکسٹینشن فراہم کرتی ہے۔</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>سرور سے منسلک ہیں، لیکن ٹنل کے ذریعے ویب سائٹس تک رسائی نہیں ہو رہی</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>پاس فریز والی SSH نجی کلید معاون نہیں ہے۔ پاس فریز ہٹائیں یا نئی کلید بنائیں۔</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 دن %2 گھنٹے</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 گھنٹے %2 منٹ</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 منٹ</translation>
     </message>
     <message>
         <source>Authentication failed</source>

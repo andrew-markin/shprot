@@ -646,6 +646,17 @@ QStringList PreferencesDialog::validate()
             errors.append(tr("Invalid Local HTTP Proxy Port"));
             setWidgetHighlighted(m_localHttpProxyPortEdit, true);
         }
+
+        // Only the HTTP proxy would be affected, since it's started after ssh takes the port
+
+        if (Utilities::proxyAddressesConflict(m_localSocks5ProxyHostEdit->text(),
+                                              Utilities::parsePort(m_localSocks5ProxyPortEdit->text(), 1080),
+                                              m_localHttpProxyHostEdit->text(),
+                                              Utilities::parsePort(m_localHttpProxyPortEdit->text(), 8080)))
+        {
+            errors.append(tr("Local SOCKS5 and HTTP Proxies Can't Use the Same Port"));
+            setWidgetHighlighted(m_localHttpProxyPortEdit, true);
+        }
     }
 
     return errors;

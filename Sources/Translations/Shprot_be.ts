@@ -166,6 +166,10 @@
         <translation>Няправільны порт лакальнага HTTP-проксі</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Лакальныя проксі SOCKS5 і HTTP не могуць выкарыстоўваць адзін порт</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Памылка праверкі даверу</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Не ўдалося запусціць ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Сістэмны трэй недаступны</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 працягвае працаваць у фоне, але яго значок, меню і апавяшчэнні нельга паказаць, бо на гэтым працоўным стале няма сістэмнага трэя. Каб адкрыць налады, запусціце %1 яшчэ раз. У GNOME трэй дадае пашырэнне AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Злучэнне з серверам ёсць, але сайты праз тунэль недаступныя</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Прыватны ключ SSH з паролем не падтрымліваецца. Выдаліце пароль або стварыце новы ключ.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 дз %2 г</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 г %2 хв</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 хв</translation>
     </message>
     <message>
         <source>Authentication failed</source>

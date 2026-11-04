@@ -166,6 +166,10 @@
         <translation>本機 HTTP 代理連接埠無效</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>本機 SOCKS5 代理和 HTTP 代理不能使用同一連接埠</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>信任檢查錯誤</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>無法啟動 ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>系統匣無法使用</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 會繼續在背景執行，但由於此桌面沒有系統匣，無法顯示其圖示、選單和通知。要開啟偏好設定，請再次啟動 %1。在 GNOME 上，系統匣由 AppIndicator 擴充功能提供。</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>已連線到伺服器，但無法透過通道存取網站</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>不支援帶密碼片語的 SSH 私密金鑰。請移除密碼片語或產生新金鑰。</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 天 %2 小時</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 小時 %2 分鐘</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 分鐘</translation>
     </message>
     <message>
         <source>Authentication failed</source>

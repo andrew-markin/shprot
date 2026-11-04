@@ -166,6 +166,10 @@
         <translation>ローカル HTTP プロキシのポートが無効です</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>ローカルの SOCKS5 プロキシと HTTP プロキシに同じポートは使用できません</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>信頼性チェックのエラー</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh を起動できません</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>システムトレイを利用できません</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 はバックグラウンドで動作を続けますが、このデスクトップにはシステムトレイがないため、アイコン、メニュー、通知を表示できません。設定を開くには、%1 をもう一度起動してください。GNOME では AppIndicator 拡張機能がトレイを提供します。</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>サーバーに接続しましたが、トンネル経由で Web サイトにアクセスできません</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>パスフレーズ付きの SSH 秘密鍵はサポートされていません。パスフレーズを削除するか、新しい鍵を生成してください。</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 日 %2 時間</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 時間 %2 分</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 分</translation>
     </message>
     <message>
         <source>Authentication failed</source>

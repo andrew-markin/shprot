@@ -166,6 +166,10 @@
         <translation>Neteisingas vietinio HTTP tarpinio serverio prievadas</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Vietiniai SOCKS5 ir HTTP tarpiniai serveriai negali naudoti to paties prievado</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Patikimumo tikrinimo klaida</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Nepavyko paleisti ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Sistemos dėklas nepasiekiamas</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 toliau veikia fone, tačiau jos piktogramos, meniu ir pranešimų negalima parodyti, nes šiame darbalaukyje nėra sistemos dėklo. Norėdami atverti nuostatas, paleiskite %1 dar kartą. GNOME aplinkoje dėklą suteikia plėtinys AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Prisijungta prie serverio, bet svetainės per tunelį nepasiekiamos</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Privatusis SSH raktas su slaptafraze nepalaikomas. Pašalinkite slaptafrazę arba sugeneruokite naują raktą.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d. %2 val.</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 val. %2 min.</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min.</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -166,6 +166,10 @@
         <translation>Nederīgs lokālā HTTP starpniekservera ports</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Lokālie SOCKS5 un HTTP starpniekserveri nevar izmantot vienu un to pašu portu</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Uzticamības pārbaudes kļūda</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Neizdevās palaist ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Sistēmas tekne nav pieejama</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 turpina darboties fonā, taču tās ikonu, izvēlni un paziņojumus nevar parādīt, jo šajā darbvirsmā nav sistēmas teknes. Lai atvērtu iestatījumus, vēlreiz palaidiet %1. GNOME vidē tekni nodrošina paplašinājums AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Savienojums ar serveri ir, bet tīmekļa vietnes caur tuneli nav pieejamas</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Privātā SSH atslēga ar ieejas frāzi netiek atbalstīta. Noņemiet ieejas frāzi vai ģenerējiet jaunu atslēgu.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 st</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 st %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

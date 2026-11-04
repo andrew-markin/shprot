@@ -166,6 +166,10 @@
         <translation>درگاه پراکسی محلی HTTP نامعتبر است</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>پروکسی‌های محلی SOCKS5 و HTTP نمی‌توانند از درگاه یکسان استفاده کنند</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>خطای بررسی اعتماد</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>اجرای ssh ممکن نیست</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>سینی سیستم در دسترس نیست</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 در پس‌زمینه به کار خود ادامه می‌دهد، اما نماد، منو و اعلان‌های آن نمایش داده نمی‌شوند، زیرا این میزکار سینی سیستم ندارد. برای باز کردن تنظیمات، %1 را دوباره اجرا کنید. در GNOME، سینی سیستم را افزونهٔ AppIndicator فراهم می‌کند.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>به سرور متصل شد، اما وب‌سایت‌ها از طریق تونل در دسترس نیستند</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>کلید خصوصی SSH دارای عبارت عبور پشتیبانی نمی‌شود. عبارت عبور را حذف کنید یا کلید جدیدی بسازید.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 روز %2 ساعت</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ساعت %2 دقیقه</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 دقیقه</translation>
     </message>
     <message>
         <source>Authentication failed</source>

@@ -166,6 +166,10 @@
         <translation>잘못된 로컬 HTTP 프록시 포트</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>로컬 SOCKS5 프록시와 HTTP 프록시는 같은 포트를 사용할 수 없습니다</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>신뢰 확인 오류</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh를 시작할 수 없음</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>시스템 트레이를 사용할 수 없음</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1은(는) 백그라운드에서 계속 실행되지만, 이 데스크톱에는 시스템 트레이가 없어 아이콘, 메뉴, 알림을 표시할 수 없습니다. 환경설정을 열려면 %1을(를) 다시 시작하세요. GNOME에서는 AppIndicator 확장 프로그램이 트레이를 제공합니다.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>서버에 연결되었지만 터널을 통해 웹사이트에 접근할 수 없습니다</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>암호 문구가 있는 SSH 개인 키는 지원되지 않습니다. 암호 문구를 제거하거나 새 키를 생성하세요.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1일 %2시간</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1시간 %2분</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1분</translation>
     </message>
     <message>
         <source>Authentication failed</source>

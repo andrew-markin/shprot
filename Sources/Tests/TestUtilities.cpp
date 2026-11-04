@@ -29,6 +29,12 @@ private slots:
     void formatProxyUrl_data();
     void formatProxyUrl();
 
+    void proxyAddressesConflict_data();
+    void proxyAddressesConflict();
+
+    void formatUptime_data();
+    void formatUptime();
+
     void describeSshError_data();
     void describeSshError();
 
@@ -218,6 +224,67 @@ void TestUtilities::formatProxyUrl()
     QFETCH(QString, expected);
 
     QCOMPARE(Utilities::formatProxyUrl("socks5h", host, 1080), expected);
+}
+
+void TestUtilities::proxyAddressesConflict_data()
+{
+    QTest::addColumn<QString>("firstHost");
+    QTest::addColumn<int>("firstPort");
+    QTest::addColumn<QString>("secondHost");
+    QTest::addColumn<int>("secondPort");
+    QTest::addColumn<bool>("expected");
+
+    QTest::newRow("defaults") << "localhost" << 1080 << "localhost" << 8080 << false;
+    QTest::newRow("same address and port") << "localhost" << 1080 << "localhost" << 1080 << true;
+    QTest::newRow("empty means localhost") << "" << 1080 << "localhost" << 1080 << true;
+    QTest::newRow("localhost in other case") << "LOCALHOST" << 1080 << "localhost" << 1080 << true;
+    QTest::newRow("localhost and ipv4 loopback") << "localhost" << 1080 << "127.0.0.1" << 1080 << true;
+    QTest::newRow("localhost and ipv6 loopback") << "localhost" << 1080 << "[::1]" << 1080 << true;
+    QTest::newRow("any ipv4 includes others") << "0.0.0.0" << 1080 << "192.168.1.5" << 1080 << true;
+    QTest::newRow("any ipv4 includes localhost") << "localhost" << 1080 << "0.0.0.0" << 1080 << true;
+    QTest::newRow("any ipv6 includes others") << "192.168.1.5" << 1080 << "[::]" << 1080 << true;
+    QTest::newRow("any address with other port") << "0.0.0.0" << 1080 << "0.0.0.0" << 8080 << false;
+    QTest::newRow("different addresses") << "192.168.1.5" << 1080 << "192.168.1.6" << 1080 << false;
+    QTest::newRow("loopback and other address") << "localhost" << 1080 << "192.168.1.5" << 1080 << false;
+    QTest::newRow("same host name") << "proxy.local" << 1080 << "PROXY.local" << 1080 << true;
+}
+
+void TestUtilities::proxyAddressesConflict()
+{
+    QFETCH(QString, firstHost);
+    QFETCH(int, firstPort);
+    QFETCH(QString, secondHost);
+    QFETCH(int, secondPort);
+    QFETCH(bool, expected);
+
+    QCOMPARE(Utilities::proxyAddressesConflict(firstHost, firstPort, secondHost, secondPort), expected);
+    QCOMPARE(Utilities::proxyAddressesConflict(secondHost, secondPort, firstHost, firstPort), expected);
+}
+
+void TestUtilities::formatUptime_data()
+{
+    QTest::addColumn<qint64>("milliseconds");
+    QTest::addColumn<QString>("expected");
+
+    static const qint64 Minute = 60000;
+
+    QTest::newRow("start") << qint64(0) << "";
+    QTest::newRow("less than a minute") << Minute - 1 << "";
+    QTest::newRow("a minute") << Minute << "1 min";
+    QTest::newRow("less than an hour") << 60 * Minute - 1 << "59 min";
+    QTest::newRow("an hour") << 60 * Minute << "1 h 0 min";
+    QTest::newRow("hours") << 135 * Minute << "2 h 15 min";
+    QTest::newRow("less than a day") << 24 * 60 * Minute - 1 << "23 h 59 min";
+    QTest::newRow("a day") << 24 * 60 * Minute << "1 d 0 h";
+    QTest::newRow("days") << (3 * 24 + 5) * 60 * Minute + 30 * Minute << "3 d 5 h";
+}
+
+void TestUtilities::formatUptime()
+{
+    QFETCH(qint64, milliseconds);
+    QFETCH(QString, expected);
+
+    QCOMPARE(Utilities::formatUptime(milliseconds), expected);
 }
 
 void TestUtilities::describeSshError_data()

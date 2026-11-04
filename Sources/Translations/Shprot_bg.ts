@@ -166,6 +166,10 @@
         <translation>Невалиден порт на локалния HTTP прокси</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Локалните SOCKS5 и HTTP проксита не могат да използват един и същ порт</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Грешка при проверката на доверието</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh не може да бъде стартиран</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Системната област не е налична</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 продължава да работи във фонов режим, но иконата, менюто и известията му не могат да се показват, защото този работен плот няма системна област. За да отворите настройките, стартирайте %1 отново. В GNOME системната област се осигурява от разширението AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Има връзка със сървъра, но сайтовете не са достъпни през тунела</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Частен SSH ключ с парола не се поддържа. Премахнете паролата или генерирайте нов ключ.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 д %2 ч</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ч %2 мин</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 мин</translation>
     </message>
     <message>
         <source>Authentication failed</source>

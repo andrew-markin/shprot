@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Copy Command to Install Key on Server</source>
-        <translation>Copier la commande d'installation de la clé sur le serveur</translation>
+        <translation>Copier la commande d&apos;installation de la clé sur le serveur</translation>
     </message>
     <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
@@ -164,6 +164,10 @@
     <message>
         <source>Invalid Local HTTP Proxy Port</source>
         <translation>Port du proxy HTTP local non valide</translation>
+    </message>
+    <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Les proxys locaux SOCKS5 et HTTP ne peuvent pas utiliser le même port</translation>
     </message>
     <message>
         <source>Trust Check Error</source>
@@ -416,6 +420,14 @@
         <translation>Impossible de lancer ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Zone de notification non disponible</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 continue de fonctionner en arrière-plan, mais son icône, son menu et ses notifications ne peuvent pas être affichés, car ce bureau n&apos;a pas de zone de notification. Pour ouvrir les préférences, relancez %1. Sous GNOME, la zone de notification est fournie par l&apos;extension AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Connecté au serveur, mais les sites web ne sont pas accessibles via le tunnel</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Les clés privées SSH avec phrase secrète ne sont pas prises en charge. Supprimez la phrase secrète ou générez une nouvelle clé.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 j %2 h</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 h %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

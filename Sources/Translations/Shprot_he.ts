@@ -166,6 +166,10 @@
         <translation>פתחת פרוקסי HTTP מקומי לא תקינה</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>שרתי Proxy מקומיים מסוג SOCKS5 ו-HTTP אינם יכולים להשתמש באותה יציאה</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>שגיאת בדיקת אמון</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>לא ניתן להפעיל את ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>מגש המערכת אינו זמין</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 ממשיך לפעול ברקע, אך לא ניתן להציג את הסמל, התפריט וההתראות שלו, כי בשולחן עבודה זה אין מגש מערכת. כדי לפתוח את ההעדפות, הפעילו את %1 שוב. ב-GNOME, את מגש המערכת מספקת ההרחבה AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>מחובר לשרת, אך אתרים אינם נגישים דרך המנהרה</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>מפתח SSH פרטי עם ביטוי סיסמה אינו נתמך. הסירו את ביטוי הסיסמה או צרו מפתח חדש.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 י׳ %2 ש׳</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ש׳ %2 דק׳</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 דק׳</translation>
     </message>
     <message>
         <source>Authentication failed</source>

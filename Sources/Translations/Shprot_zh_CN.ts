@@ -166,6 +166,10 @@
         <translation>本地 HTTP 代理端口无效</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>本地 SOCKS5 代理和 HTTP 代理不能使用同一端口</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>信任检查错误</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>无法启动 ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>系统托盘不可用</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 会继续在后台运行，但由于此桌面没有系统托盘，无法显示其图标、菜单和通知。要打开首选项，请再次启动 %1。在 GNOME 上，托盘由 AppIndicator 扩展提供。</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>已连接到服务器，但无法通过隧道访问网站</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>不支持带密码短语的 SSH 私钥。请移除密码短语或生成新密钥。</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 天 %2 小时</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 小时 %2 分钟</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 分钟</translation>
     </message>
     <message>
         <source>Authentication failed</source>

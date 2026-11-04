@@ -166,6 +166,10 @@
         <translation>Cổng proxy HTTP cục bộ không hợp lệ</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Proxy cục bộ SOCKS5 và HTTP không thể dùng cùng một cổng</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Lỗi kiểm tra độ tin cậy</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Không thể khởi động ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Khay hệ thống không khả dụng</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 vẫn chạy nền, nhưng không thể hiển thị biểu tượng, menu và thông báo vì màn hình nền này không có khay hệ thống. Để mở tùy chọn, hãy khởi động lại %1. Trên GNOME, khay hệ thống do tiện ích mở rộng AppIndicator cung cấp.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Đã kết nối máy chủ, nhưng không thể truy cập trang web qua đường hầm</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Không hỗ trợ khóa riêng tư SSH có cụm mật khẩu. Hãy xóa cụm mật khẩu hoặc tạo khóa mới.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 ngày %2 giờ</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 giờ %2 phút</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 phút</translation>
     </message>
     <message>
         <source>Authentication failed</source>

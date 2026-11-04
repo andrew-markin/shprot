@@ -87,7 +87,7 @@
     </message>
     <message>
         <source>Copy Command to Install Key on Server</source>
-        <translation>Copia l'ordre per instal·lar la clau al servidor</translation>
+        <translation>Copia l&apos;ordre per instal·lar la clau al servidor</translation>
     </message>
     <message>
         <source>Local SOCKS5 Proxy Address (e.g. localhost or 0.0.0.0):</source>
@@ -164,6 +164,10 @@
     <message>
         <source>Invalid Local HTTP Proxy Port</source>
         <translation>Port del servidor intermediari HTTP local no vàlid</translation>
+    </message>
+    <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Els servidors intermediaris locals SOCKS5 i HTTP no poden utilitzar el mateix port</translation>
     </message>
     <message>
         <source>Trust Check Error</source>
@@ -416,6 +420,14 @@
         <translation>No es pot iniciar ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>La safata del sistema no està disponible</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 continua funcionant en segon pla, però no se&apos;n poden mostrar la icona, el menú ni les notificacions perquè aquest escriptori no té safata del sistema. Per obrir les preferències, torneu a iniciar %1. A GNOME, la safata la proporciona l&apos;extensió AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Connectat al servidor, però els llocs web no són accessibles a través del túnel</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>No s&apos;admeten claus privades SSH amb contrasenya. Elimineu la contrasenya o genereu una clau nova.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 h</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 h %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

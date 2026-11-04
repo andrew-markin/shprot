@@ -218,12 +218,12 @@ The HTTP proxy works **through** the same SSH tunnel as the SOCKS5 proxy, so it 
 ### Connection Status Indicators
 You can easily track the tunnel status without opening the main window:
 * **System Tray Icon:** A vibrant, **colored icon** means the tunnel is active and the SOCKS5 proxy is successfully serving traffic. A **grayscale icon** indicates that the tunnel is closed or disconnected.
-* **Tray Icon Tooltip:** Hover over the tray icon to see the current tunnel state and, if the tunnel is closed, the reason (for example, an authentication failure or an unreachable server).
+* **Tray Icon Tooltip:** Hover over the tray icon to see the current tunnel state and, if the tunnel is closed, the reason (for example, an authentication failure or an unreachable server). While the tunnel is open, the tooltip also shows how long it has been open.
 * **Toast Notifications:** The app will send native system tray notifications whenever the tunnel successfully connects or drops. If the tunnel cannot be opened, the notification explains why; each new reason is reported once rather than on every reconnection attempt.
 
 ### Tray Menu
 Right-click the tray icon to open the menu. It is grouped as follows:
-* **Tunnel status** at the top, e.g. *Tunnel is open* or a short reason such as *Authentication failed* with the time left until the next reconnection attempt (the full explanation is in the tooltip, notifications and logs). Useful where the tray doesn't show tooltips (for example, GNOME).
+* **Tunnel status** at the top, e.g. *Tunnel is open · 2 h 15 min* with the time it has been open, or a short reason such as *Authentication failed* with the time left until the next reconnection attempt (the full explanation is in the tooltip, notifications and logs). Useful where the tray doesn't show tooltips (for example, GNOME).
 * **Reconnect Now** tries to connect right away instead of waiting for the next attempt. It is shown only during such a wait.
 * **Enable SSH Proxy Tunnel** turns the tunnel on or off without opening the settings (same as the checkbox in the settings window).
 * **Copy SOCKS5 Proxy Address** and **Copy HTTP Proxy Address** copy a ready-to-use proxy URL, such as `socks5h://localhost:1080` or `http://localhost:8080`, for browsers, `curl` or the `ALL_PROXY`/`HTTP_PROXY` environment variables. They are shown only while the corresponding proxy is available.
@@ -249,6 +249,8 @@ If the tunnel doesn't open:
 2. Open **Show Logs…** in the tray menu for details, including the output of the `ssh` client.
 
 Log files are stored in `%APPDATA%\Shprot\Logs` on Windows and in `~/.local/share/Shprot/Logs` on Linux, one file per day, and are kept for 30 days.
+
+If there is no tray icon at all, your desktop probably has no system tray, as on GNOME without the AppIndicator extension. Shprot warns about this once and keeps working in the background: start it again to open the preferences.
 
 ## Building and Development
 

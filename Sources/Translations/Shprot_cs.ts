@@ -166,6 +166,10 @@
         <translation>Neplatný port místní proxy HTTP</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Místní proxy SOCKS5 a HTTP nemohou používat stejný port</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Chyba ověření důvěryhodnosti</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Nelze spustit ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Systémová oblast není k dispozici</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 dále běží na pozadí, ale jeho ikonu, nabídku a oznámení nelze zobrazit, protože toto prostředí nemá systémovou oblast. Chcete-li otevřít předvolby, spusťte %1 znovu. V GNOME systémovou oblast poskytuje rozšíření AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Připojeno k serveru, ale webové stránky nejsou přes tunel dostupné</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Soukromý klíč SSH s heslem není podporován. Odstraňte heslo nebo vygenerujte nový klíč.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 h</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 h %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

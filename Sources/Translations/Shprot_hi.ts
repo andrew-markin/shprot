@@ -166,6 +166,10 @@
         <translation>स्थानीय HTTP प्रॉक्सी का अमान्य पोर्ट</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>स्थानीय SOCKS5 और HTTP प्रॉक्सी एक ही पोर्ट का उपयोग नहीं कर सकते</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>विश्वास जाँच त्रुटि</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh शुरू नहीं हो सका</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>सिस्टम ट्रे उपलब्ध नहीं है</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 पृष्ठभूमि में चलता रहता है, लेकिन इसका आइकन, मेनू और सूचनाएँ नहीं दिखाई जा सकतीं, क्योंकि इस डेस्कटॉप में सिस्टम ट्रे नहीं है। प्राथमिकताएँ खोलने के लिए %1 को फिर से शुरू करें। GNOME में ट्रे AppIndicator एक्सटेंशन से मिलती है।</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>सर्वर से कनेक्ट है, लेकिन टनल के ज़रिए वेबसाइटें उपलब्ध नहीं हैं</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>पासफ़्रेज़ वाली SSH निजी कुंजी समर्थित नहीं है। पासफ़्रेज़ हटाएँ या नई कुंजी बनाएँ।</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 दिन %2 घं</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 घं %2 मि</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 मि</translation>
     </message>
     <message>
         <source>Authentication failed</source>

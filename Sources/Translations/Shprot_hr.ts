@@ -166,6 +166,10 @@
         <translation>Nevaljan port lokalnog HTTP proxyja</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Lokalni SOCKS5 i HTTP posrednici ne mogu koristiti isti priključak</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Pogreška provjere povjerenja</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Nije moguće pokrenuti ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Sistemska traka nije dostupna</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 nastavlja raditi u pozadini, ali njegova ikona, izbornik i obavijesti ne mogu se prikazati jer ova radna površina nema sistemsku traku. Za otvaranje postavki ponovno pokrenite %1. U GNOME-u sistemsku traku pruža proširenje AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Povezano s poslužiteljem, ali web-mjesta nisu dostupna kroz tunel</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Privatni SSH ključ sa zaporkom nije podržan. Uklonite zaporku ili generirajte novi ključ.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 d %2 h</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 h %2 min</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 min</translation>
     </message>
     <message>
         <source>Authentication failed</source>

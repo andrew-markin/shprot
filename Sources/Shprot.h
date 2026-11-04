@@ -39,6 +39,8 @@ private slots:
     void stopTunnelProcess(int timeout = 3000);
     void scheduleTunnelProcessRestart(bool authenticationFailed);
     void handleNetworkChange();
+    void checkForWake();
+    void maybeWarnAboutMissingTray();
 
     void handleTunnelProcessStart();
     void handleTunnelProcessFinish(int exitCode, QProcess::ExitStatus exitStatus);
@@ -69,6 +71,10 @@ private:
     int m_failedRestartsCount = 0;
     bool m_tunnelPortOpened = false; // Local port is opened by ssh only after authentication
     QElapsedTimer m_tunnelWarmupTimer;
+    QElapsedTimer m_tunnelUptimeTimer; // Started by the first successful health check of the ssh process
+
+    QTimer* m_wakeCheckTimer;
+    qint64 m_wakeCheckTime = 0;
 
     QTimer* m_healthCheckTimer;
     QTcpSocket* m_healthCheckSocket = nullptr;

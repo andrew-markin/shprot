@@ -166,6 +166,10 @@
         <translation>Érvénytelen helyi HTTP-proxy port</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>A helyi SOCKS5- és HTTP-proxy nem használhatja ugyanazt a portot</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Megbízhatósági ellenőrzés hibája</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Az ssh nem indítható</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>A rendszertálca nem érhető el</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>A(z) %1 tovább fut a háttérben, de ikonja, menüje és értesítései nem jeleníthetők meg, mert ezen az asztali környezeten nincs rendszertálca. A beállítások megnyitásához indítsa el újra a(z) %1 alkalmazást. GNOME alatt a tálcát az AppIndicator bővítmény biztosítja.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Csatlakozva a kiszolgálóhoz, de a webhelyek nem érhetők el az alagúton keresztül</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>A jelmondattal védett privát SSH-kulcs nem támogatott. Távolítsa el a jelmondatot, vagy hozzon létre új kulcsot.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 n %2 ó</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ó %2 p</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 p</translation>
     </message>
     <message>
         <source>Authentication failed</source>

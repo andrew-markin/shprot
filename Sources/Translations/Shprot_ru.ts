@@ -166,6 +166,10 @@
         <translation>Неверный порт локального HTTP-прокси</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Локальные прокси SOCKS5 и HTTP не могут использовать один порт</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Ошибка проверки доверия</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Не удалось запустить ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Системный трей недоступен</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 продолжает работать в фоне, но его значок, меню и уведомления показать нельзя, так как на этом рабочем столе нет системного трея. Чтобы открыть настройки, запустите %1 ещё раз. В GNOME трей добавляет расширение AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Подключение к серверу есть, но сайты через туннель недоступны</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Закрытый ключ SSH с паролем не поддерживается. Удалите пароль или создайте новый ключ.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 д %2 ч</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ч %2 мин</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 мин</translation>
     </message>
     <message>
         <source>Authentication failed</source>

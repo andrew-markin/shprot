@@ -2,11 +2,13 @@
 
 #include <QApplication>
 #include <QClipboard>
+#include <QDateTime>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QMessageBox>
 #include <QNetworkProxy>
 #include <QRandomGenerator>
 #include <QRegularExpression>
@@ -71,6 +73,12 @@ static const int HealthCheckConnectionTimeout = 3000; // 3s
 static const int HealthCheckFailsLimit = 3;
 
 static const int StatusUpdateTimeout = 500; // 500ms
+
+static const int WakeCheckInterval = 5000; // 5s
+static const int WakeTimeGapMin = 30000; // 30s, the time missed by the check that means the system was sleeping
+
+// Tray of the desktop may appear a bit later than the application started at login
+static const int MissingTrayCheckDelay = 15000; // 15s
 
 QStringList getAllLoggedInUserNames()
 {
@@ -196,6 +204,11 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     m_tunnelTimer->setSingleShot(true);
 
     connect(m_tunnelTimer, &QTimer::timeout, this, &Shprot::maybeRestartTunnelProcess);
+
+    m_wakeCheckTimer = new QTimer(this);
+    m_wakeCheckTimer->setInterval(WakeCheckInterval);
+
+    connect(m_wakeCheckTimer, &QTimer::timeout, this, &Shprot::checkForWake);
 
     m_tunnelProcess = new QProcess(this);
     connect(m_tunnelProcess, &QProcess::started, this, &Shprot::handleTunnelProcessStart);
@@ -333,6 +346,11 @@ void Shprot::start()
 {
     m_tunnelTimer->start(0);
     m_updateChecker->start();
+
+    m_wakeCheckTime = QDateTime::currentMSecsSinceEpoch();
+    m_wakeCheckTimer->start();
+
+    QTimer::singleShot(MissingTrayCheckDelay, this, &Shprot::maybeWarnAboutMissingTray);
 }
 
 void Shprot::stop()
@@ -533,6 +551,7 @@ void Shprot::stopTunnelProcess(int timeout)
 void Shprot::handleTunnelProcessStart()
 {
     m_tunnelPortOpened = false;
+    m_tunnelUptimeTimer.invalidate();
 
     m_healthCheckTimer->start(HealthCheckStartDelay);
     m_healthCheckFailsCount = 0;
@@ -603,6 +622,49 @@ void Shprot::handleNetworkChange()
     m_failedRestartsCount = 0; // New network deserves a fresh start
     setLastError(QString(), QString()); // The reason found for the previous network is out of date
     maybeRestartTunnelProcessLater();
+}
+
+// Wall clock is used, since monotonic clock used by timers doesn't count the time of sleep on Linux. Changing the
+// system time may cause an extra reconnection, which is harmless.
+void Shprot::checkForWake()
+{
+    qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+    qint64 missedTime = currentTime - m_wakeCheckTime - WakeCheckInterval;
+
+    m_wakeCheckTime = currentTime;
+
+    if (missedTime >= WakeTimeGapMin)
+    {
+        qInfo() << qPrintable(QString("System woke up after %1s, reconnecting...").arg(missedTime / 1000));
+        handleNetworkChange(); // Connection most likely didn't survive, so don't wait until it's found to be stalled
+    }
+}
+
+void Shprot::maybeWarnAboutMissingTray()
+{
+    if (QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        return;
+    }
+
+    qWarning() << "System tray is not available";
+
+    // Shown once, otherwise it would appear at every login
+    if (m_preferences->value("missingTrayWarningShown", false).toBool())
+    {
+        return;
+    }
+
+    m_preferences->setValue("missingTrayWarningShown", true);
+
+    QMessageBox* messageBox = new QMessageBox();
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    messageBox->setWindowTitle(tr("System Tray Not Available"));
+    messageBox->setIcon(QMessageBox::Warning);
+    messageBox->setText(tr("%1 keeps working in the background, but its icon, menu and notifications can't be shown, "
+                           "since this desktop has no system tray. To open the preferences, start %1 again. "
+                           "On GNOME, the tray is provided by the AppIndicator extension.").arg(PROJECT_TITLE));
+    messageBox->show();
 }
 
 void Shprot::stopHealthCheck()
@@ -711,6 +773,12 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
         {
             m_internetReachable = true;
             m_statusTimer->start(StatusUpdateTimeout);
+
+            // Counted for the ssh process, since a quick reconnection may not even be indicated as closing the tunnel
+            if (!m_tunnelUptimeTimer.isValid())
+            {
+                m_tunnelUptimeTimer.start();
+            }
 
             m_healthCheckFailsCount = 0;
             m_failedRestartsCount = 0;
@@ -927,7 +995,7 @@ void Shprot::updateStatusText()
 
     QString status;
     QString menuStatus; // Only differs from the status when there is an error to explain
-    QString statusDetails; // What happens next, always stays visible when the status is shortened
+    QString statusDetails; // Uptime or what happens next, always stays visible when the status is shortened
 
     if (!tunnelIsEnabled)
     {
@@ -936,6 +1004,14 @@ void Shprot::updateStatusText()
     else if (tunnelIsOpened)
     {
         status = tr("Tunnel is open");
+
+        // Refreshed by every health check, so minutes are accurate enough
+        QString uptime = m_tunnelUptimeTimer.isValid() ? Utilities::formatUptime(m_tunnelUptimeTimer.elapsed()) : QString();
+
+        if (!uptime.isEmpty())
+        {
+            statusDetails = QString(" · %1").arg(uptime);
+        }
     }
     else if (tunnelIsConnecting && m_lastError.isEmpty())
     {

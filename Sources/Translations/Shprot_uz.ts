@@ -166,6 +166,10 @@
         <translation>Mahalliy HTTP proksi porti noto‘g‘ri</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Mahalliy SOCKS5 va HTTP proksilari bir xil portdan foydalana olmaydi</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Ishonchni tekshirish xatosi</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh ishga tushmadi</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Tizim laganchasi mavjud emas</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 fonda ishlashda davom etadi, lekin bu ish stolida tizim laganchasi yoʻqligi sababli uning belgisi, menyusi va bildirishnomalarini koʻrsatib boʻlmaydi. Sozlamalarni ochish uchun %1 dasturini qayta ishga tushiring. GNOME muhitida laganchani AppIndicator kengaytmasi taʼminlaydi.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Serverga ulandi, ammo saytlar tunnel orqali ochilmayapti</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Parol iborali SSH maxfiy kaliti qoʻllab-quvvatlanmaydi. Parol iborasini olib tashlang yoki yangi kalit yarating.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 k %2 soat</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 soat %2 daq</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 daq</translation>
     </message>
     <message>
         <source>Authentication failed</source>

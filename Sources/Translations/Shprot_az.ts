@@ -166,6 +166,10 @@
         <translation>Lokal HTTP proksinin yanlış portu</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Yerli SOCKS5 və HTTP proksiləri eyni portdan istifadə edə bilməz</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Etibar yoxlamasında xəta</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>ssh başladıla bilmədi</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Sistem çekməcəsi əlçatan deyil</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>%1 arxa planda işləməyə davam edir, lakin bu masaüstündə sistem çekməcəsi olmadığı üçün onun simgəsi, menyusu və bildirişləri göstərilə bilmir. Parametrləri açmaq üçün %1 proqramını yenidən başladın. GNOME-da çekməcəni AppIndicator genişlənməsi təmin edir.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Serverə qoşulub, lakin saytlar tunel vasitəsilə əlçatan deyil</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Parol ifadəli SSH şəxsi açarı dəstəklənmir. Parol ifadəsini silin və ya yeni açar yaradın.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 g %2 s</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 s %2 dəq</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 dəq</translation>
     </message>
     <message>
         <source>Authentication failed</source>

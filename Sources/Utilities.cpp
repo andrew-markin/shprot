@@ -498,6 +498,53 @@ QString formatProxyUrl(const QString& scheme, const QString& host, quint16 port)
     return QString("%1://%2:%3").arg(scheme, connectionHost).arg(port);
 }
 
+// Whether two local proxies would try to listen on the same port of the same address. Different spellings of
+// the loopback address are treated as the same one, and "any address" includes all the others.
+bool proxyAddressesConflict(const QString& firstHost, quint16 firstPort, const QString& secondHost, quint16 secondPort)
+{
+    if (firstPort != secondPort)
+    {
+        return false;
+    }
+
+    auto normalize = [](const QString& host) {
+        QString normalizedHost = stripHostBrackets(host).toLower();
+        QHostAddress address(normalizedHost);
+
+        if (normalizedHost.isEmpty() || address.isLoopback())
+        {
+            return QString("localhost");
+        }
+
+        return ((address == QHostAddress::AnyIPv4) || (address == QHostAddress::AnyIPv6)) ? QString("any") : normalizedHost;
+    };
+
+    QString first = normalize(firstHost);
+    QString second = normalize(secondHost);
+
+    return (first == second) || (first == "any") || (second == "any");
+}
+
+// Empty for the first minute, there is nothing to tell yet
+QString formatUptime(qint64 milliseconds)
+{
+    qint64 minutes = milliseconds / 60000;
+    qint64 hours = minutes / 60;
+    qint64 days = hours / 24;
+
+    if (days > 0)
+    {
+        return QCoreApplication::translate("Utilities", "%1 d %2 h").arg(days).arg(hours % 24);
+    }
+
+    if (hours > 0)
+    {
+        return QCoreApplication::translate("Utilities", "%1 h %2 min").arg(hours).arg(minutes % 60);
+    }
+
+    return (minutes > 0) ? QCoreApplication::translate("Utilities", "%1 min").arg(minutes) : QString();
+}
+
 // Turns ssh error output into a short explanation for the user
 
 struct KnownSshError

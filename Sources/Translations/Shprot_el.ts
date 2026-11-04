@@ -166,6 +166,10 @@
         <translation>Μη έγκυρη θύρα τοπικού HTTP</translation>
     </message>
     <message>
+        <source>Local SOCKS5 and HTTP Proxies Can&apos;t Use the Same Port</source>
+        <translation>Οι τοπικοί διαμεσολαβητές SOCKS5 και HTTP δεν μπορούν να χρησιμοποιούν την ίδια θύρα</translation>
+    </message>
+    <message>
         <source>Trust Check Error</source>
         <translation>Σφάλμα ελέγχου εμπιστοσύνης</translation>
     </message>
@@ -416,6 +420,14 @@
         <translation>Αδυναμία εκκίνησης του ssh</translation>
     </message>
     <message>
+        <source>System Tray Not Available</source>
+        <translation>Η περιοχή συστήματος δεν είναι διαθέσιμη</translation>
+    </message>
+    <message>
+        <source>%1 keeps working in the background, but its icon, menu and notifications can&apos;t be shown, since this desktop has no system tray. To open the preferences, start %1 again. On GNOME, the tray is provided by the AppIndicator extension.</source>
+        <translation>Το %1 συνεχίζει να εκτελείται στο παρασκήνιο, αλλά το εικονίδιο, το μενού και οι ειδοποιήσεις του δεν μπορούν να εμφανιστούν, επειδή αυτή η επιφάνεια εργασίας δεν έχει περιοχή συστήματος. Για να ανοίξετε τις προτιμήσεις, εκκινήστε ξανά το %1. Στο GNOME, την περιοχή συστήματος παρέχει η επέκταση AppIndicator.</translation>
+    </message>
+    <message>
         <source>Connected to the server, but websites are not reachable through the tunnel</source>
         <translation>Υπάρχει σύνδεση με τον διακομιστή, αλλά οι ιστότοποι δεν είναι προσβάσιμοι μέσω της σήραγγας</translation>
     </message>
@@ -505,6 +517,18 @@
     <message>
         <source>SSH private key with a passphrase is not supported. Remove the passphrase or generate a new key.</source>
         <translation>Τα ιδιωτικά κλειδιά SSH με φράση πρόσβασης δεν υποστηρίζονται. Αφαιρέστε τη φράση πρόσβασης ή δημιουργήστε νέο κλειδί.</translation>
+    </message>
+    <message>
+        <source>%1 d %2 h</source>
+        <translation>%1 ημ. %2 ώ.</translation>
+    </message>
+    <message>
+        <source>%1 h %2 min</source>
+        <translation>%1 ώ. %2 λ.</translation>
+    </message>
+    <message>
+        <source>%1 min</source>
+        <translation>%1 λ.</translation>
     </message>
     <message>
         <source>Authentication failed</source>
