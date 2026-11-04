@@ -92,6 +92,10 @@ void UpdateChecker::check()
     request.setRawHeader("Accept", "application/vnd.github+json");
     request.setTransferTimeout(CheckTransferTimeout);
 
+    // HTTP/2 gives nothing to a single small request, and Qt reads from an already closed socket
+    // when such connection ends, which adds "QIODevice::read: device not open" warning to the logs
+    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false);
+
     m_networkAccessManager->setProxy(m_proxy);
     m_reply = m_networkAccessManager->get(request);
 
