@@ -801,8 +801,9 @@ void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState sta
 
             m_healthCheckFailsCount += 1;
 
-            qWarning() << qPrintable(QString("Health check failed (%1) for %2")
+            qWarning() << qPrintable(QString("Health check failed (%1/%2) for %3")
                                      .arg(m_healthCheckFailsCount)
+                                     .arg(HealthCheckFailsLimit)
                                      .arg(socket->property("url").toUrl().toString()));
 
             if (m_healthCheckFailsCount < HealthCheckFailsLimit)
