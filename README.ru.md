@@ -239,7 +239,7 @@ HTTP-прокси работает **через** тот же SSH-туннель
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="Assets/TrayMenu-Dark.ru.png">
         <source media="(prefers-color-scheme: light)" srcset="Assets/TrayMenu-Light.ru.png">
-        <img alt="Меню значка в трее" src="Assets/TrayMenu-Light.ru.png" width="437" height="493">
+        <img alt="Меню значка в трее" src="Assets/TrayMenu-Light.ru.png" width="315" height="493">
     </picture>
 </div>
 

@@ -239,7 +239,7 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="Assets/TrayMenu-Dark.zh.png">
         <source media="(prefers-color-scheme: light)" srcset="Assets/TrayMenu-Light.zh.png">
-        <img alt="托盘菜单" src="Assets/TrayMenu-Light.zh.png" width="366" height="543">
+        <img alt="托盘菜单" src="Assets/TrayMenu-Light.zh.png" width="284" height="543">
     </picture>
 </div>
 

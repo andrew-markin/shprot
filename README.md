@@ -239,7 +239,7 @@ Right-click the tray icon to open the menu. It is grouped as follows:
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="Assets/TrayMenu-Dark.png">
         <source media="(prefers-color-scheme: light)" srcset="Assets/TrayMenu-Light.png">
-        <img alt="Tray menu" src="Assets/TrayMenu-Light.png" width="387" height="493">
+        <img alt="Tray menu" src="Assets/TrayMenu-Light.png" width="285" height="493">
     </picture>
 </div>
 

@@ -23,8 +23,11 @@
 #      gsettings set org.gnome.desktop.notifications show-banners false
 #      gsettings set org.gnome.desktop.interface enable-animations false
 #      sudo systemctl disable --now unattended-upgrades
+#      sudo sed -i 's/^GRUB_CMDLINE_LINUX_DEFAULT="/&initcall_blacklist=acpi_battery_init /' /etc/default/grub
+#      sudo update-grub && sudo reboot
 #    and turn on Settings > Users > Automatic Login. The guest's own SSH server plays
-#    the demo server myserver.com for the key verification screenshot.
+#    the demo server myserver.com for the key verification screenshot. The kernel parameter
+#    hides the host battery passed by VirtualBox: its charge level would differ in the top bar.
 #
 #    The host needs ImageMagick and the VirtualBox Python API (vboxapi, installed from
 #    the VirtualBox SDK) to click the tray icon: GNOME Shell does not accept synthetic input.
