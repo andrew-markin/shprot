@@ -719,6 +719,18 @@ img {
   }
 }
 
+/* Screenshots fade in once loaded, without scripts they are shown right away */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  picture img {
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+  }
+
+  picture img.loaded {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
