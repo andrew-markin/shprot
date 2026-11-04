@@ -20,7 +20,7 @@ hero:
   facts:
     - "Ücretsiz ve açık kaynak"
     - "Windows 10 / 11 ve Linux"
-    - "49 dil"
+    - "7 dil"
   screenshot_alt: "Shprot ayarlar penceresi"
 
 features:
@@ -49,7 +49,7 @@ features:
       text: "Simge tünelin açık olup olmadığını gösterir, bildirimler neden açık olmadığını açıklar ve günlükler bir tık uzağınızdadır."
     - id: languages
       title: "Sizin dilinizi konuşur"
-      text: "Arayüz 49 dile çevrilmiştir; Arapça, Farsça, İbranice ve Urduca için sağdan sola düzen kullanılır."
+      text: "Arayüz 7 dilde sunulur; Arapça ve Farsça için sağdan sola düzen kullanılır."
 
 compare:
   title: "Neden sadece `ssh -D` değil?"

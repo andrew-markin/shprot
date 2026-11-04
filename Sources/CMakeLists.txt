@@ -191,11 +191,7 @@ endif()
 # Translations are compiled into resources, the language is chosen by the system UI language.
 # Run "cmake --build . --target update_translations" to update .ts files after texts are changed.
 
-set(
-    TRANSLATION_LANGUAGES
-    ar az be bg bn ca cs da de el es et fa fi fr he hi hr hu hy id it ja ka kk
-    ko lt lv ms nb nl pl pt_BR pt_PT ro ru sk sl sq sr sv th tr uk ur uz vi zh_CN zh_TW
-)
+set(TRANSLATION_LANGUAGES ar fa ru tr vi zh_CN)
 
 set(TRANSLATION_TS_FILES)
 

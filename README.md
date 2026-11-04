@@ -20,7 +20,7 @@ Whether you're a developer, tester, or just need a stable proxy for daily browsi
 - **User-Friendly Authentication:** Provides a clean interface for managing remote server credentials and server/client authentication parameters.
 - **Configurable Network Settings:** Full control over the local binding address and port settings for your SOCKS5 proxy server.
 - **Optional HTTP Proxy Support:** In addition to the SOCKS5 proxy, you can enable a separate HTTP proxy that routes traffic through the same SSH tunnel. This is useful for legacy applications or scripts that only support HTTP proxies.
-- **Multilingual Interface:** The interface is translated into 49 languages and follows the system UI language, with right-to-left layout for Arabic, Persian, Hebrew and Urdu.
+- **Multilingual Interface:** The interface is available in 7 languages and follows the system UI language, with right-to-left layout for Arabic and Persian.
   
 ## Why Not Just `ssh -D`?
 

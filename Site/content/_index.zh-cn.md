@@ -20,7 +20,7 @@ hero:
   facts:
     - "免费开源"
     - "Windows 10 / 11 和 Linux"
-    - "49 种语言"
+    - "7 种语言"
   screenshot_alt: "Shprot 设置窗口"
 
 features:
@@ -49,7 +49,7 @@ features:
       text: "图标显示隧道是否已开启，通知说明未开启的原因，日志一键即可查看。"
     - id: languages
       title: "说你的语言"
-      text: "界面已翻译成 49 种语言，阿拉伯语、波斯语、希伯来语和乌尔都语采用从右到左布局。"
+      text: "界面提供 7 种语言，阿拉伯语和波斯语采用从右到左布局。"
 
 compare:
   title: "为什么不直接用 `ssh -D`？"

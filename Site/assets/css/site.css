@@ -212,7 +212,6 @@ img {
   padding: 8px;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, minmax(130px, 1fr));
   gap: 2px;
   width: max-content;
   max-width: calc(100vw - 32px);
@@ -713,7 +712,6 @@ img {
     top: 64px;
     width: auto;
     max-width: none;
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .actions .button {

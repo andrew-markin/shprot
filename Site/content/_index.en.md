@@ -22,7 +22,7 @@ hero:
   facts:
     - "Free and open source"
     - "Windows 10 / 11 and Linux"
-    - "49 languages"
+    - "7 languages"
   screenshot_alt: "Shprot settings window"
 
 features:
@@ -51,7 +51,7 @@ features:
       text: "The icon shows whether the tunnel is up, notifications explain why it isn't, and logs are one click away."
     - id: languages
       title: "Speaks your language"
-      text: "The interface is translated into 49 languages, with right-to-left layout for Arabic, Persian, Hebrew and Urdu."
+      text: "The interface is available in 7 languages, with right-to-left layout for Arabic and Persian."
 
 compare:
   title: "Why not just `ssh -D`?"

@@ -20,7 +20,7 @@ hero:
   facts:
     - "Miễn phí và mã nguồn mở"
     - "Windows 10 / 11 và Linux"
-    - "49 ngôn ngữ"
+    - "7 ngôn ngữ"
   screenshot_alt: "Cửa sổ cài đặt của Shprot"
 
 features:
@@ -49,7 +49,7 @@ features:
       text: "Biểu tượng cho biết đường hầm có đang mở không, thông báo giải thích lý do nếu không, và nhật ký chỉ cách một cú nhấp."
     - id: languages
       title: "Nói ngôn ngữ của bạn"
-      text: "Giao diện được dịch sang 49 ngôn ngữ, với bố cục từ phải sang trái cho tiếng Ả Rập, Ba Tư, Do Thái và Urdu."
+      text: "Giao diện có sẵn bằng 7 ngôn ngữ, với bố cục từ phải sang trái cho tiếng Ả Rập và Ba Tư."
 
 compare:
   title: "Sao không chỉ dùng `ssh -D`?"
