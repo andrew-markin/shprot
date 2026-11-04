@@ -464,8 +464,8 @@
         <translation>Tunnel yopiq: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>%1 proksi manzilini nusxalash (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>%1 proksi URL manzilini nusxalash</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

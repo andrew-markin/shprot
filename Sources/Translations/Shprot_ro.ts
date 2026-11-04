@@ -464,8 +464,8 @@
         <translation>Tunelul este închis: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Copiază adresa proxy-ului %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Copiază URL-ul proxy-ului %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

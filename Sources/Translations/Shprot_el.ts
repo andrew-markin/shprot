@@ -464,8 +464,8 @@
         <translation>Η σήραγγα είναι κλειστή: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Αντιγραφή διεύθυνσης διακομιστή μεσολάβησης %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Αντιγραφή URL διακομιστή μεσολάβησης %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

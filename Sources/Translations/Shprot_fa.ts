@@ -464,8 +464,8 @@
         <translation>تونل بسته است: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>کپی نشانی پراکسی %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>کپی URL پراکسی %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

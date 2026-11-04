@@ -464,8 +464,8 @@
         <translation>Tunneli on suljettu: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopioi %1-välityspalvelimen osoite (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopioi %1-välityspalvelimen URL-osoite</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

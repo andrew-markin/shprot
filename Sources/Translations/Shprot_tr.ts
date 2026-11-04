@@ -464,8 +464,8 @@
         <translation>Tünel kapalı: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>%1 Proxy Adresini Kopyala (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>%1 Proxy URL&apos;sini Kopyala</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

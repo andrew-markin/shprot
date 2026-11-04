@@ -464,8 +464,8 @@
         <translation>隧道已关闭：%1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>复制 %1 代理地址（%2）</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>复制 %1 代理 URL</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

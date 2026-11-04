@@ -464,8 +464,8 @@
         <translation>อุโมงค์ปิดอยู่: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>คัดลอกที่อยู่พร็อกซี %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>คัดลอก URL พร็อกซี %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

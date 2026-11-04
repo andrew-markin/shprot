@@ -464,8 +464,8 @@
         <translation>Թունելը փակ է՝ %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Պատճենել %1 պրոքսիի հասցեն (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Պատճենել %1 պրոքսիի URL-ը</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

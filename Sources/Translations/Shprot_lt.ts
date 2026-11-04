@@ -464,8 +464,8 @@
         <translation>Tunelis uždarytas: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopijuoti %1 tarpinio serverio adresą (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopijuoti %1 tarpinio serverio URL</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

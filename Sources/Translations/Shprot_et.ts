@@ -464,8 +464,8 @@
         <translation>Tunnel on suletud: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopeeri %1-puhverserveri aadress (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopeeri %1-puhverserveri URL</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

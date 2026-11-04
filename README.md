@@ -226,7 +226,7 @@ Right-click the tray icon to open the menu. It is grouped as follows:
 * **Tunnel status** at the top, e.g. *Tunnel is open · 2 h 15 min* with the time it has been open, or a short reason such as *Authentication failed* with the time left until the next reconnection attempt (the full explanation is in the tooltip, notifications and logs). Useful where the tray doesn't show tooltips (for example, GNOME).
 * **Reconnect Now** tries to connect right away instead of waiting for the next attempt. It is shown only during such a wait.
 * **Enable SSH Proxy Tunnel** turns the tunnel on or off without opening the settings (same as the checkbox in the settings window).
-* **Copy SOCKS5 Proxy Address** and **Copy HTTP Proxy Address** copy a ready-to-use proxy URL, such as `socks5h://localhost:1080` or `http://localhost:8080`, for browsers, `curl` or the `ALL_PROXY`/`HTTP_PROXY` environment variables. They are shown only while the corresponding proxy is available.
+* **Copy SOCKS5 Proxy URL** and **Copy HTTP Proxy URL** copy a ready-to-use proxy URL, such as `socks5h://localhost:1080` or `http://localhost:8080`, for browsers, `curl` or the `ALL_PROXY`/`HTTP_PROXY` environment variables. They are shown only while the corresponding proxy is available.
 * **Preferences…** opens the settings window (double-clicking the icon does the same).
 * **Show Notifications** turns toast notifications on or off.
 * **Start at Login** turns automatic start on login on or off for the current user.

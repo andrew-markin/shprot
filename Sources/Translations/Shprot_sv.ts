@@ -464,8 +464,8 @@
         <translation>Tunneln är stängd: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopiera adressen till %1-proxyn (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopiera URL:en till %1-proxyn</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

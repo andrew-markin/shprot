@@ -464,8 +464,8 @@
         <translation>Tunel jest zamknięty: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopiuj adres proxy %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopiuj URL proxy %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

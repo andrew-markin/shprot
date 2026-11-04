@@ -464,8 +464,8 @@
         <translation>Le tunnel est fermé : %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Copier l&apos;adresse du proxy %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Copier l&apos;URL du proxy %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

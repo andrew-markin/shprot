@@ -464,8 +464,8 @@
         <translation>ٹنل بند ہے: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>%1 پراکسی کا پتہ کاپی کریں (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>%1 پراکسی کا URL کاپی کریں</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

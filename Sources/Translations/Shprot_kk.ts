@@ -464,8 +464,8 @@
         <translation>Туннель жабық: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>%1 прокси мекенжайын көшіру (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>%1 прокси URL мекенжайын көшіру</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

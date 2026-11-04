@@ -464,8 +464,8 @@
         <translation>Terowongan tertutup: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Salin Alamat Proksi %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Salin URL Proksi %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

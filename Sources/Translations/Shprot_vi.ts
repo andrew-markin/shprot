@@ -464,8 +464,8 @@
         <translation>Đường hầm đã đóng: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Sao chép địa chỉ proxy %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Sao chép URL proxy %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

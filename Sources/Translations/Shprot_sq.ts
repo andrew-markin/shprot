@@ -464,8 +464,8 @@
         <translation>Tuneli është i mbyllur: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopjo adresën e proxy-t %1 (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopjo URL-në e proxy-t %1</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

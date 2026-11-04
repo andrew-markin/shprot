@@ -464,8 +464,8 @@
         <translation>Az alagút zárva van: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>A(z) %1-proxy címének másolása (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>A(z) %1-proxy URL-jének másolása</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

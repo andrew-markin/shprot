@@ -464,8 +464,8 @@
         <translation>Тунэль закрыты: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Капіяваць адрас %1-проксі (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Капіяваць URL %1-проксі</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

@@ -464,8 +464,8 @@
         <translation>Tunel je zatvoren: %1</translation>
     </message>
     <message>
-        <source>Copy %1 Proxy Address (%2)</source>
-        <translation>Kopiraj adresu %1 proxyja (%2)</translation>
+        <source>Copy %1 Proxy URL</source>
+        <translation>Kopiraj URL %1 proxyja</translation>
     </message>
     <message>
         <source>Reconnect Now</source>

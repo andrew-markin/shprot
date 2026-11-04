@@ -930,10 +930,10 @@ void Shprot::maybeUpdateStatus()
 
     updateStatusText();
 
-    // Proxy addresses are offered only while they can be used
+    // Proxy URLs are offered only while they can be used
     auto updateCopyAction = [tunnelIsOpened](QAction* action, const QString& label, const QString& url) {
         action->setVisible(tunnelIsOpened && !url.isEmpty());
-        action->setText(tr("Copy %1 Proxy Address (%2)").arg(label, url.mid(url.indexOf("://") + 3)));
+        action->setText(tr("Copy %1 Proxy URL").arg(label));
     };
 
     updateCopyAction(m_copySocks5ProxyUrlAction, "SOCKS5", m_socks5ProxyUrl);
