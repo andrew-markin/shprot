@@ -238,7 +238,7 @@ Right-click the tray icon to open the menu. It is grouped as follows:
 * **Start at Login** turns automatic start on login on or off for the current user.
 * **Show Logs…** shows recent log records, updated live.
 * **About Shprot…** shows version and build information, as well as licenses of Qt and its third-party components.
-* **New Version Available (1.6 → 1.7)** appears only when a newer release is published on GitHub and opens its page. The app checks for it a minute after start and then every 12 hours, through the tunnel while it's open. The version found is remembered, so after a restart the item is shown right away.
+* **New Version Available (1.7 → 1.8)** appears only when a newer release is published on GitHub and opens its page. The app checks for it a minute after start and then every 12 hours, through the tunnel while it's open. The version found is remembered, so after a restart the item is shown right away.
 * **Quit Shprot** closes the tunnel and exits.
 
 <div align="center">
