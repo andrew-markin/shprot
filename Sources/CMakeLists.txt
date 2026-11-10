@@ -137,7 +137,7 @@ target_sources(
     ${CMAKE_CURRENT_BINARY_DIR}/Shprot.rc
 )
 elseif(LINUX)
-    set(PROJECT_ICON "Shprot.png")
+    set(PROJECT_ICON "Shprot.svg")
 endif()
 
 target_link_libraries(

@@ -1177,7 +1177,7 @@ int main(int argc, char* argv[])
         qWarning() << "Unable to load default network backend.";
     }
 
-    QApplication::setWindowIcon(QIcon(":/Shprot.png"));
+    QApplication::setWindowIcon(QIcon(":/Shprot.svg"));
     QApplication::setStyle(new TweakStyle(application.style()));
     QApplication::setQuitOnLastWindowClosed(false);
 
