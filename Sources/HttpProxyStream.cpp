@@ -264,6 +264,7 @@ void HttpProxyStream::handleTargetError(QAbstractSocket::SocketError error)
     {
         qWarning() << "Unable to connect to" << m_targetHost << "through the tunnel:"
                    << m_targetSocket->errorString();
+        emit targetConnectionFailed();
         respondAndClose("502 Bad Gateway");
     }
 }
@@ -277,6 +278,7 @@ void HttpProxyStream::handleTimeout()
     else if (m_state == State::Connecting)
     {
         qWarning() << "Connection to" << m_targetHost << "through the tunnel timed out";
+        emit targetConnectionFailed();
         respondAndClose("504 Gateway Timeout");
     }
 }

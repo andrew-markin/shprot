@@ -12,6 +12,9 @@ class HttpProxyStream : public QObject
 public:
     explicit HttpProxyStream(QTcpSocket* clientSocket, const QNetworkProxy& socksProxy, QObject* parent = nullptr);
 
+signals:
+    void targetConnectionFailed(); // Hint that the tunnel may be broken, though the target may be down itself
+
 public slots:
     void closeAndDeleteLater();
 

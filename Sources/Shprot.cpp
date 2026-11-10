@@ -71,6 +71,7 @@ static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
 static const int HealthCheckConnectionTimeout = 8000; // 8s, outlasts the 5s DNS retry of the resolver on the server
 static const int HealthCheckFailsLimit = 3;
+static const int HealthCheckEarlyIntervalMin = 5000; // 5s, a page with many unreachable resources runs a single check
 
 static const int StatusUpdateTimeout = 500; // 500ms
 
@@ -225,6 +226,7 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
     }
 
     m_httpProxyServer = new HttpProxyServer(this);
+    connect(m_httpProxyServer, &HttpProxyServer::targetConnectionFailed, this, &Shprot::maybeRunEarlyHealthCheck);
 
     m_contextMenu = new QMenu();
 
@@ -476,7 +478,7 @@ void Shprot::maybeRestartTunnelProcess()
     arguments << "-o" << "BatchMode=yes";
     arguments << "-o" << "ExitOnForwardFailure=yes";
     arguments << "-o" << "ConnectTimeout=10";
-    arguments << "-o" << "ServerAliveInterval=15";
+    arguments << "-o" << "ServerAliveInterval=5";
     arguments << "-o" << "ServerAliveCountMax=3";
     arguments << "-o" << "TCPKeepAlive=yes";
 
@@ -719,8 +721,32 @@ void Shprot::maybeRunHealthCheck()
         return;
     }
 
+    m_healthCheckRunTimer.start();
+
     quint16 healthCheckUrlPort = healthCheckUrl.port(healthCheckUrl.scheme().toLower() == "https" ? 443 : 80);
     m_healthCheckSocket->connectToHost(healthCheckUrl.host(), healthCheckUrlPort);
+}
+
+// Failed connection of a client hints that the tunnel may be broken, so it is checked right away instead of
+// waiting for the regular check. Only the health check decides on restart, since the website may be down itself.
+void Shprot::maybeRunEarlyHealthCheck()
+{
+    if (!m_tunnelPortOpened || m_healthCheckSocket || (m_tunnelProcess->state() != QProcess::Running))
+    {
+        return; // Still connecting, or the check is already running
+    }
+
+    if (m_healthCheckRunTimer.isValid() && (m_healthCheckRunTimer.elapsed() < HealthCheckEarlyIntervalMin))
+    {
+        return;
+    }
+
+    if (m_healthCheckTimer->isActive() && (m_healthCheckTimer->remainingTime() <= HealthCheckDelayShort))
+    {
+        return; // Retry after a failed check is coming anyway
+    }
+
+    m_healthCheckTimer->start(HealthCheckDelayShort);
 }
 
 void Shprot::handleHealthCheckSocketStateChange(QAbstractSocket::SocketState state)

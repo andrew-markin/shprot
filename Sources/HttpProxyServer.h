@@ -17,6 +17,9 @@ public:
     QString errorString() const;
     quint16 serverPort() const;
 
+signals:
+    void targetConnectionFailed();
+
 public slots:
     bool start(const QString& host, quint16 port, const QNetworkProxy& socksProxy);
     void stop();

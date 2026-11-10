@@ -55,6 +55,8 @@ void HttpProxyServer::handleNewConnection()
         HttpProxyStream* stream = new HttpProxyStream(clientSocket, m_socksProxy, this);
         m_streams.append(stream);
 
+        connect(stream, &HttpProxyStream::targetConnectionFailed, this, &HttpProxyServer::targetConnectionFailed);
+
         connect(stream, &QObject::destroyed, this, [this](QObject* object) {
             // Not qobject_cast: the stream part of the object is already destroyed at this point
             HttpProxyStream* stream = static_cast<HttpProxyStream*>(object);

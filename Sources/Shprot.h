@@ -47,6 +47,7 @@ private slots:
 
     void stopHealthCheck();
     void maybeRunHealthCheck();
+    void maybeRunEarlyHealthCheck();
     void handleHealthCheckSocketStateChange(QAbstractSocket::SocketState state);
 
     void maybeStartHttpProxyServer();
@@ -78,6 +79,7 @@ private:
 
     QTimer* m_healthCheckTimer;
     QTcpSocket* m_healthCheckSocket = nullptr;
+    QElapsedTimer m_healthCheckRunTimer; // Started by each check of a website through the tunnel
 
     QList<QUrl> m_healthCheckUrls;
     int m_healthCheckUrlIndex = 0;

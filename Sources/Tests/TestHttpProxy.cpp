@@ -1,4 +1,5 @@
 #include <QRegularExpression>
+#include <QSignalSpy>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QTest>
@@ -221,9 +222,11 @@ void TestHttpProxy::unreachableTarget()
     quint16 closedPort = closedServer.serverPort();
     closedServer.close();
 
+    QSignalSpy failedSpy(m_proxy, &HttpProxyServer::targetConnectionFailed);
     QByteArray response = exchange(QString("GET http://127.0.0.1:%1/ HTTP/1.1\r\n\r\n").arg(closedPort).toLatin1());
 
     QVERIFY2(response.startsWith("HTTP/1.1 502 Bad Gateway\r\n"), response.constData());
+    QCOMPARE(failedSpy.count(), 1);
 }
 
 // Origin server answers "ok" once the whole request (with Content-Length body) is received
