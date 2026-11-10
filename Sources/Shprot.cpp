@@ -69,7 +69,7 @@ static const int TunnelProcessRestartCountdownDelayMin = 5000; // 5s
 static const int HealthCheckStartDelay = 100; // 100ms
 static const int HealthCheckDelayLong = 20000; // 20s
 static const int HealthCheckDelayShort = 50; // 50ms
-static const int HealthCheckConnectionTimeout = 3000; // 3s
+static const int HealthCheckConnectionTimeout = 8000; // 8s, outlasts the 5s DNS retry of the resolver on the server
 static const int HealthCheckFailsLimit = 3;
 
 static const int StatusUpdateTimeout = 500; // 500ms
