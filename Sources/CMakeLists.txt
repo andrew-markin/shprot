@@ -95,6 +95,8 @@ add_executable(
     Resources.qrc
     Shprot.cpp
     Shprot.h
+    SingleInstance.cpp
+    SingleInstance.h
     Translations.cpp
     Translations.h
     TweakStyle.cpp

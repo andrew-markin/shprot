@@ -41,3 +41,9 @@ add_shprot_test(
     ${PROJECT_SOURCE_DIR}/UpdateChecker.cpp
     ${PROJECT_SOURCE_DIR}/UpdateChecker.h
 )
+
+add_shprot_test(
+    TestSingleInstance
+    ${PROJECT_SOURCE_DIR}/SingleInstance.cpp
+    ${PROJECT_SOURCE_DIR}/SingleInstance.h
+)

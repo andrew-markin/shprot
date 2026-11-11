@@ -6,8 +6,6 @@
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>
-#include <QLocalServer>
-#include <QLocalSocket>
 #include <QMessageBox>
 #include <QNetworkProxy>
 #include <QRandomGenerator>
@@ -16,8 +14,6 @@
 #include <QStandardPaths>
 #include <QThread>
 #include <QUrl>
-
-#include <memory>
 
 #if defined(Q_OS_WINDOWS)
 #include <windows.h>
@@ -32,6 +28,7 @@
 #include "LogsDialog.h"
 #include "Preferences.h"
 #include "PreferencesDialog.h"
+#include "SingleInstance.h"
 #include "Translations.h"
 #include "TweakStyle.h"
 #include "UpdateChecker.h"
@@ -41,11 +38,6 @@
 namespace {
 
 static const int StartDelayTimeout = 5000; // 5s
-
-static const int SingleInstanceWaitTimeout = 500; // 500ms
-static const int SingleInstanceReadTimeout = 5000; // 5s
-static const int SingleInstanceMessageSizeMax = 64;
-static const int SingleInstanceWriteTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
 static const int TunnelProcessWarmupTime = 5000; // 5s since ssh opened the local port
@@ -183,11 +175,6 @@ QStringList getAllLoggedInUserNames()
 #else
     return QStringList();
 #endif
-}
-
-QString getSingleInstanceServerName(const QString& userName)
-{
-    return QString("%1:%2").arg(PROJECT_NAME).arg(userName);
 }
 
 } // namespace
@@ -1133,15 +1120,7 @@ int main(int argc, char* argv[])
     {
         for (const QString& userName : getAllLoggedInUserNames())
         {
-            QLocalSocket singleInstanceSocket;
-            singleInstanceSocket.connectToServer(getSingleInstanceServerName(userName));
-
-            if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
-            {
-                singleInstanceSocket.write("quit");
-                singleInstanceSocket.waitForBytesWritten(SingleInstanceWriteTimeout);
-                singleInstanceSocket.close();
-            }
+            SingleInstance::sendMessage(SingleInstance::nameForUser(userName), "quit");
         }
 
         return EXIT_SUCCESS;
@@ -1166,36 +1145,13 @@ int main(int argc, char* argv[])
     QApplication application(argc, argv);
     Translations::install();
 
-    // Check for other instances already running
+    // Check for other instances already running, ask the running one to show up
 
-    QString singleInstanceServerName = getSingleInstanceServerName(Utilities::getCurrentUserName());
+    SingleInstance singleInstance(SingleInstance::nameForUser(Utilities::getCurrentUserName()), SingleInstance::defaultLockDirectory());
 
-    QLocalSocket singleInstanceSocket;
-    singleInstanceSocket.connectToServer(singleInstanceServerName);
-
-    if (singleInstanceSocket.waitForConnected(SingleInstanceWaitTimeout))
+    if (!singleInstance.start())
     {
-        // Application is already started
-        singleInstanceSocket.write("activate");
-        singleInstanceSocket.waitForBytesWritten(SingleInstanceWriteTimeout);
-        singleInstanceSocket.close();
         return EXIT_FAILURE;
-    }
-
-    // Initialize single instance server to prevent other instances to start
-
-    QLocalServer::removeServer(singleInstanceServerName);
-    QLocalServer singleInstanceServer;
-
-#if defined(Q_OS_LINUX)
-    // Allow the owner only: root bypasses file permissions, so package scripts can still send "quit".
-    // Windows named pipes are already writable by the owner, administrators and LocalSystem only.
-    singleInstanceServer.setSocketOptions(QLocalServer::UserAccessOption);
-#endif
-
-    if (!singleInstanceServer.listen(singleInstanceServerName))
-    {
-        return EXIT_FAILURE; // Unable to start single instance server
     }
 
     if (!QNetworkInformation::loadDefaultBackend())
@@ -1210,71 +1166,8 @@ int main(int argc, char* argv[])
     Shprot shprot(&preferences);
     shprot.start();
 
-    QObject::connect(&singleInstanceServer, &QLocalServer::newConnection, [&singleInstanceServer, &shprot]() {
-        while (singleInstanceServer.hasPendingConnections())
-        {
-            QLocalSocket* socket = singleInstanceServer.nextPendingConnection();
-
-            if (!socket)
-            {
-                return;
-            }
-
-            // The message is complete when the sender disconnects
-            std::shared_ptr<QByteArray> message = std::make_shared<QByteArray>();
-
-            auto readMessage = [socket, message]() {
-                if (socket->bytesAvailable() <= 0)
-                {
-                    return; // Nothing to read (reading a closed socket produces warnings)
-                }
-
-                message->append(socket->readAll());
-
-                if (message->size() > SingleInstanceMessageSizeMax)
-                {
-                    message->clear();
-                    socket->abort(); // Not a message from another instance
-                }
-            };
-
-            auto handleMessage = [socket, message, &shprot]() {
-                if (socket->property("handled").toBool())
-                {
-                    return;
-                }
-
-                socket->setProperty("handled", true);
-                socket->deleteLater();
-
-                if (*message == "activate")
-                {
-                    shprot.openPreferencesDialog();
-                }
-                else if (*message == "quit")
-                {
-                    qApp->quit();
-                }
-            };
-
-            QObject::connect(socket, &QLocalSocket::readyRead, socket, readMessage);
-            QObject::connect(socket, &QLocalSocket::disconnected, socket, [readMessage, handleMessage]() {
-                readMessage();
-                handleMessage();
-            });
-
-            QTimer::singleShot(SingleInstanceReadTimeout, socket, [socket]() {
-                socket->abort(); // Sender did not disconnect in time
-            });
-
-            readMessage(); // Sender may have already sent the message and disconnected
-
-            if (socket->state() == QLocalSocket::UnconnectedState)
-            {
-                handleMessage();
-            }
-        }
-    });
+    QObject::connect(&singleInstance, &SingleInstance::activationRequested, &shprot, &Shprot::openPreferencesDialog);
+    QObject::connect(&singleInstance, &SingleInstance::quitRequested, &application, &QCoreApplication::quit);
 
     if (arguments.contains("--preferences"))
     {
