@@ -48,8 +48,8 @@
 # 4. Check from the host:
 #      ssh -i ~/.ssh/shprot_vm_ed25519 -p 2222 developer@127.0.0.1 true
 #
-# The VM must be running with the user logged in. Other VM names, users, ports
-# or keys are set in .env (see .env.example).
+# A stopped VM is started headless and shut down on exit, a running one is left running.
+# Other VM names, users, ports or keys are set in .env (see .env.example).
 
 # Get script directory
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -80,6 +80,57 @@ fi
 
 SSH_OPTIONS=(-i "$SSH_KEY" -p "$SSH_PORT" -o BatchMode=yes)
 SCP_OPTIONS=(-q -i "$SSH_KEY" -P "$SSH_PORT" -o BatchMode=yes)
+
+# Start the VM if it is stopped and shut it down on exit, so it is not left running.
+# A started VM has no window, a running one gets its window back after a restart.
+
+STARTED_VM=
+VM_TYPE=gui
+
+stop_vm() {
+    [ -n "$STARTED_VM" ] || return 0
+
+    VBoxManage controlvm "$VM_NAME" acpipowerbutton 2>/dev/null || true
+
+    for i in $(seq 60); do
+        VBoxManage list runningvms | grep -qF "\"$VM_NAME\"" || break
+        sleep 2
+    done
+
+    if VBoxManage list runningvms | grep -qF "\"$VM_NAME\""; then
+        VBoxManage controlvm "$VM_NAME" poweroff
+    fi
+
+    echo "The VM is shut down."
+}
+
+# Waits for SSH and the session of the automatically logged in user
+wait_for_guest() {
+    local started=
+    for i in $(seq 60); do
+        if ssh "${SSH_OPTIONS[@]}" -o ConnectTimeout=3 "$SSH_TARGET" 'pgrep -u $USER -x gnome-shell' >/dev/null 2>&1; then
+            started=1
+            break
+        fi
+        sleep 3
+    done
+
+    if [ -z "$started" ]; then
+        echo "ERROR: Guest session did not start, check automatic login."
+        exit 1
+    fi
+
+    sleep 15 # Let the session settle, the tray extension starts after GNOME Shell
+}
+
+trap stop_vm EXIT
+
+if ! VBoxManage list runningvms | grep -qF "\"$VM_NAME\""; then
+    VM_TYPE=headless
+    VBoxManage startvm "$VM_NAME" --type $VM_TYPE >/dev/null
+    STARTED_VM=1
+    wait_for_guest
+fi
 
 # Runs a command in the guest with the environment of its GNOME session
 guest() {
@@ -167,23 +218,8 @@ restart_guest() {
     fi
 
     sleep 3 # Let VirtualBox release the VM
-    VBoxManage startvm "$VM_NAME" --type gui >/dev/null
-
-    local started=
-    for i in $(seq 60); do
-        if ssh "${SSH_OPTIONS[@]}" -o ConnectTimeout=3 "$SSH_TARGET" 'pgrep -u $USER -x gnome-shell' >/dev/null 2>&1; then
-            started=1
-            break
-        fi
-        sleep 3
-    done
-
-    if [ -z "$started" ]; then
-        echo "ERROR: Guest session did not start, check automatic login."
-        exit 1
-    fi
-
-    sleep 15 # Let the session settle, the tray extension starts after GNOME Shell
+    VBoxManage startvm "$VM_NAME" --type $VM_TYPE >/dev/null
+    wait_for_guest
 }
 
 # Remember guest settings and restore them on exit
@@ -209,6 +245,7 @@ enter_rtl_session() {
 }
 
 cleanup() {
+    set +e # Shut the VM down even if the guest does not answer
     guest "~/ShprotScreenshots/Package/opt/Shprot/Shprot --shutdown
            [ -f ~/ShprotScreenshots/Server/sshd.pid ] && kill \$(cat ~/ShprotScreenshots/Server/sshd.pid)
            gsettings set org.gnome.desktop.interface color-scheme $ORIGINAL_COLOR_SCHEME
@@ -220,8 +257,11 @@ cleanup() {
                rmdir ~/.config/environment.d 2>/dev/null
                gsettings set org.gnome.shell.extensions.ding show-home $ORIGINAL_SHOW_HOME"
 
-        restart_guest
+        # A VM started here is shut down anyway, the next start leaves the mirrored session
+        [ -n "$STARTED_VM" ] || restart_guest
     fi
+
+    stop_vm
 }
 
 trap cleanup EXIT
