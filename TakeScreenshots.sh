@@ -383,22 +383,33 @@ EOF')
         exit 1
     fi
 
-    click_guest $((iconX + iconWidth / 2)) $((iconY + iconHeight / 2))
-    sleep 2
-    VBoxManage controlvm "$VM_NAME" screenshotpng "$temporary/After.png"
-    VBoxManage controlvm "$VM_NAME" keyboardputscancode 01 81 # Escape closes the menu
-
-    # The menu is the changed area below the top bar
-    local width=$(identify -format "%w" "$temporary/After.png")
-    local height=$(identify -format "%h" "$temporary/After.png")
+    local width=$(identify -format "%w" "$temporary/Before.png")
+    local height=$(identify -format "%h" "$temporary/Before.png")
     local bar=32
-    local menu=$(convert "$temporary/After.png" "$temporary/Before.png" -compose difference -composite \
-                 -crop "${width}x$((height - bar))+0+$bar" +repage -colorspace gray -threshold 5% -format "%@" info:)
+    local menu menuWidth=0 menuHeight=0 menuX menuY
 
-    local menuWidth=$(echo "$menu" | sed -E 's/^([0-9]+)x.*/\1/')
-    local menuHeight=$(echo "$menu" | sed -E 's/^[0-9]+x([0-9]+).*/\1/')
-    local menuX=$(echo "$menu" | sed -E 's/^[0-9]+x[0-9]+\+([0-9]+).*/\1/')
-    local menuY=$(echo "$menu" | sed -E 's/.*\+([0-9]+)$/\1/')
+    # A click is sometimes lost in a VM without a window, then the icon is clicked again
+    for i in $(seq 3); do
+        click_guest $((iconX + iconWidth / 2)) $((iconY + iconHeight / 2))
+        sleep 2
+        VBoxManage controlvm "$VM_NAME" screenshotpng "$temporary/After.png"
+        VBoxManage controlvm "$VM_NAME" keyboardputscancode 01 81 # Escape closes the menu
+
+        # The menu is the changed area below the top bar
+        menu=$(convert "$temporary/After.png" "$temporary/Before.png" -compose difference -composite \
+               -crop "${width}x$((height - bar))+0+$bar" +repage -colorspace gray -threshold 5% -format "%@" info: 2>/dev/null)
+
+        if [[ "$menu" =~ ^([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+)$ ]]; then
+            menuWidth=${BASH_REMATCH[1]}
+            menuHeight=${BASH_REMATCH[2]}
+            menuX=${BASH_REMATCH[3]}
+            menuY=${BASH_REMATCH[4]}
+            [ "$menuWidth" -ge 100 ] && [ "$menuHeight" -ge 100 ] && break
+        fi
+
+        echo "Tray menu did not open for $output, clicking again."
+        sleep 1
+    done
 
     if [ "$menuWidth" -lt 100 ] || [ "$menuHeight" -lt 100 ]; then
         echo "ERROR: Tray menu was not opened for $output."
