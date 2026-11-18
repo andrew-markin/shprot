@@ -163,8 +163,9 @@ void SingleInstance::acceptConnections()
             finishMessage();
         });
 
-        QTimer::singleShot(ReadTimeout, socket, [socket]() {
+        QTimer::singleShot(ReadTimeout, socket, [socket, finishMessage]() {
             socket->abort(); // Sender did not disconnect in time
+            finishMessage(); // abort() may not emit disconnected, the socket is deleted anyway
         });
 
         readMessage(); // Sender may have already sent the message and disconnected
