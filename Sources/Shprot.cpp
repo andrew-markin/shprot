@@ -311,13 +311,21 @@ Shprot::Shprot(Preferences* preferences, QObject* parent) : QObject(parent), m_p
         m_tunnelEnabledAction->setEnabled(!m_preferencesDialog->isVisible());
     });
 
+    // Null when no backend could be loaded, the application works, but the tunnel is not restarted on network changes
     QNetworkInformation* networkInformation = QNetworkInformation::instance();
 
-    connect(networkInformation, &QNetworkInformation::reachabilityChanged,
-            this, &Shprot::handleNetworkChange);
+    if (networkInformation)
+    {
+        connect(networkInformation, &QNetworkInformation::reachabilityChanged,
+                this, &Shprot::handleNetworkChange);
 
-    connect(networkInformation, &QNetworkInformation::transportMediumChanged,
-            this, &Shprot::handleNetworkChange);
+        connect(networkInformation, &QNetworkInformation::transportMediumChanged,
+                this, &Shprot::handleNetworkChange);
+    }
+    else
+    {
+        qWarning() << "Network information is not available.";
+    }
 
     maybeUpdateStatus();
 }
