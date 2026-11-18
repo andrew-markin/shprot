@@ -1,5 +1,8 @@
+#include <QSignalSpy>
+#include <QTemporaryDir>
 #include <QTest>
 
+#include "Preferences.h"
 #include "UpdateChecker.h"
 
 class TestUpdateChecker : public QObject
@@ -12,7 +15,54 @@ private slots:
 
     void isNewerVersion_data();
     void isNewerVersion();
+
+    void savedVersionIsOffered();
+    void versionEqualToCurrentIsNotOffered();
+    void invalidSavedVersionIsNotOffered();
+
+private:
+    QString preferencesPath() const;
+
+private:
+    QTemporaryDir m_temporaryDir;
 };
+
+// The checker restores the version found before restart from the preferences
+void TestUpdateChecker::savedVersionIsOffered()
+{
+    Preferences preferences(preferencesPath());
+    preferences.setValue("latestVersion", "9.9.9");
+
+    UpdateChecker checker(&preferences);
+
+    QCOMPARE(checker.newVersion(), QString("9.9.9"));
+    QCOMPARE(checker.newVersionUrl(), QUrl(QString(PROJECT_GITHUB_REPOSITORY) + "/releases/tag/v9.9.9"));
+}
+
+void TestUpdateChecker::versionEqualToCurrentIsNotOffered()
+{
+    Preferences preferences(preferencesPath());
+    preferences.setValue("latestVersion", "v" PROJECT_VERSION);
+
+    UpdateChecker checker(&preferences);
+
+    QCOMPARE(checker.newVersion(), QString());
+}
+
+void TestUpdateChecker::invalidSavedVersionIsNotOffered()
+{
+    Preferences preferences(preferencesPath());
+    preferences.setValue("latestVersion", "garbage");
+
+    UpdateChecker checker(&preferences);
+
+    QCOMPARE(checker.newVersion(), QString());
+}
+
+QString TestUpdateChecker::preferencesPath() const
+{
+    return m_temporaryDir.filePath("Preferences.json");
+}
 
 void TestUpdateChecker::parseTagVersion_data()
 {
