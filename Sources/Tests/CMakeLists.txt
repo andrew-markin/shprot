@@ -43,6 +43,12 @@ add_shprot_test(
 )
 
 add_shprot_test(
+    TestPreferences
+    ${PROJECT_SOURCE_DIR}/Preferences.cpp
+    ${PROJECT_SOURCE_DIR}/Preferences.h
+)
+
+add_shprot_test(
     TestSingleInstance
     ${PROJECT_SOURCE_DIR}/SingleInstance.cpp
     ${PROJECT_SOURCE_DIR}/SingleInstance.h
