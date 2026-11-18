@@ -82,7 +82,6 @@ private:
     QElapsedTimer m_healthCheckRunTimer; // Started by each check of a website through the tunnel
 
     QList<QUrl> m_healthCheckUrls;
-    int m_healthCheckUrlIndex = 0;
     int m_healthCheckFailsCount = 0;
 
     HttpProxyServer* m_httpProxyServer;
