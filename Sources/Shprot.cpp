@@ -40,6 +40,7 @@ namespace {
 static const int StartDelayTimeout = 5000; // 5s
 
 static const int TunnelProcessStartTimeout = 2000; // 2s
+static const int KillTimeout = 5000; // 5s, a killed process is given a chance to clean up
 static const int TunnelProcessWarmupTime = 5000; // 5s since ssh opened the local port
 static const int TunnelProcessRestartDelayLazy = 1000; // 1s
 
@@ -519,7 +520,11 @@ void Shprot::stopTunnelProcess(int timeout)
             if (!m_tunnelProcess->waitForFinished(timeout))
             {
                 m_tunnelProcess->kill();
-                m_tunnelProcess->waitForFinished();
+
+                if (!m_tunnelProcess->waitForFinished(KillTimeout))
+                {
+                    qCritical() << "Tunnel process did not finish after kill";
+                }
             }
 
             SetConsoleCtrlHandler(NULL, FALSE);
@@ -537,7 +542,11 @@ void Shprot::stopTunnelProcess(int timeout)
         if (!m_tunnelProcess->waitForFinished(timeout))
         {
             m_tunnelProcess->kill();
-            m_tunnelProcess->waitForFinished();
+
+            if (!m_tunnelProcess->waitForFinished(KillTimeout))
+            {
+                qCritical() << "Tunnel process did not finish after kill";
+            }
         }
     #endif
     }
