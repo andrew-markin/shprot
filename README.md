@@ -403,7 +403,7 @@ To publish a release:
 2. Create and push a matching tag, for example `git tag v1.5 && git push origin v1.5`. The workflow stops immediately if the tag does not match the project version.
 3. Once all builds succeed, a **draft** release with the three packages and auto-generated release notes appears on the Releases page. Review it and publish it manually.
 
-Docker builder images are cached in GitHub Container Registry (`ghcr.io`) and rebuilt only when a Dockerfile changes, so only the first run and runs after Dockerfile changes take long.
+Docker builder images are cached in GitHub Container Registry (`ghcr.io`) and rebuilt only when a Dockerfile changes, so only the first run and runs after Dockerfile changes take long. The detailed maintainer release procedure is kept in [Packaging/ReleaseChecklist.md](Packaging/ReleaseChecklist.md).
 
 ### Website
 

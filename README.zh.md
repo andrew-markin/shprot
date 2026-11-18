@@ -403,7 +403,7 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 2. 创建并推送对应的标签，例如 `git tag v1.5 && git push origin v1.5`。如果标签与项目版本不一致，工作流会立即停止。
 3. 所有构建成功后，Releases 页面上会出现一个 **草稿** 版本，其中包含三个软件包和自动生成的发布说明。检查后请手动发布。
 
-Docker 构建镜像缓存在 GitHub Container Registry（`ghcr.io`）中，仅在 Dockerfile 发生变化时才会重新构建，因此只有首次运行以及修改 Dockerfile 后的运行耗时较长。
+Docker 构建镜像缓存在 GitHub Container Registry（`ghcr.io`）中，仅在 Dockerfile 发生变化时才会重新构建，因此只有首次运行以及修改 Dockerfile 后的运行耗时较长。面向维护者的详细发布流程见 [Packaging/ReleaseChecklist.md](Packaging/ReleaseChecklist.md)。
 
 ### 网站
 
