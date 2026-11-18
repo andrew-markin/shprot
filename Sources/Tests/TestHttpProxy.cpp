@@ -19,8 +19,10 @@ private slots:
     void requestBodyIsForwarded();
     void hostHeaderIsAdded();
     void upgradeIsPreserved();
+    void fragmentedRequest();
     void connectTunnel();
     void connectTunnelIpv6();
+    void largeTransferThroughTunnel();
     void listensOnIpv6InBrackets();
 
     void invalidRequest_data();
@@ -30,6 +32,7 @@ private slots:
 
 private:
     void serveOrigin(QTcpServer* server);
+    void serveEcho(QTcpServer* server);
     QByteArray exchange(const QByteArray& request);
     QByteArray withOriginPort(const char* request) const;
 
@@ -115,6 +118,33 @@ void TestHttpProxy::upgradeIsPreserved()
     QVERIFY(!m_originRequests.first().contains("Connection: close"));
 }
 
+void TestHttpProxy::fragmentedRequest()
+{
+    // The proxy must wait for the complete headers, the request line may arrive split
+    QTcpSocket client;
+    QByteArray response;
+
+    connect(&client, &QTcpSocket::readyRead, &client, [&client, &response]() {
+        response.append(client.readAll());
+    });
+
+    client.connectToHost(QHostAddress::LocalHost, m_proxy->serverPort());
+    QVERIFY(QTest::qWaitFor([&client]() { return client.state() == QAbstractSocket::ConnectedState; }, 5000));
+
+    client.write(withOriginPort("GET http://127.0.0.1:%1/frag"));
+    QTest::qWait(100); // Let the proxy receive an incomplete request first
+    client.write(withOriginPort("mented HTTP/1.1\r\nHost: 127.0.0.1:%1\r\n\r\n"));
+
+    QVERIFY(QTest::qWaitFor([&client, &response]() {
+                return (client.state() == QAbstractSocket::UnconnectedState) && !response.isEmpty();
+            }, 5000));
+
+    response.append(client.readAll());
+    QVERIFY2(response.startsWith("HTTP/1.1 200 OK\r\n"), response.constData());
+    QCOMPARE(m_originRequests.size(), 1);
+    QVERIFY(m_originRequests.first().startsWith("GET /fragmented HTTP/1.1\r\n"));
+}
+
 void TestHttpProxy::connectTunnel()
 {
     // Data sent right after CONNECT (before the proxy answers) must reach the target too
@@ -151,6 +181,59 @@ void TestHttpProxy::connectTunnelIpv6()
     QVERIFY2(response.startsWith("HTTP/1.1 200 Connection Established\r\n"), response.constData());
     QCOMPARE(m_originRequests.size(), 1);
     QVERIFY(m_originRequests.first().startsWith("GET /ipv6 HTTP/1.1\r\n"));
+}
+
+// Much more than the pending limit of the stream, so the proxy has to throttle and pump repeatedly,
+// and everything received by the far end before it disconnected must be delivered back
+void TestHttpProxy::largeTransferThroughTunnel()
+{
+    QTcpServer echo;
+    QVERIFY(echo.listen(QHostAddress::LocalHost));
+    serveEcho(&echo);
+
+    QTcpSocket client;
+    QByteArray echoed;
+
+    connect(&client, &QTcpSocket::readyRead, &client, [&client, &echoed]() {
+        echoed.append(client.readAll());
+    });
+
+    client.connectToHost(QHostAddress::LocalHost, m_proxy->serverPort());
+    QVERIFY(QTest::qWaitFor([&client]() { return client.state() == QAbstractSocket::ConnectedState; }, 5000));
+
+    client.write(QString("CONNECT 127.0.0.1:%1 HTTP/1.1\r\n\r\n").arg(echo.serverPort()).toLatin1());
+    QVERIFY(QTest::qWaitFor([&client, &echoed]() {
+                return echoed.startsWith("HTTP/1.1 200 Connection Established\r\n\r\n");
+            }, 5000));
+
+    QByteArray payload(1024 * 1024, 0);
+
+    for (int i = 0; i < payload.size(); i++)
+    {
+        payload[i] = static_cast<char>(i);
+    }
+
+    quint64 written = 0;
+    connect(&client, &QTcpSocket::bytesWritten, &client, [&written](quint64 bytes) {
+        written += bytes;
+    });
+
+    client.write(payload);
+
+    // Throttling is exercised: the pending limit of the stream is much smaller than the payload,
+    // so the proxy repeatedly pumps and pauses while both directions pass more than a megabyte
+    QVERIFY(QTest::qWaitFor([&echoed, &payload]() {
+                return echoed.size() >= payload.size();
+            }, 30000));
+
+    // The client disconnects only when everything is received, disconnectFromHost closes both directions
+    client.disconnectFromHost();
+
+    QVERIFY(QTest::qWaitFor([&client]() {
+                return client.state() == QAbstractSocket::UnconnectedState;
+            }, 30000));
+
+    QCOMPARE(echoed.mid(echoed.indexOf("\r\n\r\n") + 4, payload.size()), payload);
 }
 
 void TestHttpProxy::listensOnIpv6InBrackets()
@@ -262,6 +345,21 @@ void TestHttpProxy::serveOrigin(QTcpServer* server)
                 socket->write("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nok");
                 socket->disconnectFromHost();
             });
+        }
+    });
+}
+
+// Echoes everything received until the peer disconnects, then answers and disconnects the same way
+void TestHttpProxy::serveEcho(QTcpServer* server)
+{
+    connect(server, &QTcpServer::newConnection, server, [server]() {
+        while (QTcpSocket* socket = server->nextPendingConnection())
+        {
+            connect(socket, &QTcpSocket::readyRead, socket, [socket]() {
+                socket->write(socket->readAll());
+            });
+
+            connect(socket, &QTcpSocket::disconnected, socket, &QObject::deleteLater);
         }
     });
 }
