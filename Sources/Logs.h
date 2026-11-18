@@ -33,5 +33,8 @@ QString dirPath();
 QList<Record> recentRecords();
 Notifier* notifier();
 
+// Parses records from a log file of the given date, used to restore recent records and in tests
+QList<Record> readLogFileRecords(const QString& logFilePath, const QDate& date);
+
 }
 #endif // LOGS_H
