@@ -122,8 +122,8 @@ download:
     text: "⁦Ubuntu 22.04+⁩، ⁦Debian 12+⁩ و توزیع‌های سازگار."
     button: "بسته ⁦(.deb)⁩"
   rpm:
-    title: "Fedora، RHEL"
-    text: "⁦Fedora 39+⁩، ⁦RHEL 9+⁩، ⁦AlmaLinux 9+⁩ و توزیع‌های سازگار."
+    title: "RED OS، RHEL، Fedora"
+    text: "⁦RED OS 7.3+⁩، ⁦RHEL 8+⁩، ⁦AlmaLinux 8+⁩، ⁦Fedora 39+⁩ و توزیع‌های سازگار."
     button: "بسته ⁦(.rpm)⁩"
   requirements: "Shprot از کلاینت OpenSSH (`ssh` و `ssh-keygen`) استفاده می‌کند. این کلاینت همراه Windows 10 / 11 و بیشتر میزکارهای Linux هست؛ اگر نبود، Shprot روش افزودنش را می‌گوید."
   verify: "هر انتشار یک فایل `SHA256SUMS` دارد تا بررسی کنید فایل دانلودشده تغییر نکرده است."

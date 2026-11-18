@@ -124,8 +124,8 @@ download:
     text: "Ubuntu 22.04+, Debian 12+ and compatible distributions."
     button: "Package (.deb)"
   rpm:
-    title: "Fedora, RHEL"
-    text: "Fedora 39+, RHEL 9+, AlmaLinux 9+ and compatible distributions."
+    title: "RED OS, RHEL, Fedora"
+    text: "RED OS 7.3+, RHEL 8+, AlmaLinux 8+, Fedora 39+ and compatible distributions."
     button: "Package (.rpm)"
   requirements: "Shprot uses the OpenSSH client (`ssh` and `ssh-keygen`). It comes with Windows 10 / 11 and most Linux desktops; if it's missing, Shprot will tell you how to add it."
   verify: "Every release includes a `SHA256SUMS` file to check that the download wasn't altered."

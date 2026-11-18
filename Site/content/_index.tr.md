@@ -122,8 +122,8 @@ download:
     text: "Ubuntu 22.04+, Debian 12+ ve uyumlu dağıtımlar."
     button: "Paket (.deb)"
   rpm:
-    title: "Fedora, RHEL"
-    text: "Fedora 39+, RHEL 9+, AlmaLinux 9+ ve uyumlu dağıtımlar."
+    title: "RED OS, RHEL, Fedora"
+    text: "RED OS 7.3+, RHEL 8+, AlmaLinux 8+, Fedora 39+ ve uyumlu dağıtımlar."
     button: "Paket (.rpm)"
   requirements: "Shprot, OpenSSH istemcisini (`ssh` ve `ssh-keygen`) kullanır. Windows 10 / 11 ve çoğu Linux masaüstünde hazır gelir; eksikse Shprot nasıl ekleyeceğinizi söyler."
   verify: "Her sürüm, indirilen dosyanın değiştirilmediğini kontrol etmek için bir `SHA256SUMS` dosyası içerir."

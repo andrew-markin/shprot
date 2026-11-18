@@ -50,8 +50,8 @@ Shprot is available for **Windows** and **Linux** platforms:
 
 - **Windows:** Windows 10 / 11 (64-bit)
 - **Linux (DEB-based):** Ubuntu 22.04 or newer, Debian 12 or newer, and other compatible distributions
-- **Linux (RPM-based):** Fedora 39 or newer, RHEL 9 / AlmaLinux 9 or newer
-- **All platforms:** OpenSSH client (`ssh` and `ssh-keygen`). On Windows it is usually installed already; if not, add **"OpenSSH Client"** in Windows Settings, *Optional features*. On Linux, install the `openssh-client` package (Ubuntu/Debian) or `openssh-clients` (Fedora/RHEL). Shprot warns you if the client is missing.
+- **Linux (RPM-based):** RED OS 7.3, RHEL 8 / AlmaLinux 8, Fedora 39 or newer
+- **All platforms:** OpenSSH client (`ssh` and `ssh-keygen`). On Windows it is usually installed already; if not, add **"OpenSSH Client"** in Windows Settings, *Optional features*. On Linux, install the `openssh-client` package (Ubuntu/Debian) or `openssh-clients` (RED OS/Fedora/RHEL). Shprot warns you if the client is missing.
 
 ## Installation
 
@@ -71,15 +71,15 @@ For Ubuntu, Debian, and other DEB-based systems, download the `.deb` package and
 The package is built on Ubuntu 22.04 and should work on all newer versions of Ubuntu, Debian 12+, and compatible distributions.
 
 ### Linux (RPM-based distributions)
-For Fedora, RHEL, AlmaLinux, and other RPM-based systems, download the `.rpm` package and install it using:
+For RED OS, RHEL, AlmaLinux, Fedora, and other RPM-based systems, download the `.rpm` package and install it using:
 
     sudo rpm -i shprot-*.rpm
 
-Or on Fedora/RHEL with DNF:
+Or with DNF:
 
     sudo dnf install ./shprot-*.rpm
 
-The package is built on Fedora 39 and should work on Fedora 39+, RHEL 9+, AlmaLinux 9+, and compatible distributions.
+The package is built on AlmaLinux 8, the oldest RPM base still in wide use, and should work on RED OS 7.3 and newer, RHEL 8 / AlmaLinux 8 and newer, Fedora 39 and newer, and compatible distributions.
 
 ### Verifying the Download
 Every release includes a `SHA256SUMS` file with checksums of all packages. Download it next to your package and check that the package was not altered:
@@ -264,7 +264,7 @@ If there is no tray icon at all, your desktop probably has no system tray, as on
 
 Before building or opening the project, ensure you have the following environment configuration:
 
-- **OS:** Windows 10/11 (64-bit) or Linux (Ubuntu 22.04+, Fedora 39+)
+- **OS:** Windows 10/11 (64-bit) or Linux (Ubuntu 22.04+, AlmaLinux 8+)
 - **Compiler:** 
   - Windows: MSVC 2022 (x64)
   - Linux: GCC 11 or newer (or Clang 14+)
@@ -315,15 +315,15 @@ Building Linux packages is done using Docker to ensure consistency and reproduci
 
 1. **For DEB-based distributions (Ubuntu 22.04+):**
 
-       ./ReleaseUbuntu.sh
+       ./ReleaseDEB.sh
 
 Produces a `.deb` package using `dpkg-deb`, compatible with Ubuntu 22.04 and newer, Debian 12 and newer.
 
-2. **For RPM-based distributions (Fedora 39+):**
+2. **For RPM-based distributions (RED OS 7.3+, RHEL / AlmaLinux 8+, Fedora 39+):**
 
-       ./ReleaseFedora.sh
+       ./ReleaseRPM.sh
 
-Produces an `.rpm` package using `rpmbuild`, compatible with Fedora 39 and newer, RHEL 9 / AlmaLinux 9 and newer.
+Produces an `.rpm` package using `rpmbuild`, built on AlmaLinux 8, compatible with RED OS 7.3 and newer, RHEL 8 / AlmaLinux 8 and newer, Fedora 39 and newer.
 
 **Important notes about Docker builds:**
 
@@ -331,10 +331,10 @@ Produces an `.rpm` package using `rpmbuild`, compatible with Fedora 39 and newer
 - **Subsequent builds are fast:** After the Docker images are cached locally, all following builds will be significantly faster (typically a few minutes).
 - **No local Qt required:** Since Qt is bundled inside the Docker containers, you don't need to configure `.env` or install Qt on your host system.
 - **Output location:** All generated packages (`.deb` or `.rpm`) will appear in the **`Release`** folder, just like the Windows installer.
-- **Updating builder images:** The scripts build a Docker image only if it does not exist yet. After `Dockerfile.ubuntu` or `Dockerfile.fedora` changes, remove the old image (`docker rmi shprot-ubuntu-builder` or `docker rmi shprot-fedora-builder`) so that the next run rebuilds it.
+- **Updating builder images:** The scripts build a Docker image only if it does not exist yet. After `Dockerfile.deb` or `Dockerfile.rpm` changes, remove the old image (`docker rmi shprot-deb-builder` or `docker rmi shprot-rpm-builder`) so that the next run rebuilds it.
 - **Qt sources mirror:** Qt sources are downloaded from the Yandex mirror by default. To use another mirror, build the image manually, for example:
 
-      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-ubuntu-builder - < Dockerfile.ubuntu
+      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-deb-builder - < Dockerfile.deb
 
 #### Linux Build (Alternative: Native)
 
@@ -346,7 +346,7 @@ If you prefer to build natively without Docker, you can do so by installing the 
 
       sudo apt-get install build-essential cmake fakeroot dpkg-dev file ninja-build patchelf
 
-- **Fedora/RHEL:**
+- **AlmaLinux/RHEL/Fedora:**
 
       sudo dnf install cmake file gcc-c++ make ninja-build patchelf rpm-build
 

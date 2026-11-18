@@ -100,12 +100,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - distro: ubuntu
-            script: ReleaseUbuntu.sh
-            package: deb
-          - distro: fedora
-            script: ReleaseFedora.sh
-            package: rpm
+          - format: deb
+            script: ReleaseDEB.sh
+          - format: rpm
+            script: ReleaseRPM.sh
     steps:
       - uses: actions/checkout@v7
 
@@ -120,12 +118,12 @@ jobs:
       # Builder image is tagged with the Dockerfile hash, so it is rebuilt only when the Dockerfile changes
       - name: Prepare builder image
         env:
-          DISTRO: ${{ matrix.distro }}
+          FORMAT: ${{ matrix.format }}
           PUSH_IMAGE: ${{ github.event_name != 'pull_request' }}
         run: |
           OWNER="${GITHUB_REPOSITORY_OWNER,,}"
-          REMOTE_IMAGE="ghcr.io/$OWNER/shprot-$DISTRO-builder:$(sha256sum "Dockerfile.$DISTRO" | cut -c1-16)"
-          LOCAL_IMAGE="shprot-$DISTRO-builder"
+          REMOTE_IMAGE="ghcr.io/$OWNER/shprot-$FORMAT-builder:$(sha256sum "Dockerfile.$FORMAT" | cut -c1-16)"
+          LOCAL_IMAGE="shprot-$FORMAT-builder"
 
           if docker pull "$REMOTE_IMAGE"; then
             docker tag "$REMOTE_IMAGE" "$LOCAL_IMAGE"
@@ -140,7 +138,7 @@ jobs:
 
           # Dockerfiles do not copy any files, so no build context is needed.
           # Official Qt download server is used instead of the default mirror meant for local builds.
-          docker build --build-arg QT_MIRROR=https://download.qt.io -t "$LOCAL_IMAGE" - < "Dockerfile.$DISTRO"
+          docker build --build-arg QT_MIRROR=https://download.qt.io -t "$LOCAL_IMAGE" - < "Dockerfile.$FORMAT"
 
           if [ "$PUSH_IMAGE" = "true" ]; then
             docker tag "$LOCAL_IMAGE" "$REMOTE_IMAGE"
@@ -156,7 +154,7 @@ jobs:
         run: |
           docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/workspace" -w /workspace \
                      -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro \
-                     "shprot-${{ matrix.distro }}-builder" /bin/bash -ec '
+                     "shprot-${{ matrix.format }}-builder" /bin/bash -ec '
             cmake -S Sources -B Builds/Tests -DCMAKE_PREFIX_PATH="$QT_PREFIX" -DSHPROT_BUILD_TESTS=ON
             cmake --build Builds/Tests --target ShprotTests --parallel
             ctest --test-dir Builds/Tests --output-on-failure --no-tests=error
@@ -164,8 +162,8 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: package-${{ matrix.package }}
-          path: Release/*.${{ matrix.package }}
+          name: package-${{ matrix.format }}
+          path: Release/*.${{ matrix.format }}
           if-no-files-found: error
 
   release:

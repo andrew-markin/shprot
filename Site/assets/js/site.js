@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let os = null;
   if (/Windows/.test(agent)) {
     os = "windows";
-  } else if (/Fedora|Red Hat|CentOS|AlmaLinux|Rocky/i.test(agent)) {
+  } else if (/Fedora|Red Hat|RED OS|CentOS|AlmaLinux|Rocky/i.test(agent)) {
     os = "rpm";
   } else if (/Linux|X11/.test(agent) && !/Android/.test(agent)) {
     os = "deb";

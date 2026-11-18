@@ -1,38 +1,53 @@
-# Fedora 39 is the oldest version that provides all build tools for Qt 6.11.2
-# Building here maximizes backward compatibility with older distros
+# AlmaLinux 8 is the oldest RPM base still in wide use: RED OS 7.3/8, RHEL 8/9/10,
+# AlmaLinux, Rocky Linux and Fedora all run binaries built on it. Building here
+# maximizes backward compatibility with older RPM distributions.
 # =============================================================================
 # Stage "base": System packages shared by Qt build and the final image
 # =============================================================================
-FROM fedora:39 AS base
+FROM almalinux:8 AS base
 
 ENV QT_PREFIX="/usr/local/qt"
 
 # -----------------------------------------------------------------------------
-# Stage: Configure DNF mirrors for faster and reliable downloads
+# Stage: Enable additional repositories and configure DNF for faster downloads
 # -----------------------------------------------------------------------------
-RUN echo -e "fastestmirror=True\nmax_parallel_downloads=20" >> /etc/dnf/dnf.conf
+# CRB ("powertools") provides ninja-build, libxkbcommon-x11-devel and xcb-util-*
+# (except xcb-util-cursor), EPEL provides patchelf and xcb-util-cursor-devel
+RUN dnf install -y -v --verbose epel-release dnf-utils && \
+    dnf config-manager --set-enabled powertools && \
+    echo -e "fastestmirror=True\nmax_parallel_downloads=20" >> /etc/dnf/dnf.conf
 
 # -----------------------------------------------------------------------------
 # Stage: Base build tools
 # -----------------------------------------------------------------------------
+# Qt 6.11 requires GCC 11 or newer, while the base compiler of EL8 is GCC 8.
+# gcc-toolset-13 provides GCC 13, yet stays binary compatible with EL8: newer
+# C++ runtime pieces are linked statically from libstdc++_nonshared.a, while the
+# shared libstdc++ and glibc stay the base system ones. This is an officially
+# supported Qt configuration ("Red Hat 8 + GCC toolset"). Python 3.9 is installed
+# because the default python3 of EL8 is too old for Qt build scripts.
 RUN dnf install -y -v --verbose \
     cmake \
     file \
     findutils \
-    gcc-c++ \
+    gcc-toolset-13 \
+    gcc-toolset-13-gcc-c++ \
+    gcc-toolset-13-libstdc++-devel \
     git \
-    glibc-static \
-    libstdc++-static \
     make \
     ninja-build \
     patchelf \
     perl \
-    python3 \
-    python3-pip \
+    python39 \
     rpm-build \
     wget \
     xz \
     && dnf clean all
+
+# GCC from the toolset is on PATH for the Qt build below and for building the
+# application in the final image. The toolset binaries need no runtime libraries
+# of their own, as they link against the base system ones.
+ENV PATH="/opt/rh/gcc-toolset-13/root/usr/bin:$PATH"
 
 # -----------------------------------------------------------------------------
 # Stage: Qt GUI dependencies (X11 + font rendering)
@@ -52,7 +67,7 @@ RUN dnf install -y -v --verbose \
     libxkbcommon-devel \
     libxkbcommon-x11-devel \
     openssl-devel \
-    pkgconfig \
+    pkgconf-pkg-config \
     xcb-util-cursor-devel \
     xcb-util-devel \
     xcb-util-image-devel \
@@ -183,6 +198,9 @@ RUN ../sources/configure \
     # Skip building non-essential categories
     -nomake examples \
     -nomake tests \
+    \
+    # The default python3 of EL8 is too old for Qt build scripts
+    -DPython3_EXECUTABLE=/usr/bin/python3.9 \
     \
     # Set install prefix
     -prefix $QT_PREFIX \

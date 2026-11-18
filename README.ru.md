@@ -50,8 +50,8 @@ Shprot доступен для платформ **Windows** и **Linux**:
 
 - **Windows:** Windows 10 / 11 (64-bit)
 - **Linux (DEB-пакеты):** Ubuntu 22.04 или новее, Debian 12 или новее, и другие совместимые дистрибутивы
-- **Linux (RPM-пакеты):** Fedora 39 или новее, RHEL 9 / AlmaLinux 9 или новее
-- **Все платформы:** клиент OpenSSH (`ssh` и `ssh-keygen`). В Windows он обычно уже установлен; если нет, добавьте компонент **"OpenSSH Client"** в параметрах Windows, раздел *Дополнительные компоненты*. В Linux установите пакет `openssh-client` (Ubuntu/Debian) или `openssh-clients` (Fedora/RHEL). Если клиента нет, Shprot об этом сообщит.
+- **Linux (RPM-пакеты):** РЕДОС 7.3, RHEL 8 / AlmaLinux 8, Fedora 39 или новее
+- **Все платформы:** клиент OpenSSH (`ssh` и `ssh-keygen`). В Windows он обычно уже установлен; если нет, добавьте компонент **"OpenSSH Client"** в параметрах Windows, раздел *Дополнительные компоненты*. В Linux установите пакет `openssh-client` (Ubuntu/Debian) или `openssh-clients` (РЕДОС/Fedora/RHEL). Если клиента нет, Shprot об этом сообщит.
 
 ## Установка
 
@@ -71,15 +71,15 @@ Shprot доступен для платформ Windows и Linux. Выберит
 Пакет собран на Ubuntu 22.04 и должен работать на всех более новых версиях Ubuntu, Debian 12+ и совместимых дистрибутивах.
 
 ### Linux (RPM-дистрибутивы)
-Для Fedora, RHEL, AlmaLinux и других RPM-систем скачайте `.rpm`-пакет и установите его с помощью:
+Для РЕДОС, RHEL, AlmaLinux, Fedora и других RPM-систем скачайте `.rpm`-пакет и установите его с помощью:
 
     sudo rpm -i shprot-*.rpm
 
-Или на Fedora/RHEL с DNF:
+Или с DNF:
 
     sudo dnf install ./shprot-*.rpm
 
-Пакет собран на Fedora 39 и должен работать на Fedora 39+, RHEL 9+, AlmaLinux 9+ и совместимых дистрибутивах.
+Пакет собран на AlmaLinux 8 — старейшей ещё широко используемой RPM-базе — и должен работать на РЕДОС 7.3 и новее, RHEL 8 / AlmaLinux 8 и новее, Fedora 39 и новее и совместимых дистрибутивах.
 
 ### Проверка скачанных файлов
 К каждому релизу приложен файл `SHA256SUMS` с контрольными суммами всех пакетов. Скачайте его в ту же папку, что и пакет, и убедитесь, что пакет не был изменен:
@@ -264,7 +264,7 @@ HTTP-прокси работает **через** тот же SSH-туннель
 
 Перед сборкой или открытием проекта убедитесь, что конфигурация вашего окружения соответствует следующим требованиям:
 
-- **ОС:** Windows 10/11 (64-bit) или Linux (Ubuntu 22.04+, Fedora 39+)
+- **ОС:** Windows 10/11 (64-bit) или Linux (Ubuntu 22.04+, AlmaLinux 8+)
 - **Компилятор:** 
   - Windows: MSVC 2022 (x64)
   - Linux: GCC 11 или новее (или Clang 14+)
@@ -315,15 +315,15 @@ HTTP-прокси работает **через** тот же SSH-туннель
 
 1. **Для DEB-дистрибутивов (Ubuntu 22.04+):**
 
-       ./ReleaseUbuntu.sh
+       ./ReleaseDEB.sh
 
 Создает `.deb`-пакет с использованием `dpkg-deb`, совместимый с Ubuntu 22.04 и новее, Debian 12 и новее.
 
-2. **Для RPM-дистрибутивов (Fedora 39+):**
+2. **Для RPM-дистрибутивов (РЕДОС 7.3+, RHEL / AlmaLinux 8+, Fedora 39+):**
 
-       ./ReleaseFedora.sh
+       ./ReleaseRPM.sh
 
-Создает `.rpm`-пакет с использованием `rpmbuild`, совместимый с Fedora 39 и новее, RHEL 9 / AlmaLinux 9 и новее.
+Создает `.rpm`-пакет с использованием `rpmbuild`, собранный на AlmaLinux 8, совместимый с РЕДОС 7.3 и новее, RHEL 8 / AlmaLinux 8 и новее, Fedora 39 и новее.
 
 **Важные замечания о Docker-сборке:**
 
@@ -331,10 +331,10 @@ HTTP-прокси работает **через** тот же SSH-туннель
 - **Последующие сборки выполняются быстро:** После того как Docker-образы сохранены в кэше локально, все следующие сборки будут значительно быстрее (обычно несколько минут).
 - **Локальный Qt не требуется:** Поскольку Qt встроен в Docker-контейнеры, вам не нужно настраивать `.env` или устанавливать Qt на вашей хост-системе.
 - **Расположение выходных файлов:** Все созданные пакеты (`.deb` или `.rpm`) появятся в папке **`Release`**, так же как и установщик для Windows.
-- **Обновление образов сборки:** Скрипты собирают Docker-образ, только если его еще нет. После изменения `Dockerfile.ubuntu` или `Dockerfile.fedora` удалите старый образ (`docker rmi shprot-ubuntu-builder` или `docker rmi shprot-fedora-builder`), чтобы при следующем запуске он был собран заново.
+- **Обновление образов сборки:** Скрипты собирают Docker-образ, только если его еще нет. После изменения `Dockerfile.deb` или `Dockerfile.rpm` удалите старый образ (`docker rmi shprot-deb-builder` или `docker rmi shprot-rpm-builder`), чтобы при следующем запуске он был собран заново.
 - **Зеркало исходников Qt:** По умолчанию исходники Qt скачиваются с зеркала Яндекса. Чтобы использовать другое зеркало, соберите образ вручную, например:
 
-      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-ubuntu-builder - < Dockerfile.ubuntu
+      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-deb-builder - < Dockerfile.deb
 
 #### Сборка под Linux (Альтернатива: Нативная)
 
@@ -346,7 +346,7 @@ HTTP-прокси работает **через** тот же SSH-туннель
 
       sudo apt-get install build-essential cmake fakeroot dpkg-dev file ninja-build patchelf
 
-- **Fedora/RHEL:**
+- **AlmaLinux/RHEL/Fedora:**
 
       sudo dnf install cmake file gcc-c++ make ninja-build patchelf rpm-build
 

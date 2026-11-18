@@ -50,8 +50,8 @@ Shprot 适用于 **Windows** 和 **Linux** 平台：
 
 - **Windows：** Windows 10 / 11（64 位）
 - **Linux（基于 DEB）：** Ubuntu 22.04 或更新版本，Debian 12 或更新版本，以及其他兼容发行版
-- **Linux（基于 RPM）：** Fedora 39 或更新版本，RHEL 9 / AlmaLinux 9 或更新版本
-- **所有平台：** OpenSSH 客户端（`ssh` 和 `ssh-keygen`）。Windows 上通常已预装；如果没有，请在 Windows 设置的 *可选功能* 中添加 **"OpenSSH Client"**。Linux 上请安装 `openssh-client`（Ubuntu/Debian）或 `openssh-clients`（Fedora/RHEL）软件包。如果缺少客户端，Shprot 会给出提示。
+- **Linux（基于 RPM）：** RED OS 7.3、RHEL 8 / AlmaLinux 8、Fedora 39 或更新版本
+- **所有平台：** OpenSSH 客户端（`ssh` 和 `ssh-keygen`）。Windows 上通常已预装；如果没有，请在 Windows 设置的 *可选功能* 中添加 **"OpenSSH Client"**。Linux 上请安装 `openssh-client`（Ubuntu/Debian）或 `openssh-clients`（RED OS/Fedora/RHEL）软件包。如果缺少客户端，Shprot 会给出提示。
 
 ## 安装
 
@@ -71,15 +71,15 @@ Shprot 适用于 Windows 和 Linux 平台。请从 **[Releases](../../releases)*
 该软件包在 Ubuntu 22.04 上构建，应适用于所有更新版本的 Ubuntu、Debian 12+ 和兼容发行版。
 
 ### Linux（基于 RPM 的发行版）
-对于 Fedora、RHEL、AlmaLinux 和其他基于 RPM 的系统，请下载 `.rpm` 软件包并使用以下命令安装：
+对于 RED OS、RHEL、AlmaLinux、Fedora 和其他基于 RPM 的系统，请下载 `.rpm` 软件包并使用以下命令安装：
 
     sudo rpm -i shprot-*.rpm
 
-或在 Fedora/RHEL 上使用 DNF：
+或使用 DNF：
 
     sudo dnf install ./shprot-*.rpm
 
-该软件包在 Fedora 39 上构建，应适用于 Fedora 39+、RHEL 9+、AlmaLinux 9+ 和兼容发行版。
+该软件包在 AlmaLinux 8（仍在广泛使用的最老 RPM 基础）上构建，应适用于 RED OS 7.3 及更新版本、RHEL 8 / AlmaLinux 8 及更新版本、Fedora 39 及更新版本和兼容发行版。
 
 ### 验证下载的文件
 每个版本都附带一个 `SHA256SUMS` 文件，其中包含所有软件包的校验和。将其下载到软件包所在的文件夹，并确认软件包未被篡改：
@@ -264,7 +264,7 @@ HTTP 代理通过 **相同的** SSH 隧道工作，因此不需要任何额外�
 
 在构建或打开项目之前，请确保您的环境配置满足以下要求：
 
-- **操作系统：** Windows 10/11（64 位）或 Linux（Ubuntu 22.04+、Fedora 39+）
+- **操作系统：** Windows 10/11（64 位）或 Linux（Ubuntu 22.04+、AlmaLinux 8+）
 - **编译器：**
   - Windows：MSVC 2022（x64）
   - Linux：GCC 11 或更新版本（或 Clang 14+）
@@ -315,15 +315,15 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
 1. **适用于基于 DEB 的发行版（Ubuntu 22.04+）：**
 
-       ./ReleaseUbuntu.sh
+       ./ReleaseDEB.sh
 
 使用 `dpkg-deb` 生成 `.deb` 软件包，兼容 Ubuntu 22.04 及更新版本、Debian 12 及更新版本。
 
-2. **适用于基于 RPM 的发行版（Fedora 39+）：**
+2. **适用于基于 RPM 的发行版（RED OS 7.3+、RHEL / AlmaLinux 8+、Fedora 39+）：**
 
-       ./ReleaseFedora.sh
+       ./ReleaseRPM.sh
 
-使用 `rpmbuild` 生成 `.rpm` 软件包，兼容 Fedora 39 及更新版本、RHEL 9 / AlmaLinux 9 及更新版本。
+使用 `rpmbuild` 生成在 AlmaLinux 8 上构建的 `.rpm` 软件包，兼容 RED OS 7.3 及更新版本、RHEL 8 / AlmaLinux 8 及更新版本、Fedora 39 及更新版本。
 
 **关于 Docker 构建的重要说明：**
 
@@ -331,10 +331,10 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 - **后续构建很快：** Docker 镜像在本地缓存后，所有后续构建将显著加快（通常只需几分钟）。
 - **不需要本地 Qt：** 由于 Qt 捆绑在 Docker 容器中，您无需配置 `.env` 或在主机系统上安装 Qt。
 - **输出位置：** 所有生成的软件包（`.deb` 或 `.rpm`）将出现在 **`Release`** 文件夹中，与 Windows 安装程序相同。
-- **更新构建镜像：** 脚本仅在 Docker 镜像不存在时才会构建它。修改 `Dockerfile.ubuntu` 或 `Dockerfile.fedora` 后，请删除旧镜像（`docker rmi shprot-ubuntu-builder` 或 `docker rmi shprot-fedora-builder`），以便下次运行时重新构建。
+- **更新构建镜像：** 脚本仅在 Docker 镜像不存在时才会构建它。修改 `Dockerfile.deb` 或 `Dockerfile.rpm` 后，请删除旧镜像（`docker rmi shprot-deb-builder` 或 `docker rmi shprot-rpm-builder`），以便下次运行时重新构建。
 - **Qt 源代码镜像：** 默认从 Yandex 镜像下载 Qt 源代码。如需使用其他镜像，请手动构建镜像，例如：
 
-      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-ubuntu-builder - < Dockerfile.ubuntu
+      docker build --build-arg QT_MIRROR=https://download.qt.io -t shprot-deb-builder - < Dockerfile.deb
 
 #### Linux 构建（替代方案：本地构建）
 
@@ -346,7 +346,7 @@ Linux 软件包的构建使用 Docker 以确保一致性和可重复性。这种
 
       sudo apt-get install build-essential cmake fakeroot dpkg-dev file ninja-build patchelf
 
-- **Fedora/RHEL：**
+- **AlmaLinux/RHEL/Fedora：**
 
       sudo dnf install cmake file gcc-c++ make ninja-build patchelf rpm-build
 

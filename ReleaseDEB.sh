@@ -18,7 +18,7 @@ if [ -n "$QT_PREFIX" ]; then
     cd Release/Build
 
     cmake ../../Sources -DCMAKE_PREFIX_PATH="$QT_PREFIX" -DCMAKE_BUILD_TYPE=Release
-    cmake --build . --target all deploy_rpm --parallel
+    cmake --build . --target all deploy_deb --parallel
 
     mv Output/* ..
     cd ../..
@@ -33,12 +33,12 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-IMAGE_NAME="shprot-fedora-builder"
+IMAGE_NAME="shprot-deb-builder"
 
 # Build Docker image if it doesn't exist
 if ! docker image inspect "$IMAGE_NAME" &> /dev/null; then
     echo "Docker image '$IMAGE_NAME' not found. Building..."
-    docker build -t "$IMAGE_NAME" -f Dockerfile.fedora .
+    docker build -t "$IMAGE_NAME" -f Dockerfile.deb .
 fi
 
 docker run --rm \
@@ -46,4 +46,4 @@ docker run --rm \
     -v "$SCRIPT_DIR:/workspace" \
     -w /workspace \
     "$IMAGE_NAME" \
-    /bin/bash -c "./ReleaseFedora.sh"
+    /bin/bash -c "./ReleaseDEB.sh"

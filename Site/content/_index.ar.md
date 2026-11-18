@@ -122,8 +122,8 @@ download:
     text: "⁦Ubuntu 22.04+⁩ و⁦Debian 12+⁩ والتوزيعات المتوافقة."
     button: "الحزمة ⁦(.deb)⁩"
   rpm:
-    title: "Fedora وRHEL"
-    text: "⁦Fedora 39+⁩ و⁦RHEL 9+⁩ و⁦AlmaLinux 9+⁩ والتوزيعات المتوافقة."
+    title: "RED OS وRHEL وFedora"
+    text: "⁦RED OS 7.3+⁩ و⁦RHEL 8+⁩ و⁦AlmaLinux 8+⁩ و⁦Fedora 39+⁩ والتوزيعات المتوافقة."
     button: "الحزمة ⁦(.rpm)⁩"
   requirements: "يستخدم Shprot عميل OpenSSH (`ssh` و`ssh-keygen`). يأتي مع Windows 10 / 11 ومعظم أسطح مكتب Linux؛ وإن لم يكن موجودًا، فسيخبرك Shprot بكيفية إضافته."
   verify: "يتضمن كل إصدار ملف `SHA256SUMS` للتحقق من أن الملف المُنزَّل لم يُعدَّل."

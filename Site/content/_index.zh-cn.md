@@ -122,8 +122,8 @@ download:
     text: "Ubuntu 22.04+、Debian 12+ 及兼容发行版。"
     button: "软件包 (.deb)"
   rpm:
-    title: "Fedora、RHEL"
-    text: "Fedora 39+、RHEL 9+、AlmaLinux 9+ 及兼容发行版。"
+    title: "RED OS、RHEL、Fedora"
+    text: "RED OS 7.3+、RHEL 8+、AlmaLinux 8+、Fedora 39+ 及兼容发行版。"
     button: "软件包 (.rpm)"
   requirements: "Shprot 使用 OpenSSH 客户端（`ssh` 和 `ssh-keygen`）。Windows 10 / 11 和大多数 Linux 桌面系统已自带；如果缺失，Shprot 会告诉你如何添加。"
   verify: "每个版本都附带 `SHA256SUMS` 文件，用于检查下载的文件是否被篡改。"

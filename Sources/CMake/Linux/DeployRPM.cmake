@@ -1,4 +1,6 @@
-# Build RPM for Fedora/RHEL/AlmaLinux
+# Build RPM for RED OS, RHEL, AlmaLinux, Rocky Linux, Fedora and other RPM-based systems.
+# The package is built on AlmaLinux 8 (see Dockerfile.rpm), so its binaries run
+# everywhere from EL8 (RED OS 7.3 included) to the newest Fedora.
 
 set(RPM_PACKAGE_NAME ${PACKAGE_NAME})
 set(RPM_PACKAGE_VERSION "${PROJECT_VERSION}")

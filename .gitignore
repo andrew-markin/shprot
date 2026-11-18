@@ -8,3 +8,4 @@ CMakeLists.txt.user
 /Site/resources
 /Site/.hugo_build.lock
 /.claude
+/.zcode

@@ -122,8 +122,8 @@ download:
     text: "Ubuntu 22.04+, Debian 12+ và các bản phân phối tương thích."
     button: "Gói (.deb)"
   rpm:
-    title: "Fedora, RHEL"
-    text: "Fedora 39+, RHEL 9+, AlmaLinux 9+ và các bản phân phối tương thích."
+    title: "RED OS, RHEL, Fedora"
+    text: "RED OS 7.3+, RHEL 8+, AlmaLinux 8+, Fedora 39+ và các bản phân phối tương thích."
     button: "Gói (.rpm)"
   requirements: "Shprot dùng ứng dụng khách OpenSSH (`ssh` và `ssh-keygen`). Nó có sẵn trong Windows 10 / 11 và hầu hết các môi trường Linux; nếu thiếu, Shprot sẽ hướng dẫn bạn cách thêm vào."
   verify: "Mỗi bản phát hành đều có tệp `SHA256SUMS` để kiểm tra tệp tải về không bị thay đổi."
