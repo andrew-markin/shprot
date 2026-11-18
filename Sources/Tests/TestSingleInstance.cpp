@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <QLocalSocket>
 #include <QSignalSpy>
 #include <QTemporaryDir>
 #include <QTest>
@@ -21,6 +22,8 @@ private slots:
     void quitMessageReachesFirst();
     void startsAgainAfterFirstQuits();
     void namesAreSeparate();
+    void oversizeMessageIsIgnored();
+    void splitMessageIsAssembled();
 
 private:
     QString name(const QString& suffix = QString()) const;
@@ -115,6 +118,66 @@ void TestSingleInstance::namesAreSeparate()
 
     QVERIFY(first.start());
     QVERIFY(other.start());
+}
+
+// A client that sends a message longer than the limit is not an instance, it must not trigger anything
+void TestSingleInstance::oversizeMessageIsIgnored()
+{
+    SingleInstance first(name(), m_temporaryDir->path());
+    QSignalSpy activationSpy(&first, &SingleInstance::activationRequested);
+    QSignalSpy quitSpy(&first, &SingleInstance::quitRequested);
+    QVERIFY(first.start());
+
+    QVERIFY(runInThread([this]() {
+        QLocalSocket socket;
+        socket.connectToServer(name());
+
+        if (!socket.waitForConnected(5000))
+        {
+            return false;
+        }
+
+        socket.write(QByteArray(1000, 'x')); // Longer than any message an instance sends
+        socket.flush(); // Synchronous on Unix, completes when the server reads on Windows
+        socket.disconnectFromServer();
+        return true;
+    }));
+
+    QVERIFY(runInThread([this]() { return SingleInstance::sendMessage(name(), "activate"); }));
+
+    QTRY_COMPARE(activationSpy.count(), 1);
+    QCOMPARE(quitSpy.count(), 0);
+}
+
+// The message may be delivered in several portions, the parts must be assembled
+void TestSingleInstance::splitMessageIsAssembled()
+{
+    SingleInstance first(name(), m_temporaryDir->path());
+    QSignalSpy activationSpy(&first, &SingleInstance::activationRequested);
+    QSignalSpy quitSpy(&first, &SingleInstance::quitRequested);
+    QVERIFY(first.start());
+
+    QVERIFY(runInThread([this]() {
+        QLocalSocket socket;
+        socket.connectToServer(name());
+
+        if (!socket.waitForConnected(5000))
+        {
+            return false;
+        }
+
+        // A pause between the parts, so the server receives two separate portions
+        socket.write("acti");
+        socket.flush(); // Synchronous on Unix, completes when the server reads on Windows
+        QThread::msleep(100);
+        socket.write("vate");
+        socket.flush();
+        socket.disconnectFromServer();
+        return true;
+    }));
+
+    QTRY_COMPARE(activationSpy.count(), 1);
+    QCOMPARE(quitSpy.count(), 0);
 }
 
 QTEST_GUILESS_MAIN(TestSingleInstance)
