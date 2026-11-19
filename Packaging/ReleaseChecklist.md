@@ -72,6 +72,20 @@ manifests, copying and updating the previous version's folder:
   `InstallerSha256` (SHA-256 of the released `.exe`),
   `DisplayVersion`.
 
+Instead of opening a new PR per version (which goes to the back of the validation
+queue), push the new version's folder into the *open* PR of the previous version
+and rename it. The branch is reused since 1.5 (in the fork, branch
+`AndrewMarkin.Shprot-1.5-24a155b7-668c-45fc-8868-48dacd8f6f61`), so validation
+restarts without losing the queue position.
+
+- **Remove the previous version's folder in the same push.** The validator
+  accepts exactly one version directory per PR; pushing `X.Y` while `X.(Y-1)`
+  is still there fails with "The pull request contains more than one manifest"
+  and emails validation errors. The folder stays in this repository as an
+  archive — remove it only in the PR branch.
+- `gh pr edit` may fail on an old `gh` (Projects classic deprecation); use
+  `gh api -X PATCH repos/microsoft/winget-pkgs/pulls/<n> -f title=...` instead.
+
 ## Optional sanity checks before publishing the draft
 
 - Install the RPM on RED OS 7.3 and the DEB on Ubuntu 22.04 in containers and
